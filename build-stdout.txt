@@ -1,0 +1,3 @@
+  ▲ Next.js 14.2.35
+
+   Creating an optimized production build ...
