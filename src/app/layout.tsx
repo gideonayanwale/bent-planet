@@ -1,17 +1,6 @@
 import type { Metadata } from "next";
-import { DM_Sans, Syne } from "next/font/google";
 
 import "@/app/globals.css";
-
-const syne = Syne({
-  subsets: ["latin"],
-  variable: "--font-syne",
-});
-
-const dmSans = DM_Sans({
-  subsets: ["latin"],
-  variable: "--font-dm-sans",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://bentplanet.com"),
@@ -29,9 +18,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${syne.variable} ${dmSans.variable}`}>
+    <html lang="en">
       <body>{children}</body>
     </html>
   );
 }
-

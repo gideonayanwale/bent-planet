@@ -66,8 +66,8 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        heading: ["var(--font-syne)", "system-ui", "sans-serif"],
-        body: ["var(--font-dm-sans)", "system-ui", "sans-serif"],
+        heading: ["Segoe UI", "Aptos Display", "system-ui", "sans-serif"],
+        body: ["Aptos", "Segoe UI", "system-ui", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
@@ -92,4 +92,3 @@ const config = {
 } satisfies Config;
 
 export default config;
-
