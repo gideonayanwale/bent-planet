@@ -83,7 +83,7 @@ Church fills in a simple form — AI handles the rest.
 - Conference name
 - Short caption (2–4 sentences about the conference — AI expands this)
 - Banner image upload (stored in Supabase Storage)
-- Speaker / preacher name
+- Speaker(s) / preacher(s)/ minister(s) name
 - Date, start time, timezone
 - Conference theme / topic (dropdown: Revival, Prophetic, Healing, Youth, Leadership, Worship, Prayer, Evangelism, or custom)
 - Stream link (YouTube Live, Vimeo, or Zoom — URL input)
