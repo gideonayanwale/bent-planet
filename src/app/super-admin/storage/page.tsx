@@ -1,18 +1,10 @@
 import { requireSuperAdminUser } from "@/lib/current-user";
-import { createAdminClient } from "@/lib/supabase/admin";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { HardDriveIcon, ShieldCheckIcon, ServerIcon, CloudIcon, LockIcon, CheckCircle2Icon } from "lucide-react";
 
 export default async function SuperAdminStoragePage() {
   await requireSuperAdminUser();
-  const adminClient = createAdminClient();
-
-  // Inspect storage buckets metrics
-  const { data: buckets } = await adminClient.storage.listBuckets();
-  const churchAssetsBucket = buckets?.find((b) => b.name === "church-assets");
-  const conferenceBannersBucket = buckets?.find((b) => b.name === "conference-banners");
 
   const cloudinaryActive = Boolean(process.env.CLOUDINARY_CLOUD_NAME && process.env.CLOUDINARY_UPLOAD_PRESET);
   const teraboxActive = Boolean(process.env.TERABOX_GATEWAY_URL || process.env.EXTERNAL_STORAGE_GATEWAY_URL);
