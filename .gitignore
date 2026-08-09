@@ -9,4 +9,5 @@ dist
 out
 *.log
 *.tsbuildinfo
+.snapshots
 

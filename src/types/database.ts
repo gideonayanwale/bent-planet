@@ -99,6 +99,7 @@ export interface Database {
           status: string | null;
           og_title: string | null;
           og_description: string | null;
+          social_captions: Json | null;
           created_at: string | null;
         };
         Insert: {
@@ -124,6 +125,7 @@ export interface Database {
           status?: string | null;
           og_title?: string | null;
           og_description?: string | null;
+          social_captions?: Json | null;
           created_at?: string | null;
         };
         Update: {
@@ -149,9 +151,18 @@ export interface Database {
           status?: string | null;
           og_title?: string | null;
           og_description?: string | null;
+          social_captions?: Json | null;
           created_at?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "conferences_church_id_fkey";
+            columns: ["church_id"];
+            isOneToOne: false;
+            referencedRelation: "churches";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       subscribers: {
         Row: {
@@ -190,7 +201,22 @@ export interface Database {
           unsubscribed?: boolean | null;
           subscribed_at?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "subscribers_church_id_fkey";
+            columns: ["church_id"];
+            isOneToOne: false;
+            referencedRelation: "churches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "subscribers_conference_id_fkey";
+            columns: ["conference_id"];
+            isOneToOne: false;
+            referencedRelation: "conferences";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       email_log: {
         Row: {
@@ -229,7 +255,29 @@ export interface Database {
           clicked?: boolean | null;
           resend_email_id?: string | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "email_log_church_id_fkey";
+            columns: ["church_id"];
+            isOneToOne: false;
+            referencedRelation: "churches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "email_log_conference_id_fkey";
+            columns: ["conference_id"];
+            isOneToOne: false;
+            referencedRelation: "conferences";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "email_log_subscriber_id_fkey";
+            columns: ["subscriber_id"];
+            isOneToOne: false;
+            referencedRelation: "subscribers";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       utm_clicks: {
         Row: {
@@ -262,7 +310,22 @@ export interface Database {
           clicked_at?: string | null;
           converted?: boolean | null;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "utm_clicks_church_id_fkey";
+            columns: ["church_id"];
+            isOneToOne: false;
+            referencedRelation: "churches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "utm_clicks_conference_id_fkey";
+            columns: ["conference_id"];
+            isOneToOne: false;
+            referencedRelation: "conferences";
+            referencedColumns: ["id"];
+          }
+        ];
       };
       invites: {
         Row: {
