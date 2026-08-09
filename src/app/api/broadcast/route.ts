@@ -4,6 +4,8 @@ import { getChurchByAdminEmail } from "@/lib/churches";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendBroadcastEmail } from "@/lib/email";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const user = await requireChurchUser();
