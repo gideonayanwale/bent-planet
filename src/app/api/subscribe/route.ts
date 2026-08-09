@@ -2,6 +2,8 @@ import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { sendSubscriberWelcomeEmail } from "@/lib/email";
 
+export const dynamic = "force-dynamic";
+
 export async function POST(req: Request) {
   try {
     const { churchId, conferenceId, fullName, email, phone } = await req.json();
