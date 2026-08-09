@@ -6,10 +6,8 @@ import {
   UsersIcon,
   MailIcon,
   ArrowRightIcon,
-  GlobeIcon,
   CheckCircle2Icon,
   PlayIcon,
-  CalendarIcon,
   RadioIcon,
   HardDriveIcon,
   CpuIcon,
@@ -310,7 +308,7 @@ export default function HomePage() {
               Never Settle for Single Provider Downtime
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Bent Planet's AI Engine coordinates multiple LLM providers in sequence: OpenAI (gpt-4o) → DeepSeek → Google Gemini → Anthropic Claude → Guaranteed Prebuilt Faith Variant Engine. Your church will never experience generation failures.
+              Bent Planet&apos;s AI Engine coordinates multiple LLM providers in sequence: OpenAI (gpt-4o) → DeepSeek → Google Gemini → Anthropic Claude → Guaranteed Prebuilt Faith Variant Engine. Your church will never experience generation failures.
             </p>
             <div className="space-y-3 pt-2">
               {["100% Generation Uptime Guarantee", "Zero App Server Memory Overload via Cloud Storage CDN", "Strict Super Admin Key Security Lock"].map((item) => (
