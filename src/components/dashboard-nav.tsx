@@ -12,6 +12,7 @@ import {
   LogOutIcon,
   GlobeIcon,
   SparklesIcon,
+  HardDriveIcon,
 } from "lucide-react";
 
 interface DashboardNavProps {
@@ -39,6 +40,7 @@ export function DashboardNav({
   const superAdminNavItems = [
     { label: "Overview", href: "/super-admin", icon: HomeIcon },
     { label: "Invite Church", href: "/super-admin/invite", icon: SparklesIcon },
+    { label: "Cloud Storage", href: "/super-admin/storage", icon: HardDriveIcon },
   ];
 
   const items = isSuperAdmin ? superAdminNavItems : churchNavItems;
@@ -60,7 +62,7 @@ export function DashboardNav({
                 {isSuperAdmin ? "Bent Planet Admin" : churchName || "Bent Planet"}
               </span>
               <span className="text-[11px] text-slate-500 font-medium leading-none mt-1">
-                {isSuperAdmin ? "Super Admin Portal" : "Church Dashboard"}
+                {isSuperAdmin ? adminEmail || "Super Admin Portal" : "Church Dashboard"}
               </span>
             </div>
           </Link>

@@ -7,6 +7,11 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PlusIcon, ExternalLinkIcon, Share2Icon } from "lucide-react";
+import type { Database } from "@/types/database";
+
+type ConferenceWithCount = Database["public"]["Tables"]["conferences"]["Row"] & {
+  subscribers?: { count: number }[];
+};
 
 export default async function ConferencesPage() {
   const user = await requireChurchUser();
@@ -62,7 +67,7 @@ export default async function ConferencesPage() {
               </TableHeader>
               <TableBody>
                 {conferences && conferences.length > 0 ? (
-                  conferences.map((conf: any) => (
+                  (conferences as unknown as ConferenceWithCount[]).map((conf) => (
                     <TableRow key={conf.id}>
                       <TableCell>
                         <p className="font-semibold text-slate-900">{conf.title}</p>
@@ -112,7 +117,7 @@ export default async function ConferencesPage() {
                   <TableRow>
                     <TableCell colSpan={4} className="text-center py-12">
                       <div className="flex flex-col items-center justify-center space-y-3">
-                        <p className="text-slate-500">You haven't created any conferences yet.</p>
+                        <p className="text-slate-500">You haven&apos;t created any conferences yet.</p>
                         <Button asChild variant="outline">
                           <Link href="/dashboard/conferences/new">Create Your First Conference</Link>
                         </Button>

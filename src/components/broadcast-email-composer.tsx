@@ -72,10 +72,11 @@ export function BroadcastEmailComposer({
           text: data.error || "Failed to dispatch broadcast email.",
         });
       }
-    } catch (err: any) {
+    } catch (err: unknown) {
+      const error = err as Error;
       setStatusMsg({
         type: "error",
-        text: err.message || "An unexpected error occurred.",
+        text: error.message || "An unexpected error occurred.",
       });
     } finally {
       setIsSending(false);

@@ -5,6 +5,11 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { BroadcastEmailComposer } from "@/components/broadcast-email-composer";
+import type { Database } from "@/types/database";
+
+type EmailLogRow = Database["public"]["Tables"]["email_log"]["Row"] & {
+  subscribers?: { full_name?: string; email?: string } | null;
+};
 
 export default async function EmailsPage() {
   const user = await requireChurchUser();
@@ -29,7 +34,7 @@ export default async function EmailsPage() {
       .eq("unsubscribed", false),
   ]);
 
-  const emails = emailsRes.data || [];
+  const emails = (emailsRes.data as unknown as EmailLogRow[]) || [];
   const subscriberCount = subscribersCountRes.count || 0;
 
   const totalOpened = emails.filter((e) => e.opened).length;
@@ -64,11 +69,11 @@ export default async function EmailsPage() {
 
         <Card className="border-purple-100 bg-gradient-to-br from-purple-50/50 to-white shadow-sm">
           <CardHeader className="pb-2">
-            <CardTitle className="text-xs font-semibold text-purple-900 uppercase tracking-wider">Automated Sequences</CardTitle>
+            <CardTitle className="text-xs font-semibold text-purple-900 uppercase tracking-wider">Avg Open Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold font-heading text-purple-950">Active</p>
-            <p className="text-xs text-purple-700 mt-1 font-medium">Welcome, Reminders & Announcements</p>
+            <p className="text-3xl font-bold font-heading text-purple-950">{openRate}%</p>
+            <p className="text-xs text-purple-700 mt-1 font-medium">Welcome & Announcement Sequences</p>
           </CardContent>
         </Card>
       </div>
@@ -107,7 +112,7 @@ export default async function EmailsPage() {
               </TableHeader>
               <TableBody>
                 {emails.length > 0 ? (
-                  emails.map((emailLog: any) => (
+                  emails.map((emailLog) => (
                     <TableRow key={emailLog.id} className="hover:bg-slate-50/50">
                       <TableCell>
                         <p className="font-semibold text-slate-900 text-sm">{emailLog.subscribers?.full_name || "Subscriber"}</p>
@@ -133,13 +138,15 @@ export default async function EmailsPage() {
                         )}
                       </TableCell>
                       <TableCell className="text-slate-500 text-xs">
-                        {new Date(emailLog.sent_at).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                          hour: "2-digit",
-                          minute: "2-digit",
-                        })}
+                        {emailLog.sent_at
+                          ? new Date(emailLog.sent_at).toLocaleDateString("en-US", {
+                              month: "short",
+                              day: "numeric",
+                              year: "numeric",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                            })
+                          : "—"}
                       </TableCell>
                     </TableRow>
                   ))

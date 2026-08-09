@@ -63,8 +63,9 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ success: true, count: sentCount });
-  } catch (error: any) {
-    console.error("Broadcast API error:", error);
-    return NextResponse.json({ error: error.message || "Something went wrong" }, { status: 500 });
+  } catch (error: unknown) {
+    const err = error as Error;
+    console.error("Broadcast API error:", err);
+    return NextResponse.json({ error: err.message || "Something went wrong" }, { status: 500 });
   }
 }

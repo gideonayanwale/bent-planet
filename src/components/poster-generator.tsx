@@ -98,7 +98,7 @@ export function PosterGenerator({
       ctx.fillStyle = "#ffffff";
       const words = title.split(" ");
       let line = "";
-      let lines: string[] = [];
+      const lines: string[] = [];
 
       for (let n = 0; n < words.length; n++) {
         const testLine = line + words[n] + " ";

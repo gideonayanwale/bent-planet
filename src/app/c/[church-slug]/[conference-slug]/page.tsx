@@ -8,6 +8,12 @@ import { StreamPlayer } from "@/components/stream-player";
 import { CalendarIcon, ClockIcon, VideoIcon, DownloadIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
+interface AgendaItem {
+  time?: string;
+  title?: string;
+  description?: string;
+}
+
 export default async function PublicConferencePage({
   params,
 }: {
@@ -25,7 +31,7 @@ export default async function PublicConferencePage({
   }
 
   const church = conference.churches;
-  const agenda = (conference.agenda as any[]) || [];
+  const agenda = (conference.agenda as unknown as AgendaItem[]) || [];
 
   return (
     <div className="min-h-screen bg-slate-50 selection:bg-primary/20">
@@ -118,7 +124,7 @@ export default async function PublicConferencePage({
               <div className="space-y-6">
                 <h3 className="text-2xl font-bold font-heading text-slate-900">Conference Agenda</h3>
                 <div className="space-y-4">
-                  {agenda.map((item: any, i: number) => (
+                  {agenda.map((item, i) => (
                     <div key={i} className="flex flex-col sm:flex-row gap-4 sm:gap-6 group bg-white p-6 rounded-2xl border border-slate-100 shadow-sm">
                       <div className="sm:w-28 flex-shrink-0 pt-0.5">
                         <span className="inline-flex items-center justify-center px-3.5 py-1.5 rounded-full bg-indigo-50 text-indigo-700 font-mono font-semibold text-xs border border-indigo-100">
@@ -173,7 +179,7 @@ export default async function PublicConferencePage({
                 </div>
 
                 <div className="pt-6 border-t border-slate-100">
-                  <SubscribeForm churchId={church?.id!} conferenceId={conference.id} />
+                  <SubscribeForm churchId={church?.id || ""} conferenceId={conference.id} />
                 </div>
               </div>
 
@@ -181,7 +187,7 @@ export default async function PublicConferencePage({
               <div className="bg-slate-900 rounded-3xl p-8 text-white shadow-xl">
                 <div className="flex items-center gap-4 mb-4">
                   {church?.logo_url && (
-                    <Image src={church.logo_url} alt={church.name!} width={48} height={48} className="rounded-full bg-white p-1" />
+                    <Image src={church.logo_url} alt={church.name || "Church Logo"} width={48} height={48} className="rounded-full bg-white p-1" />
                   )}
                   <h4 className="text-xl font-bold font-heading">{church?.name}</h4>
                 </div>

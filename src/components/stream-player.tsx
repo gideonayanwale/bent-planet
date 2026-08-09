@@ -1,8 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { PlayIcon, VideoIcon, ClockIcon, RadioIcon } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { VideoIcon, ClockIcon, RadioIcon } from "lucide-react";
 
 interface StreamPlayerProps {
   streamUrl?: string | null;

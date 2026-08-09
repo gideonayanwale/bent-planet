@@ -4,6 +4,9 @@ import Link from "next/link";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import type { Database } from "@/types/database";
+
+type ConferenceRow = Database["public"]["Tables"]["conferences"]["Row"];
 
 export default async function ChurchPublicProfilePage({
   params,
@@ -23,12 +26,12 @@ export default async function ChurchPublicProfilePage({
   }
 
   // Fetch all published conferences for this church
-  const { data: conferences, error: confError } = await adminClient
+  const { data: conferences } = await adminClient
     .from("conferences")
     .select("*")
     .eq("church_id", church.id)
     .eq("status", "published")
-    .order("conference_date", { ascending: true }); // Ideally filter out past ones or sort them appropriately
+    .order("conference_date", { ascending: true });
 
   return (
     <div className="min-h-screen bg-slate-50">
@@ -74,7 +77,7 @@ export default async function ChurchPublicProfilePage({
         
         {conferences && conferences.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {conferences.map((conf: any) => (
+            {conferences.map((conf: ConferenceRow) => (
               <Link href={`/c/${church.slug}/${conf.slug}`} key={conf.id} className="group">
                 <Card className="h-full overflow-hidden border-slate-200/60 shadow-sm hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
                   <div className="relative h-48 w-full bg-slate-100 overflow-hidden">
@@ -99,7 +102,7 @@ export default async function ChurchPublicProfilePage({
                       {conf.title}
                     </CardTitle>
                     <CardDescription className="flex items-center gap-2 mt-2 font-medium text-slate-600">
-                      {new Date(conf.conference_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}
+                      {conf.conference_date ? new Date(conf.conference_date).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' }) : "TBA"}
                     </CardDescription>
                   </CardHeader>
                   <CardContent>

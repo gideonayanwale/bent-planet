@@ -29,7 +29,7 @@ export default async function PromoteConferencePage({
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com";
   const publicUrl = `${baseUrl}/c/${church.slug}/${conference.slug}`;
-  const socialCaptions = (conference as any).social_captions || {};
+  const socialCaptions = (conference.social_captions as Record<string, string>) || {};
 
   const utmLinks = [
     { label: "Instagram Bio", url: `${publicUrl}?utm_source=instagram&utm_medium=bio&utm_campaign=launch` },
@@ -99,7 +99,7 @@ export default async function PromoteConferencePage({
       <div>
         <h2 className="text-xl font-bold text-slate-900 mb-4">AI-Generated Social Media Captions</h2>
         <div className="grid md:grid-cols-2 gap-6">
-          {Object.entries(socialCaptions).map(([platform, caption]: [string, any]) => (
+          {Object.entries(socialCaptions).map(([platform, caption]: [string, string]) => (
             <Card key={platform} className="flex flex-col h-full shadow-sm">
               <CardHeader className="pb-3 border-b border-slate-100">
                 <div className="flex items-center justify-between">

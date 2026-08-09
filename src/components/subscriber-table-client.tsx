@@ -12,7 +12,7 @@ interface SubscriberItem {
   full_name: string;
   email: string;
   phone?: string | null;
-  subscribed_at: string;
+  subscribed_at?: string | null;
   conferences?: { title?: string } | null;
 }
 
@@ -46,7 +46,7 @@ export function SubscriberTableClient({
       `"${s.email.replace(/"/g, '""')}"`,
       `"${(s.phone || "").replace(/"/g, '""')}"`,
       `"${(s.conferences?.title || "Direct Signup").replace(/"/g, '""')}"`,
-      `"${new Date(s.subscribed_at).toISOString()}"`,
+      `"${s.subscribed_at ? new Date(s.subscribed_at).toISOString() : ""}"`,
     ]);
 
     const csvContent = "data:text/csv;charset=utf-8," + [headers.join(","), ...rows.map((r) => r.join(","))].join("\n");
@@ -168,11 +168,13 @@ export function SubscriberTableClient({
                     </Badge>
                   </TableCell>
                   <TableCell className="text-slate-500 text-xs">
-                    {new Date(sub.subscribed_at).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                      year: "numeric",
-                    })}
+                    {sub.subscribed_at
+                      ? new Date(sub.subscribed_at).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })
+                      : "—"}
                   </TableCell>
                 </TableRow>
               ))

@@ -4,6 +4,11 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SubscriberTableClient } from "@/components/subscriber-table-client";
+import type { Database } from "@/types/database";
+
+type SubscriberWithConf = Database["public"]["Tables"]["subscribers"]["Row"] & {
+  conferences?: { title?: string } | null;
+};
 
 export default async function SubscribersPage() {
   const user = await requireChurchUser();
@@ -44,7 +49,7 @@ export default async function SubscribersPage() {
         </CardHeader>
         <CardContent>
           <SubscriberTableClient
-            initialSubscribers={(subscribers as any[]) || []}
+            initialSubscribers={(subscribers as unknown as SubscriberWithConf[]) || []}
             churchId={church.id}
           />
         </CardContent>

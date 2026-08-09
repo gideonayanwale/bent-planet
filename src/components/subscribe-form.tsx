@@ -40,7 +40,7 @@ export function SubscribeForm({ churchId, conferenceId }: { churchId: string, co
   if (success) {
     return (
       <div className="bg-green-50/50 border border-green-200 rounded-xl p-8 text-center space-y-3">
-        <h3 className="text-xl font-semibold text-green-800">You're in! 🙌</h3>
+        <h3 className="text-xl font-semibold text-green-800">You&apos;re in! 🙌</h3>
         <p className="text-green-700">Check your email for the confirmation and details.</p>
       </div>
     );
