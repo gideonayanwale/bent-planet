@@ -10,4 +10,7 @@ out
 *.log
 *.tsbuildinfo
 .snapshots
+build-output.txt
+build-stderr.txt
+build-stdout.txt
 
