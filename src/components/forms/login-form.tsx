@@ -2,6 +2,8 @@
 
 import { useState } from "react";
 
+import { useRouter } from "next/navigation";
+
 import { loginAction } from "@/app/login/actions";
 import { FieldError } from "@/components/forms/field-error";
 import { FormFeedback } from "@/components/forms/form-feedback";
@@ -15,6 +17,7 @@ type LoginFormProps = {
 };
 
 export function LoginForm({ defaultEmail }: LoginFormProps) {
+  const router = useRouter();
   const [state, setState] = useState<ActionState>(INITIAL_ACTION_STATE);
   const [isPending, setIsPending] = useState(false);
 
@@ -23,6 +26,11 @@ export function LoginForm({ defaultEmail }: LoginFormProps) {
     setState(INITIAL_ACTION_STATE);
 
     const nextState = await loginAction(formData);
+
+    if (nextState?.payload) {
+      router.push(nextState.payload);
+      return;
+    }
 
     if (nextState) {
       setState(nextState);

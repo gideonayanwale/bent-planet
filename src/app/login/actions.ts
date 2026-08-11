@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 
 import { getAppRouteForEmail } from "@/lib/auth";
 import {
@@ -32,5 +31,8 @@ export async function loginAction(formData: FormData): Promise<ActionState | voi
     return actionError("The email or password you entered is incorrect.");
   }
 
-  redirect(getAppRouteForEmail(data.user.email));
+  return {
+    status: "success",
+    payload: getAppRouteForEmail(data.user.email),
+  };
 }

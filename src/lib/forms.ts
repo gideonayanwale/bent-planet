@@ -50,6 +50,7 @@ export type ActionState = {
   status: "idle" | "success" | "error";
   message?: string;
   fieldErrors?: Record<string, string[] | undefined>;
+  payload?: string;
 };
 
 export const INITIAL_ACTION_STATE: ActionState = {

@@ -14,6 +14,8 @@ import {
   EyeOffIcon,
 } from "lucide-react";
 
+import { useRouter } from "next/navigation";
+
 import { completeOnboardingAction } from "@/app/onboarding/[token]/actions";
 import { FieldError } from "@/components/forms/field-error";
 import { FormFeedback } from "@/components/forms/form-feedback";
@@ -40,6 +42,7 @@ type OnboardingFormProps = {
 };
 
 export function OnboardingForm({ adminEmail, token, defaultValues }: OnboardingFormProps) {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState<number>(1);
   const [state, setState] = useState<ActionState>(INITIAL_ACTION_STATE);
   const [isPending, setIsPending] = useState(false);
@@ -104,6 +107,11 @@ export function OnboardingForm({ adminEmail, token, defaultValues }: OnboardingF
     setState(INITIAL_ACTION_STATE);
 
     const nextState = await completeOnboardingAction(formData);
+
+    if (nextState?.payload) {
+      router.push(nextState.payload);
+      return;
+    }
 
     if (nextState) {
       setState(nextState);

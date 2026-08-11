@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { redirect } from "next/navigation";
 
 import { upsertChurchAuthUser } from "@/lib/auth-users";
 import { getChurchByAdminEmail, generateUniqueChurchSlug } from "@/lib/churches";
@@ -135,12 +134,16 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
     });
 
     if (signInError) {
-      redirect(
-        `/login?email=${encodeURIComponent(adminEmail)}&onboarding=complete`,
-      );
+      return {
+        status: "success",
+        payload: `/login?email=${encodeURIComponent(adminEmail)}&onboarding=complete`,
+      };
     }
 
-    redirect("/dashboard");
+    return {
+      status: "success",
+      payload: "/dashboard",
+    };
   } catch (error) {
     const message =
       error instanceof Error

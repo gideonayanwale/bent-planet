@@ -7,12 +7,12 @@ const publicEnvSchema = z.object({
 });
 
 const serverEnvSchema = publicEnvSchema.extend({
-  SUPABASE_SERVICE_ROLE_KEY: z.string().min(1),
-  OPENAI_API_KEY: z.string().min(1),
-  RESEND_API_KEY: z.string().min(1),
-  RESEND_FROM_EMAIL: z.string().email(),
-  CRON_SECRET: z.string().min(1),
-  SUPER_ADMIN_EMAIL: z.string().email(),
+  SUPABASE_SERVICE_ROLE_KEY: z.string().optional().default(""),
+  OPENAI_API_KEY: z.string().optional().default(""),
+  RESEND_API_KEY: z.string().optional().default(""),
+  RESEND_FROM_EMAIL: z.string().optional().default("noreply@bentplanet.com"),
+  CRON_SECRET: z.string().optional().default(""),
+  SUPER_ADMIN_EMAIL: z.string().optional().default(""),
 });
 
 export function getPublicEnv() {
