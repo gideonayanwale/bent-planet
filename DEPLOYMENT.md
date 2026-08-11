@@ -74,3 +74,105 @@ Once deployed, follow these steps to verify the platform is fully operational:
 3. **AI Generation Check**: Log in as the test church, navigate to `/dashboard/conferences/new`, fill in some dummy details, and verify that OpenAI successfully generates the content.
 4. **Storage Check**: Upload a banner during the conference creation process. Verify it displays correctly on the public conference page and appears in your Supabase Storage bucket.
 5. **Subscription & Webhooks**: Go to the public conference page, submit a subscription. Verify the user appears in the `/dashboard/subscribers` table. (To fully test webhook opens/clicks, you must configure a Webhook endpoint in your Resend dashboard pointing to `https://yourdomain.com/api/webhooks/resend`).
+
+---
+
+## 5. Docker Deployment (Alternative to Vercel)
+
+Bent Planet can be deployed to **any server with Docker** using the included Docker Compose setup. This includes a multi-stage build for the Next.js app, an Nginx reverse proxy, and automatic TLS via Let's Encrypt.
+
+### Prerequisites
+
+- Docker Engine 20+ and Docker Compose v2+
+- A server with ports 80 and 443 open
+- A domain name with DNS A record pointing to your server's IP
+- Your `.env.local` file with all environment variables from Section 1
+
+### 5.1 — Build the Docker Image
+
+The `NEXT_PUBLIC_*` variables must be passed as build arguments because Next.js inlines them into the client-side JavaScript bundle at build time:
+
+```bash
+docker compose build
+```
+
+> **Note**: The `docker-compose.yml` reads `NEXT_PUBLIC_*` values from your `.env.local` file and passes them as build args automatically.
+
+### 5.2 — Initial TLS Certificate Setup
+
+Before starting the full stack, you need to provision Let's Encrypt certificates:
+
+1. **Edit the init script** — Open `init-letsencrypt.sh` and update:
+   - `DOMAINS` — your domain(s)
+   - `EMAIL` — your email for renewal notices
+   - `STAGING=1` — set to `1` first to test without hitting rate limits
+
+2. **Edit Nginx config** — In `nginx/nginx.conf` and `nginx/nginx-initial.conf`, replace `bentplanet.com` with your actual domain.
+
+3. **Run the init script**:
+   ```bash
+   chmod +x init-letsencrypt.sh
+   ./init-letsencrypt.sh
+   ```
+
+4. Once successful with staging, set `STAGING=0` in the script and run it again for production certificates.
+
+### 5.3 — Start the Full Stack
+
+```bash
+docker compose up -d
+```
+
+This starts three containers:
+
+| Container | Purpose |
+|---|---|
+| `bent-planet-app` | Next.js application (port 3000, internal only) |
+| `bent-planet-nginx` | Nginx reverse proxy (ports 80 & 443) |
+| `bent-planet-certbot` | Auto-renews TLS certs every 12 hours |
+
+### 5.4 — Verify Deployment
+
+```bash
+# Check all containers are running and healthy
+docker compose ps
+
+# View application logs
+docker compose logs -f app
+
+# Test HTTPS
+curl -I https://yourdomain.com
+```
+
+### 5.5 — Updating the Application
+
+```bash
+# Pull latest code
+git pull origin main
+
+# Rebuild and restart (zero-downtime with health checks)
+docker compose build
+docker compose up -d
+```
+
+### 5.6 — Useful Commands
+
+```bash
+# View logs for a specific service
+docker compose logs -f app
+docker compose logs -f nginx
+
+# Restart a single service
+docker compose restart app
+
+# Force certificate renewal
+docker compose run --rm certbot renew --force-renewal
+docker compose exec nginx nginx -s reload
+
+# Stop everything
+docker compose down
+
+# Stop and remove volumes
+docker compose down -v
+```
+

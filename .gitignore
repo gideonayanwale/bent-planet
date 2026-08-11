@@ -14,3 +14,6 @@ build-output.txt
 build-stderr.txt
 build-stdout.txt
 
+# Docker / Certbot
+certbot/
+

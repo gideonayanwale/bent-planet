@@ -1,0 +1,50 @@
+# Dependencies & build output
+node_modules
+.next
+out
+dist
+coverage
+
+# Version control
+.git
+.gitignore
+
+# Environment files (secrets!)
+.env
+.env.*
+
+# IDE & editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# Docker (avoid recursive context)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Documentation & meta
+*.md
+LICENSE
+
+# Logs & artifacts
+*.log
+*.tsbuildinfo
+build-output.txt
+build-stderr.txt
+build-stdout.txt
+
+# Snapshots
+.snapshots
+
+# Vercel
+.vercel
+
+# Nginx & Certbot (separate context)
+nginx
+certbot
+init-letsencrypt.sh
+
+# Agents config
+.agents
