@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { generateConferenceContentWithFallbacks } from "@/lib/ai-generator";
-import { getCurrentUser } from "@/lib/auth";
+import { getCurrentUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
 import { createAdminClient } from "@/lib/supabase/admin";
 

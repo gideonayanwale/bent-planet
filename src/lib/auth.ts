@@ -10,6 +10,7 @@ export function isSuperAdmin(email?: string | null): boolean {
   return superAdmins.includes(email.toLowerCase());
 }
 
+
 export function getAppRouteForEmail(email?: string | null) {
   return isSuperAdmin(email) ? "/super-admin" : "/dashboard";
 }

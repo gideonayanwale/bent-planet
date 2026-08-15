@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 
-import { getAppRouteForEmail, isSuperAdminEmail } from "@/lib/auth";
+import { getAppRouteForEmail, isSuperAdmin } from "@/lib/auth";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
 
 export async function getCurrentUser() {
@@ -25,7 +25,7 @@ export async function requireAuthenticatedUser() {
 export async function requireSuperAdminUser() {
   const user = await requireAuthenticatedUser();
 
-  if (!isSuperAdminEmail(user.email)) {
+  if (!isSuperAdmin(user.email)) {
     redirect(getAppRouteForEmail(user.email));
   }
 
@@ -35,7 +35,7 @@ export async function requireSuperAdminUser() {
 export async function requireChurchUser() {
   const user = await requireAuthenticatedUser();
 
-  if (isSuperAdminEmail(user.email)) {
+  if (isSuperAdmin(user.email)) {
     redirect("/super-admin");
   }
 

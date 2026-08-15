@@ -1,7 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
-import { getAppRouteForEmail, isSuperAdminEmail } from "@/lib/auth";
+import { getAppRouteForEmail, isSuperAdmin } from "@/lib/auth";
 import { updateSession } from "@/lib/supabase/middleware";
 
 const PUBLIC_API_ROUTES = new Set([
@@ -61,7 +61,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isSuperAdminRoute(pathname)) {
-    if (!isSuperAdminEmail(user.email)) {
+    if (!isSuperAdmin(user.email)) {
       return NextResponse.redirect(new URL("/dashboard", request.url));
     }
 
@@ -69,7 +69,7 @@ export async function middleware(request: NextRequest) {
   }
 
   if (isDashboardRoute(pathname) || isProtectedApiRoute(pathname)) {
-    if (isSuperAdminEmail(user.email)) {
+    if (isSuperAdmin(user.email)) {
       if (isProtectedApiRoute(pathname)) {
         return NextResponse.json({ error: "Super admin cannot call church-only API routes." }, { status: 403 });
       }
