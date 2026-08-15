@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function SubscribeForm({ churchId, conferenceId }: { churchId: string, conferenceId: string }) {
+export function SubscribeForm({ churchId, conferenceId }: { churchId: string; conferenceId?: string }) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
 
@@ -39,28 +39,28 @@ export function SubscribeForm({ churchId, conferenceId }: { churchId: string, co
 
   if (success) {
     return (
-      <div className="bg-green-50/50 border border-green-200 rounded-xl p-8 text-center space-y-3">
-        <h3 className="text-xl font-semibold text-green-800">You&apos;re in! 🙌</h3>
-        <p className="text-green-700">Check your email for the confirmation and details.</p>
+      <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-6 text-center space-y-2">
+        <h3 className="text-lg font-bold text-emerald-900">You&apos;re connected! 🙌</h3>
+        <p className="text-xs text-emerald-700">Thank you for subscribing. You will receive notifications for upcoming events.</p>
       </div>
     );
   }
 
   return (
     <form onSubmit={handleSubmit} className="space-y-4">
-      <div className="space-y-2">
-        <Label htmlFor="fullName">Full Name</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="fullName" className="text-xs font-semibold text-slate-700">Full Name *</Label>
         <Input 
           id="fullName" 
           required 
           placeholder="e.g. Sarah Jenkins"
           value={formData.fullName}
           onChange={e => setFormData({...formData, fullName: e.target.value})}
-          className="bg-white/50 backdrop-blur-sm focus:bg-white transition-colors"
+          className="bg-white text-xs h-9"
         />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="email">Email Address</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="email" className="text-xs font-semibold text-slate-700">Email Address *</Label>
         <Input 
           id="email" 
           type="email" 
@@ -68,22 +68,22 @@ export function SubscribeForm({ churchId, conferenceId }: { churchId: string, co
           placeholder="e.g. sarah@example.com"
           value={formData.email}
           onChange={e => setFormData({...formData, email: e.target.value})}
-          className="bg-white/50 backdrop-blur-sm focus:bg-white transition-colors"
+          className="bg-white text-xs h-9"
         />
       </div>
-      <div className="space-y-2">
-        <Label htmlFor="phone">Phone (Optional)</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor="phone" className="text-xs font-semibold text-slate-700">Phone (Optional)</Label>
         <Input 
           id="phone" 
           type="tel" 
           placeholder="e.g. +1 234 567 8900"
           value={formData.phone}
           onChange={e => setFormData({...formData, phone: e.target.value})}
-          className="bg-white/50 backdrop-blur-sm focus:bg-white transition-colors"
+          className="bg-white text-xs h-9"
         />
       </div>
-      <Button type="submit" size="lg" className="w-full text-lg shadow-lg hover:shadow-xl transition-all" disabled={loading}>
-        {loading ? "Subscribing..." : "Secure My Spot"}
+      <Button type="submit" size="default" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md mt-2" disabled={loading}>
+        {loading ? "Connecting..." : conferenceId ? "Reserve My Spot" : "Join Ministry Updates"}
       </Button>
     </form>
   );

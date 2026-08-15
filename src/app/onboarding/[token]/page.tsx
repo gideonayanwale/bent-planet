@@ -4,6 +4,7 @@ import { CheckCircle2 } from "lucide-react";
 import { OnboardingForm } from "@/components/forms/onboarding-form";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { BrandLogo } from "@/components/brand-logo";
 import {
   Card,
   CardContent,
@@ -80,6 +81,9 @@ export default async function OnboardingPage({ params }: OnboardingPageProps) {
       <section className="container py-12 sm:py-16">
         <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
           <div className="space-y-6">
+            <Link href="/" className="inline-block transition-opacity hover:opacity-85">
+              <BrandLogo iconSize={44} />
+            </Link>
             <Badge className="bg-accent/10 text-accent hover:bg-accent/10">Church onboarding</Badge>
             <div className="space-y-4">
               <h1 className="font-heading text-4xl font-bold tracking-tight text-primary sm:text-5xl">

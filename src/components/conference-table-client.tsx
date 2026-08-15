@@ -144,7 +144,7 @@ export function ConferenceTableClient({
                       </Badge>
                       <Button
                         variant="ghost"
-                        size="xs"
+                        size="sm"
                         onClick={() => handleToggleStatus(conf)}
                         disabled={isUpdatingThis}
                         className="h-6 px-1.5 text-[11px] text-slate-500 hover:text-indigo-600"

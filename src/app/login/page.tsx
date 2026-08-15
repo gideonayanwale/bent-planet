@@ -13,6 +13,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getCurrentUser } from "@/lib/current-user";
+import { BrandLogo } from "@/components/brand-logo";
 import { getAppRouteForEmail } from "@/lib/auth";
 
 type LoginPageProps = {
@@ -37,6 +38,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       <section className="container py-12 sm:py-16 lg:py-24">
         <div className="grid gap-10 lg:grid-cols-[1.1fr_0.9fr] lg:items-center">
           <div className="space-y-6">
+            <Link href="/" className="inline-block transition-opacity hover:opacity-85">
+              <BrandLogo iconSize={44} />
+            </Link>
             <Badge className="bg-accent/10 text-accent hover:bg-accent/10">Secure workspace</Badge>
             <div className="space-y-4">
               <h1 className="max-w-3xl font-heading text-4xl font-bold tracking-tight text-primary sm:text-5xl">

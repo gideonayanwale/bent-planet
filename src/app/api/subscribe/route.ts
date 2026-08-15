@@ -8,9 +8,9 @@ export async function POST(req: Request) {
   try {
     const { churchId, conferenceId, fullName, email, phone } = await req.json();
 
-    if (!churchId || !conferenceId || !fullName || !email) {
+    if (!churchId || !fullName || !email) {
       return NextResponse.json(
-        { error: "Missing required fields" },
+        { error: "Missing required fields (churchId, fullName, email)" },
         { status: 400 }
       );
     }
@@ -23,10 +23,10 @@ export async function POST(req: Request) {
       .upsert(
         {
           church_id: churchId,
-          conference_id: conferenceId,
+          conference_id: conferenceId || null,
           full_name: fullName,
           email,
-          phone,
+          phone: phone || null,
         },
         { onConflict: "church_id, email" }
       )
@@ -41,43 +41,45 @@ export async function POST(req: Request) {
       );
     }
 
-    // Trigger Welcome Email in background
-    try {
-      const [churchRes, confRes] = await Promise.all([
-        adminClient.from("churches").select("name, logo_url").eq("id", churchId).maybeSingle(),
-        adminClient.from("conferences").select("title, conference_date, conference_time, stream_url, free_resource_url, free_resource_name").eq("id", conferenceId).maybeSingle(),
-      ]);
+    // Trigger Welcome Email in background if conference is attached
+    if (conferenceId) {
+      try {
+        const [churchRes, confRes] = await Promise.all([
+          adminClient.from("churches").select("name, logo_url").eq("id", churchId).maybeSingle(),
+          adminClient.from("conferences").select("title, conference_date, conference_time, stream_url, free_resource_url, free_resource_name").eq("id", conferenceId).maybeSingle(),
+        ]);
 
-      const church = churchRes.data;
-      const conf = confRes.data;
+        const church = churchRes.data;
+        const conf = confRes.data;
 
-      if (church && conf) {
-        const resendId = await sendSubscriberWelcomeEmail({
-          toEmail: email,
-          subscriberName: fullName,
-          churchName: church.name,
-          churchLogo: church.logo_url,
-          conferenceTitle: conf.title,
-          conferenceDate: conf.conference_date,
-          conferenceTime: conf.conference_time,
-          streamUrl: conf.stream_url,
-          freeResourceUrl: conf.free_resource_url,
-          freeResourceName: conf.free_resource_name,
-        });
-
-        if (resendId) {
-          await adminClient.from("email_log").insert({
-            church_id: churchId,
-            conference_id: conferenceId,
-            subscriber_id: subscriber?.id,
-            email_type: "welcome",
-            subject: `Welcome to ${church.name}`,
-            resend_email_id: resendId,
+        if (church && conf) {
+          const resendId = await sendSubscriberWelcomeEmail({
+            toEmail: email,
+            subscriberName: fullName,
+            churchName: church.name,
+            churchLogo: church.logo_url,
+            conferenceTitle: conf.title,
+            conferenceDate: conf.conference_date,
+            conferenceTime: conf.conference_time,
+            streamUrl: conf.stream_url,
+            freeResourceUrl: conf.free_resource_url,
+            freeResourceName: conf.free_resource_name,
           });
+
+          if (resendId) {
+            await adminClient.from("email_log").insert({
+              church_id: churchId,
+              conference_id: conferenceId,
+              subscriber_id: subscriber?.id,
+              email_type: "welcome",
+              subject: `Welcome to ${church.name}`,
+              resend_email_id: resendId,
+            });
+          }
         }
+      } catch (emailErr) {
+        console.error("Welcome email error (non-fatal):", emailErr);
       }
-    } catch (emailErr) {
-      console.error("Welcome email error (non-fatal):", emailErr);
     }
 
     return NextResponse.json({ success: true });

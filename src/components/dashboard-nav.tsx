@@ -4,6 +4,8 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { BrandIcon } from "@/components/brand-logo";
 import {
   CalendarIcon,
   HomeIcon,
@@ -46,22 +48,20 @@ export function DashboardNav({
   const items = isSuperAdmin ? superAdminNavItems : churchNavItems;
 
   return (
-    <header className="sticky top-0 z-40 w-full border-b border-slate-200/80 bg-white/80 backdrop-blur-md">
+    <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/80 backdrop-blur-md">
       <div className="container flex h-16 items-center justify-between px-4 sm:px-8">
         <div className="flex items-center gap-6">
           <Link href={isSuperAdmin ? "/super-admin" : "/dashboard"} className="flex items-center gap-3">
             {churchLogo ? (
               <img src={churchLogo} alt={churchName} className="h-8 w-8 rounded-lg object-cover" />
             ) : (
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 font-heading font-bold text-white shadow-sm">
-                BP
-              </div>
+              <BrandIcon size={34} className="shrink-0" />
             )}
             <div className="flex flex-col">
-              <span className="font-heading text-lg font-bold tracking-tight text-slate-900 leading-none">
+              <span className="font-heading text-lg font-bold tracking-tight text-foreground leading-none">
                 {isSuperAdmin ? "Bent Planet Admin" : churchName || "Bent Planet"}
               </span>
-              <span className="text-[11px] text-slate-500 font-medium leading-none mt-1">
+              <span className="text-[11px] text-muted-foreground font-medium leading-none mt-1">
                 {isSuperAdmin ? adminEmail || "Super Admin Portal" : "Church Dashboard"}
               </span>
             </div>
@@ -77,8 +77,8 @@ export function DashboardNav({
                   href={item.href}
                   className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
                     isActive
-                      ? "bg-slate-100 text-indigo-600"
-                      : "text-slate-600 hover:bg-slate-50 hover:text-slate-900"
+                      ? "bg-secondary text-primary"
+                      : "text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
                   }`}
                 >
                   <Icon className="h-4 w-4" />
@@ -90,8 +90,10 @@ export function DashboardNav({
         </div>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
+          
           {!isSuperAdmin && (
-            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-slate-600">
+            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground">
               <Link href="/" target="_blank" className="flex items-center gap-1.5">
                 <GlobeIcon className="h-3.5 w-3.5" />
                 Public Site
@@ -100,7 +102,7 @@ export function DashboardNav({
           )}
 
           <form action={signOutAction}>
-            <Button variant="outline" size="sm" type="submit" className="flex items-center gap-1.5 text-slate-700">
+            <Button variant="outline" size="sm" type="submit" className="flex items-center gap-1.5">
               <LogOutIcon className="h-3.5 w-3.5" />
               Sign out
             </Button>

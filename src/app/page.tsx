@@ -16,6 +16,8 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { BrandLogo } from "@/components/brand-logo";
 
 export default function HomePage() {
   const features = [
@@ -81,7 +83,7 @@ export default function HomePage() {
   ];
 
   return (
-    <div className="relative min-h-screen bg-slate-950 text-slate-100 overflow-hidden font-sans">
+    <div className="relative min-h-screen bg-background text-foreground overflow-hidden font-sans">
       {/* Background Ambient Glow Orbs & Grid Pattern */}
       <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
       <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] glow-orb-indigo rounded-full blur-[120px] pointer-events-none" />
@@ -92,20 +94,10 @@ export default function HomePage() {
       <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 sm:px-8">
           <Link href="/" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500 via-purple-500 to-emerald-400 font-heading font-bold text-white shadow-lg shadow-indigo-500/25">
-              BP
-            </div>
-            <div className="flex flex-col">
-              <span className="font-heading text-xl font-bold tracking-tight text-white leading-none">
-                Bent Planet
-              </span>
-              <span className="text-[10px] font-semibold tracking-wider text-indigo-300 uppercase leading-none mt-1">
-                Church SaaS Platform
-              </span>
-            </div>
+            <BrandLogo iconSize={40} />
           </Link>
 
-          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+          <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
             <a href="#features" className="hover:text-white transition">
               Features
             </a>
@@ -121,9 +113,10 @@ export default function HomePage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-slate-300 hover:text-white hover:bg-white/5">
+            <ThemeToggle />
+            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground hover:text-foreground hover:bg-secondary">
               <Link href="/super-admin" className="flex items-center gap-1.5 text-xs font-semibold">
-                <LockIcon className="h-3.5 w-3.5 text-indigo-400" />
+                <LockIcon className="h-3.5 w-3.5 text-primary" />
                 Super Admin
               </Link>
             </Button>

@@ -13,20 +13,32 @@ Before deploying or running locally, you must provide the following environment 
 - **`NEXT_PUBLIC_SUPABASE_ANON_KEY`**: Your Supabase anonymous API key. Safe to expose to the browser.
 - **`SUPABASE_SERVICE_ROLE_KEY`**: Your Supabase service role key. **KEEP THIS SECRET**. It bypasses Row-Level Security (RLS) and is used by server actions/APIs to manage administrative tasks.
 
-### Third-Party Services
-- **`OPENAI_API_KEY`**: Your OpenAI API key for generating conference pages via `gpt-4o`.
-- **`RESEND_API_KEY`**: Your Resend API key for sending transactional emails (welcome emails, reminders).
+### AI Engine Providers (Multi-LLM Fallback)
+- **`OPENAI_API_KEY`**: Primary LLM key for GPT-4o conference generation.
+- **`DEEPSEEK_API_KEY`**: Fallback 1 LLM key for DeepSeek Chat/V3.
+- **`GEMINI_API_KEY` / `GOOGLE_AI_API_KEY`**: Fallback 2 LLM key for Google Gemini 1.5.
+- **`ANTHROPIC_API_KEY`**: Fallback 3 LLM key for Anthropic Claude.
+
+### Email & Communications
+- **`RESEND_API_KEY`**: Resend API key for sending transactional emails (welcome emails, reminders, live broadcast notifications).
+- **`RESEND_FROM_EMAIL`**: Verified sender address (defaults to `noreply@bentplanet.com`).
+
+### Cloud Media Storage (Optional CDN Offload)
+- **`CLOUDINARY_CLOUD_NAME`**: Cloudinary cloud name for direct asset hosting.
+- **`CLOUDINARY_UPLOAD_PRESET`**: Cloudinary unsigned upload preset for browser uploads.
+- **`EXTERNAL_STORAGE_GATEWAY_URL`**: High-capacity external file gateway URL (e.g. S3, R2, TeraBox).
+- **`EXTERNAL_STORAGE_API_KEY`**: API key for external storage gateway.
 
 ### Platform & Security
 - **`NEXT_PUBLIC_APP_URL`**: The base URL of your deployed application (e.g., `https://bentplanet.com`). Used for generating absolute links for emails and OG images.
 - **`CRON_SECRET`**: A random secure string (e.g., a 32-character UUID) used to secure your automated Vercel Cron routes from unauthorized triggers.
-- **`SUPER_ADMIN_EMAILS`**: A comma-separated list of up to two emails for the platform owners. Only these emails can access the `/super-admin` dashboard to invite new churches.
+- **`SUPER_ADMIN_EMAILS`**: A comma-separated list of up to two emails for the platform owners (e.g., `admin1@bentplanet.com,admin2@bentplanet.com`). Only these emails can access the `/super-admin` dashboard to invite new churches.
 
 ---
 
 ## 2. Database Migration Setup
 
-Bent Planet uses Supabase (PostgreSQL). We have three sequential migration files located in `supabase/migrations/` that must be executed in order.
+Bent Planet uses Supabase (PostgreSQL). We have four sequential migration files located in `supabase/migrations/` that must be executed in order.
 
 ### Option A: Using the Supabase Dashboard (SQL Editor)
 If you don't have the Supabase CLI installed, you can simply run the scripts manually in the Supabase SQL Editor. 
@@ -40,6 +52,9 @@ If you don't have the Supabase CLI installed, you can simply run the scripts man
    - Sets up public read access and authenticated upload policies.
 3. **`0003_social_captions.sql`**: 
    - Alters the `conferences` table to include the `social_captions` JSONB column for storing AI-generated social media content.
+4. **`0004_church_assets.sql`**:
+   - Creates the `church-assets` storage bucket with RLS policies for church logos and media.
+   - Enables Supabase Realtime for `subscribers` and `conferences` tables for live analytics updates.
 
 ### Option B: Using the Supabase CLI
 If you use the Supabase CLI for local development or CI/CD:

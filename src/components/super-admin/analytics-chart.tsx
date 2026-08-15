@@ -15,8 +15,8 @@ export function AnalyticsChart({
   initialSubscribers, 
   initialConferences 
 }: { 
-  initialSubscribers: { subscribed_at: string }[], 
-  initialConferences: { created_at: string }[] 
+  initialSubscribers: { subscribed_at: string | null }[], 
+  initialConferences: { created_at: string | null }[] 
 }) {
   const [subs, setSubs] = useState(initialSubscribers);
   const [confs, setConfs] = useState(initialConferences);

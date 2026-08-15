@@ -4,9 +4,11 @@ import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { requireChurchUser } from "@/lib/current-user";
+import { getChurchByAdminEmail } from "@/lib/churches";
+import { uploadChurchLogo, uploadChurchBanner } from "@/lib/storage";
 
 const settingsSchema = z.object({
-  name: z.string().min(2),
+  name: z.string().min(2, "Church name must be at least 2 characters."),
   bio: z.string().optional(),
   country: z.string().optional(),
   timezone: z.string().optional(),
@@ -22,6 +24,11 @@ export async function saveChurchSettings(formData: FormData) {
     const user = await requireChurchUser();
     const adminClient = createAdminClient();
 
+    const church = await getChurchByAdminEmail(adminClient, user.email!);
+    if (!church) {
+      throw new Error("Church workspace not found.");
+    }
+
     const data = {
       name: formData.get("name") as string,
       bio: formData.get("bio") as string,
@@ -36,22 +43,49 @@ export async function saveChurchSettings(formData: FormData) {
 
     const parsed = settingsSchema.parse(data);
 
+    let logo_url = church.logo_url;
+    const logoFile = formData.get("logo") as File;
+    if (logoFile && logoFile.size > 0) {
+      try {
+        logo_url = await uploadChurchLogo(adminClient, church.id, logoFile);
+      } catch (uploadErr) {
+        console.error("Failed to upload church logo:", uploadErr);
+        throw new Error("Failed to upload church logo.");
+      }
+    }
+
+    let banner_url = church.banner_url;
+    const bannerFile = formData.get("banner") as File;
+    if (bannerFile && bannerFile.size > 0) {
+      try {
+        banner_url = await uploadChurchBanner(adminClient, church.id, bannerFile);
+      } catch (uploadErr) {
+        console.error("Failed to upload church banner:", uploadErr);
+        throw new Error("Failed to upload church banner.");
+      }
+    }
+
     const { error } = await adminClient
       .from("churches")
-      .update(parsed)
-      .eq("admin_email", user.email!);
+      .update({
+        ...parsed,
+        logo_url,
+        banner_url,
+      })
+      .eq("id", church.id);
 
     if (error) {
-      return { error: error.message };
+      throw new Error(error.message);
     }
 
     revalidatePath("/dashboard/settings");
-    revalidatePath("/c/[church-slug]", "page");
-    
+    revalidatePath("/dashboard");
+    revalidatePath(`/c/${church.slug}`);
+    revalidatePath(`/c/${church.slug}`, "page");
+
     return { success: true };
   } catch (error: unknown) {
     const err = error as Error;
-    return { error: err.message || "Failed to update settings" };
+    throw new Error(err.message || "Failed to update settings");
   }
 }
-

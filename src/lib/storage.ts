@@ -15,6 +15,17 @@ export async function uploadChurchLogo(adminClient: AdminClient, churchId: strin
   return result.publicUrl;
 }
 
+export async function uploadChurchBanner(adminClient: AdminClient, churchId: string, file: File) {
+  const result = await uploadToExternalCloudStorage(adminClient, {
+    folder: "banners",
+    entityId: `church-${churchId}`,
+    file,
+  });
+
+  console.log(`[Storage] Church banner offloaded successfully via ${result.provider}:`, result.publicUrl);
+  return result.publicUrl;
+}
+
 export async function uploadConferenceBanner(adminClient: AdminClient, churchId: string, file: File) {
   const result = await uploadToExternalCloudStorage(adminClient, {
     folder: "banners",
