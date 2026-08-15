@@ -10,6 +10,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { AnalyticsChart } from "@/components/super-admin/analytics-chart";
 
 function formatDate(date?: string | null) {
   if (!date) {
@@ -30,6 +31,8 @@ export default async function SuperAdminPage() {
     pendingInviteCountResult,
     recentChurchesResult,
     recentInvitesResult,
+    subscribersResult,
+    conferencesResult,
   ] = await Promise.all([
     adminClient.from("churches").select("*", { count: "exact", head: true }),
     adminClient
@@ -47,6 +50,8 @@ export default async function SuperAdminPage() {
       .select("id,church_name,email,status,invited_at")
       .order("invited_at", { ascending: false })
       .limit(6),
+    adminClient.from("subscribers").select("subscribed_at"),
+    adminClient.from("conferences").select("created_at"),
   ]);
 
   if (
@@ -107,6 +112,11 @@ export default async function SuperAdminPage() {
           </Card>
         ))}
       </section>
+
+      <AnalyticsChart 
+        initialSubscribers={subscribersResult.data || []} 
+        initialConferences={conferencesResult.data || []} 
+      />
 
       <section className="grid gap-6 lg:grid-cols-2">
         <Card className="border-slate-200/70 bg-white/90">

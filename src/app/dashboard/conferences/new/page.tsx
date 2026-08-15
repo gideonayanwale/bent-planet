@@ -9,6 +9,7 @@ import {
   EyeIcon,
   Edit2Icon,
   GlobeIcon,
+  FileTextIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -22,9 +23,10 @@ interface GeneratedConferenceData {
   fullDescription: string;
   speakerBio: string;
   agenda: { time: string; title: string; description: string }[];
+  socialCaptions?: Record<string, string>;
   ogTitle?: string;
   ogDescription?: string;
-  inviteEmailCopy?: string;
+  providerUsed?: string;
 }
 
 export default function NewConferencePage() {
@@ -33,6 +35,7 @@ export default function NewConferencePage() {
   const [isSaving, setIsSaving] = useState(false);
   const [generatedData, setGeneratedData] = useState<GeneratedConferenceData | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -43,7 +46,6 @@ export default function NewConferencePage() {
     caption: "",
     streamUrl: "",
     enableReplay: true,
-    hasFreeResource: false,
   });
 
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -56,6 +58,7 @@ export default function NewConferencePage() {
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsGenerating(true);
+    setErrorMessage(null);
     try {
       const response = await fetch("/api/generate-conference", {
         method: "POST",
@@ -66,20 +69,23 @@ export default function NewConferencePage() {
       if (data.error) throw new Error(data.error);
 
       setGeneratedData(data);
-    } catch (error) {
-      console.error(error);
-      alert("Failed to generate content. Please try again.");
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error(err);
+      setErrorMessage(err.message || "Failed to generate content. Please try again.");
     } finally {
       setIsGenerating(false);
     }
   };
 
-  const handleSave = async () => {
+  const handleSave = async (status: "published" | "draft" = "published") => {
     if (!generatedData) return;
     setIsSaving(true);
+    setErrorMessage(null);
     try {
       const formDataObj = new FormData();
       Object.entries(formData).forEach(([key, value]) => formDataObj.append(key, String(value)));
+      formDataObj.append("status", status);
       formDataObj.append("generatedData", JSON.stringify(generatedData));
 
       const fileInput = document.querySelector<HTMLInputElement>("#bannerImage");
@@ -91,9 +97,10 @@ export default function NewConferencePage() {
       if (result.error) throw new Error(result.error);
 
       router.push("/dashboard/conferences");
-    } catch (error) {
-      console.error(error);
-      alert("Failed to save conference.");
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error(err);
+      setErrorMessage(err.message || "Failed to save conference.");
     } finally {
       setIsSaving(false);
     }
@@ -113,10 +120,16 @@ export default function NewConferencePage() {
             Create AI-Powered Conference Page
           </h1>
           <p className="text-xs text-slate-500 mt-1">
-            Provide basic event details and Bent Planet AI will write a Spirit-filled description, time-blocked agenda, and OG tags.
+            Provide basic event details and Bent Planet AI will write a Spirit-filled description, time-blocked agenda, and promotional copy.
           </p>
         </div>
       </div>
+
+      {errorMessage && (
+        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
+          {errorMessage}
+        </div>
+      )}
 
       {!generatedData ? (
         <Card className="border-slate-200/80 bg-white shadow-xs">
@@ -149,7 +162,7 @@ export default function NewConferencePage() {
                   <Label htmlFor="theme">Conference Theme / Category *</Label>
                   <select
                     id="theme"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background"
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background font-medium"
                     value={formData.theme}
                     onChange={(e) => setFormData({ ...formData, theme: e.target.value })}
                   >
@@ -160,6 +173,7 @@ export default function NewConferencePage() {
                     <option value="Worship & Praise">Worship & Praise</option>
                     <option value="Womens Conference">Womens Conference</option>
                     <option value="Evangelism & Outreach">Evangelism & Outreach</option>
+                    <option value="Faith & Breakthrough">Faith & Breakthrough</option>
                   </select>
                 </div>
 
@@ -235,11 +249,13 @@ export default function NewConferencePage() {
         </Card>
       ) : (
         <div className="space-y-8 animate-in fade-in duration-300">
-          <div className="flex items-center justify-between rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 px-6 text-emerald-900">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 px-6 text-emerald-900">
             <div className="flex items-center gap-3">
-              <CheckCircle2Icon className="h-6 w-6 text-emerald-600" />
+              <CheckCircle2Icon className="h-6 w-6 text-emerald-600 shrink-0" />
               <div>
-                <h3 className="font-heading font-bold text-sm">AI Content Generated Successfully!</h3>
+                <h3 className="font-heading font-bold text-sm">
+                  Content Generated Successfully! {generatedData.providerUsed ? `(${generatedData.providerUsed})` : ""}
+                </h3>
                 <p className="text-xs text-emerald-700">Review, edit if needed, upload your banner, and publish.</p>
               </div>
             </div>
@@ -247,7 +263,7 @@ export default function NewConferencePage() {
               variant="outline"
               size="sm"
               onClick={() => setGeneratedData(null)}
-              className="text-xs border-emerald-300 bg-white hover:bg-emerald-100"
+              className="text-xs border-emerald-300 bg-white hover:bg-emerald-100 shrink-0"
             >
               Re-generate
             </Button>
@@ -313,26 +329,39 @@ export default function NewConferencePage() {
               <Card className="border-slate-200/80 bg-white shadow-xs">
                 <CardHeader>
                   <CardTitle className="text-base font-bold">Banner & Publication</CardTitle>
-                  <CardDescription className="text-xs">Upload event graphic to publish.</CardDescription>
+                  <CardDescription className="text-xs">Upload event graphic and choose publish status.</CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
                   <div className="space-y-2">
-                    <Label htmlFor="bannerImage" className="text-xs">Conference Banner Image *</Label>
+                    <Label htmlFor="bannerImage" className="text-xs">Conference Banner Image</Label>
                     {bannerPreview && (
                       <img src={bannerPreview} alt="Banner preview" className="h-32 w-full object-cover rounded-xl border border-slate-200" />
                     )}
-                    <Input id="bannerImage" type="file" accept="image/*" onChange={handleBannerChange} required className="text-xs" />
+                    <Input id="bannerImage" type="file" accept="image/*" onChange={handleBannerChange} className="text-xs" />
                   </div>
 
-                  <Button
-                    size="lg"
-                    className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold gap-2 shadow-md"
-                    onClick={handleSave}
-                    disabled={isSaving}
-                  >
-                    <GlobeIcon className="h-4 w-4" />
-                    {isSaving ? "Publishing Conference..." : "Publish Conference Page"}
-                  </Button>
+                  <div className="flex flex-col gap-2 pt-2">
+                    <Button
+                      size="lg"
+                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold gap-2 shadow-md"
+                      onClick={() => handleSave("published")}
+                      disabled={isSaving}
+                    >
+                      <GlobeIcon className="h-4 w-4" />
+                      {isSaving ? "Saving..." : "Publish Conference Page"}
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full text-slate-700 hover:bg-slate-50 gap-2"
+                      onClick={() => handleSave("draft")}
+                      disabled={isSaving}
+                    >
+                      <FileTextIcon className="h-4 w-4" />
+                      Save as Draft
+                    </Button>
+                  </div>
                 </CardContent>
               </Card>
 

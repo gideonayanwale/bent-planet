@@ -45,7 +45,7 @@ export default async function DashboardPage() {
 
   // Fetch emails sent count
   const { count: emailCount } = await adminClient
-    .from("emails")
+    .from("email_log")
     .select("*", { count: "exact", head: true })
     .eq("church_id", church.id);
 

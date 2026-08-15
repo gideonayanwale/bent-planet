@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import { DownloadIcon, LayoutGridIcon, SmartphoneIcon } from "lucide-react";
 
@@ -27,16 +27,16 @@ export function PosterGenerator({
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   const isSquare = format === "square";
-  const canvasWidth = isSquare ? 1080 : 1080;
+  const canvasWidth = 1080;
   const canvasHeight = isSquare ? 1080 : 1920;
 
-  useEffect(() => {
+  const drawPoster = useCallback((withImage = true) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    // Draw background
+    // Draw background gradient
     const bgGradient = ctx.createLinearGradient(0, 0, canvasWidth, canvasHeight);
     bgGradient.addColorStop(0, "#0f172a");
     bgGradient.addColorStop(0.5, "#1e1b4b");
@@ -91,12 +91,12 @@ export function PosterGenerator({
       // Church name
       ctx.font = "600 36px sans-serif";
       ctx.fillStyle = "#cbd5e1";
-      ctx.fillText(churchName.toUpperCase(), canvasWidth / 2, badgeY + 110);
+      ctx.fillText((churchName || "CHURCH EVENT").toUpperCase(), canvasWidth / 2, badgeY + 110);
 
       // Conference Title (Wrapped)
       ctx.font = "bold 72px sans-serif";
       ctx.fillStyle = "#ffffff";
-      const words = title.split(" ");
+      const words = (title || "Upcoming Conference").split(" ");
       let line = "";
       const lines: string[] = [];
 
@@ -139,12 +139,16 @@ export function PosterGenerator({
       ctx.fillText("POWERED BY BENT PLANET", canvasWidth / 2, canvasHeight - 60);
     };
 
-    if (bannerUrl) {
+    if (bannerUrl && withImage) {
       const img = new Image();
       img.crossOrigin = "anonymous";
       img.src = bannerUrl;
       img.onload = () => {
-        ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+        try {
+          ctx.drawImage(img, 0, 0, canvasWidth, canvasHeight);
+        } catch {
+          // Ignore drawing error
+        }
         renderTextContent();
       };
       img.onerror = () => {
@@ -153,15 +157,35 @@ export function PosterGenerator({
     } else {
       renderTextContent();
     }
-  }, [canvasWidth, canvasHeight, churchName, title, speaker, date, time, theme, bannerUrl, isSquare]);
+  }, [bannerUrl, canvasHeight, canvasWidth, churchName, date, isSquare, speaker, theme, time, title]);
+
+  useEffect(() => {
+    drawPoster(true);
+  }, [drawPoster]);
 
   const handleDownload = () => {
     const canvas = canvasRef.current;
     if (!canvas) return;
-    const link = document.createElement("a");
-    link.download = `${title.toLowerCase().replace(/[^a-z0-9]/g, "-")}-poster-${format}.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
+
+    try {
+      const link = document.createElement("a");
+      link.download = `${(title || "conference").toLowerCase().replace(/[^a-z0-9]/g, "-")}-poster-${format}.png`;
+      link.href = canvas.toDataURL("image/png");
+      link.click();
+    } catch (e) {
+      console.warn("Direct canvas export tainted by CORS image, exporting with native background...", e);
+      drawPoster(false);
+      setTimeout(() => {
+        const fallbackCanvas = canvasRef.current;
+        if (fallbackCanvas) {
+          const link = document.createElement("a");
+          link.download = `${(title || "conference").toLowerCase().replace(/[^a-z0-9]/g, "-")}-poster-${format}.png`;
+          link.href = fallbackCanvas.toDataURL("image/png");
+          link.click();
+          drawPoster(true);
+        }
+      }, 100);
+    }
   };
 
   return (

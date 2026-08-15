@@ -21,46 +21,81 @@ export interface GeneratedConferenceOutput {
   providerUsed?: string;
 }
 
+function cleanAndParseJSON(rawText: string): GeneratedConferenceOutput | null {
+  try {
+    let text = rawText.trim();
+    // Remove markdown code fences if present
+    if (text.startsWith("```")) {
+      text = text.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
+    }
+    
+    // Find json object bounds if wrapped by surrounding text
+    const firstOpen = text.indexOf("{");
+    const lastClose = text.lastIndexOf("}");
+    if (firstOpen !== -1 && lastClose !== -1 && lastClose > firstOpen) {
+      text = text.substring(firstOpen, lastClose + 1);
+    }
+
+    const parsed = JSON.parse(text);
+    if (parsed && typeof parsed === "object" && parsed.fullDescription) {
+      return parsed as GeneratedConferenceOutput;
+    }
+    return null;
+  } catch (e) {
+    console.warn("[AI Engine] Failed to parse generated JSON:", e);
+    return null;
+  }
+}
+
 /**
  * Multi-Provider Collaborative AI Generation Engine
  * Attempts generation using available API providers in sequence:
  * 1. OpenAI (gpt-4o / gpt-4o-mini)
- * 2. DeepSeek / OpenRouter (OpenAI-compatible)
- * 3. Google Gemini (REST endpoint using GEMINI_API_KEY)
- * 4. Anthropic Claude (REST endpoint using ANTHROPIC_API_KEY)
+ * 2. Google Gemini (gemini-1.5-flash / gemini-2.0-flash via GEMINI_API_KEY)
+ * 3. DeepSeek (deepseek-chat)
+ * 4. Anthropic Claude (claude-3-5-sonnet)
  * 5. Pre-built Rich Faith Variant (Guaranteed zero-fail fallback)
  */
 export async function generateConferenceContentWithFallbacks(
   input: GenerateConferencePromptInput
 ): Promise<GeneratedConferenceOutput> {
-  const { name, caption = "", theme = "Revival", speaker = "Guest Speaker", date = "", startTime = "", churchName = "Our Church" } = input;
+  const {
+    name,
+    caption = "",
+    theme = "Revival & Healing",
+    speaker = "Guest Minister",
+    date = "",
+    startTime = "",
+    churchName = "Our Church",
+  } = input;
 
   const prompt = `
-You are an expert copywriter for Christian ministry conferences.
-Please generate rich, engaging, Spirit-filled content for an upcoming conference.
+You are an expert copywriter for Christian ministry conferences and church events.
+Please generate rich, inspiring, Spirit-filled content for this upcoming conference.
 Church Name: ${churchName}
 Conference Name: ${name}
 Theme: ${theme}
-Speaker: ${speaker}
-Date: ${date} at ${startTime}
-Short Caption/Context: ${caption}
+Speaker/Minister: ${speaker}
+Date & Time: ${date} ${startTime ? `at ${startTime}` : ""}
+Context/Scripture notes: ${caption}
 
-Please output strictly valid JSON matching this structure:
+Please output strictly valid JSON matching this schema:
 {
-  "fullDescription": "A 300-500 word description written in a dynamic, Spirit-filled Christian tone.",
-  "speakerBio": "A 2-3 paragraph biography for the speaker, tailored to the theme.",
+  "fullDescription": "A 300-500 word description written in a warm, dynamic, Spirit-filled Christian tone.",
+  "speakerBio": "A 2-3 paragraph biography for the speaker, tailored to the conference theme and spiritual mandate.",
   "agenda": [
-    {"time": "18:00", "title": "Opening Worship & Intercession", "description": "Lifting high praise..."},
-    {"time": "19:00", "title": "Keynote Ministration", "description": "Powerful message on revival..."}
+    {"time": "09:00 AM", "title": "Opening Worship & Consecration", "description": "Atmospheric worship and laying the spiritual foundation..."},
+    {"time": "10:30 AM", "title": "Keynote Ministration", "description": "Powerful teaching and impartation on ${theme}..."},
+    {"time": "01:00 PM", "title": "Prophetic Prayer & Altar Call", "description": "Targeted intercession and personal breakthrough..."}
   ],
   "socialCaptions": {
-    "instagram": "Ready for transformation? Join us...",
-    "whatsapp": "Greetings family! Don't miss...",
-    "facebook": "We invite you to gather with us...",
-    "twitter": "Expect signs & wonders! ..."
+    "instagram": "Ready for a divine encounter? Join us for ${name}...",
+    "whatsapp": "🙌 *${name.toUpperCase()}* 🙌\\n\\nJoin ${churchName} with ${speaker} on ${date}...",
+    "facebook": "We warmly invite you to join us for ${name}...",
+    "twitter": "Expect signs & wonders! ${name} is coming on ${date}..."
   },
   "ogTitle": "${name} | ${churchName}",
-  "ogDescription": "Join us live for ${theme} with ${speaker}."
+  "ogDescription": "Join ${churchName} with ${speaker} for an inspiring conference on ${date}."
 }
 `;
 
@@ -71,22 +106,61 @@ Please output strictly valid JSON matching this structure:
       const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
       const completion = await openai.chat.completions.create({
         model: "gpt-4o",
-        messages: [{ role: "user", content: prompt }],
+        messages: [
+          { role: "system", content: "You are a Christian copywriter. Always output valid JSON only." },
+          { role: "user", content: prompt },
+        ],
         response_format: { type: "json_object" },
-        temperature: 0.8,
+        temperature: 0.7,
       });
 
       const content = completion.choices[0]?.message?.content;
       if (content) {
-        const parsed = JSON.parse(content);
-        return { ...parsed, providerUsed: "OpenAI gpt-4o" };
+        const parsed = cleanAndParseJSON(content);
+        if (parsed) {
+          return { ...parsed, providerUsed: "OpenAI gpt-4o" };
+        }
       }
     } catch (err) {
-      console.warn("[AI Engine] OpenAI failed, falling back to next provider...", err);
+      console.warn("[AI Engine] OpenAI failed, trying next provider...", err);
     }
   }
 
-  // 2. Try DeepSeek if key is present
+  // 2. Try Google Gemini if key is present
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY;
+  if (geminiKey) {
+    try {
+      console.log("[AI Engine] Attempting Google Gemini API...");
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt + "\nRespond with STRICTLY JSON." }] }],
+            generationConfig: {
+              responseMimeType: "application/json",
+            },
+          }),
+        }
+      );
+
+      if (res.ok) {
+        const geminiData = await res.json();
+        const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) {
+          const parsed = cleanAndParseJSON(text);
+          if (parsed) {
+            return { ...parsed, providerUsed: "Google Gemini" };
+          }
+        }
+      }
+    } catch (err) {
+      console.warn("[AI Engine] Gemini API failed, trying next provider...", err);
+    }
+  }
+
+  // 3. Try DeepSeek if key is present
   if (process.env.DEEPSEEK_API_KEY) {
     try {
       console.log("[AI Engine] Attempting DeepSeek (deepseek-chat)...");
@@ -102,38 +176,13 @@ Please output strictly valid JSON matching this structure:
 
       const content = completion.choices[0]?.message?.content;
       if (content) {
-        const parsed = JSON.parse(content);
-        return { ...parsed, providerUsed: "DeepSeek API" };
-      }
-    } catch (err) {
-      console.warn("[AI Engine] DeepSeek failed, trying next provider...", err);
-    }
-  }
-
-  // 3. Try Google Gemini if key is present
-  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY;
-  if (geminiKey) {
-    try {
-      console.log("[AI Engine] Attempting Google Gemini API...");
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          contents: [{ parts: [{ text: prompt + "\nReturn ONLY JSON." }] }],
-        }),
-      });
-
-      if (res.ok) {
-        const geminiData = await res.json();
-        const text = geminiData?.candidates?.[0]?.content?.parts?.[0]?.text;
-        if (text) {
-          const jsonString = text.replace(/```json/g, "").replace(/```/g, "").trim();
-          const parsed = JSON.parse(jsonString);
-          return { ...parsed, providerUsed: "Google Gemini" };
+        const parsed = cleanAndParseJSON(content);
+        if (parsed) {
+          return { ...parsed, providerUsed: "DeepSeek API" };
         }
       }
     } catch (err) {
-      console.warn("[AI Engine] Gemini API failed, trying next provider...", err);
+      console.warn("[AI Engine] DeepSeek failed, trying next provider...", err);
     }
   }
 
@@ -150,7 +199,7 @@ Please output strictly valid JSON matching this structure:
         },
         body: JSON.stringify({
           model: "claude-3-5-sonnet-20241022",
-          max_tokens: 2000,
+          max_tokens: 2500,
           messages: [{ role: "user", content: prompt + "\nRespond with valid JSON only." }],
         }),
       });
@@ -159,9 +208,10 @@ Please output strictly valid JSON matching this structure:
         const claudeData = await res.json();
         const text = claudeData?.content?.[0]?.text;
         if (text) {
-          const jsonString = text.replace(/```json/g, "").replace(/```/g, "").trim();
-          const parsed = JSON.parse(jsonString);
-          return { ...parsed, providerUsed: "Anthropic Claude" };
+          const parsed = cleanAndParseJSON(text);
+          if (parsed) {
+            return { ...parsed, providerUsed: "Anthropic Claude" };
+          }
         }
       }
     } catch (err) {
@@ -169,8 +219,8 @@ Please output strictly valid JSON matching this structure:
     }
   }
 
-  // 5. Guaranteed Pre-built Fallback Engine (Zero Uptime Failures)
-  console.log("[AI Engine] Serving rich prebuilt variant for theme:", theme);
+  // 5. Guaranteed Pre-built Faith Fallback Engine (Zero Uptime Failures)
+  console.log("[AI Engine] Serving rich pre-built variant for theme:", theme);
   const fallback = getVariantContent(theme, name, churchName, speaker, date || "Upcoming Date");
-  return { ...fallback, providerUsed: "Pre-built Faith Engine (Fallback)" };
+  return { ...fallback, providerUsed: "Pre-built Faith Engine (Guaranteed Fallback)" };
 }

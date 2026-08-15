@@ -17,14 +17,17 @@ export async function saveConferenceAction(formData: FormData) {
     }
 
     const name = formData.get("name") as string;
-    const theme = formData.get("theme") as string;
+    const theme = (formData.get("theme") as string) || "Revival & Healing";
     const speaker = formData.get("speaker") as string;
     const date = formData.get("date") as string;
     const startTime = formData.get("startTime") as string;
     const caption = formData.get("caption") as string;
+    const streamUrl = formData.get("streamUrl") as string;
+    const enableReplay = formData.get("enableReplay") === "true";
+    const status = (formData.get("status") as string) || "published";
 
     const generatedDataStr = formData.get("generatedData") as string;
-    const generatedData = JSON.parse(generatedDataStr);
+    const generatedData = generatedDataStr ? JSON.parse(generatedDataStr) : {};
 
     const banner = formData.get("banner") as File;
     let bannerUrl: string | null = null;
@@ -44,24 +47,26 @@ export async function saveConferenceAction(formData: FormData) {
       church_id: church.id,
       title: name,
       slug,
-      caption,
-      theme,
-      speaker_name: speaker,
-      conference_date: date,
-      conference_time: startTime,
-      full_description: generatedData.fullDescription,
-      agenda: generatedData.agenda,
-      speaker_bio: generatedData.speakerBio,
+      caption: caption || null,
+      theme: theme || null,
+      speaker_name: speaker || null,
+      conference_date: date || null,
+      conference_time: startTime || null,
+      stream_url: streamUrl || null,
+      enable_replay: enableReplay,
+      full_description: generatedData.fullDescription || null,
+      agenda: generatedData.agenda || [],
+      speaker_bio: generatedData.speakerBio || null,
       banner_url: bannerUrl,
-      og_title: generatedData.ogTitle,
-      og_description: generatedData.ogDescription,
-      social_captions: generatedData.socialCaptions,
-      status: "published",
+      og_title: generatedData.ogTitle || `${name} | ${church.name}`,
+      og_description: generatedData.ogDescription || `Join ${church.name} for ${name}`,
+      social_captions: generatedData.socialCaptions || {},
+      status,
     });
 
     if (insertError) {
       console.error("Conference insert error:", insertError);
-      return { error: "Failed to save conference." };
+      return { error: `Failed to save conference: ${insertError.message}` };
     }
 
     return { success: true };

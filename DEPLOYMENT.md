@@ -20,7 +20,7 @@ Before deploying or running locally, you must provide the following environment 
 ### Platform & Security
 - **`NEXT_PUBLIC_APP_URL`**: The base URL of your deployed application (e.g., `https://bentplanet.com`). Used for generating absolute links for emails and OG images.
 - **`CRON_SECRET`**: A random secure string (e.g., a 32-character UUID) used to secure your automated Vercel Cron routes from unauthorized triggers.
-- **`SUPER_ADMIN_EMAIL`**: The email address of the platform owner (you). Only this email can access the `/super-admin` dashboard to invite new churches.
+- **`SUPER_ADMIN_EMAILS`**: A comma-separated list of up to two emails for the platform owners. Only these emails can access the `/super-admin` dashboard to invite new churches.
 
 ---
 
@@ -69,7 +69,7 @@ Bent Planet is designed specifically to run seamlessly on Vercel.
 
 Once deployed, follow these steps to verify the platform is fully operational:
 
-1. **Super Admin Access**: Navigate to `/super-admin`. It should redirect you to `/login`. Sign in using the email you set as `SUPER_ADMIN_EMAIL`. You should gain access to the Super Admin dashboard.
+1. **Super Admin Access**: Navigate to `/super-admin`. It should redirect you to `/login`. Sign in using one of the emails you set in `SUPER_ADMIN_EMAILS`. You should gain access to the Super Admin dashboard.
 2. **Invite a Test Church**: Send an invite to a secondary email address. Check if Resend delivers the invite email.
 3. **AI Generation Check**: Log in as the test church, navigate to `/dashboard/conferences/new`, fill in some dummy details, and verify that OpenAI successfully generates the content.
 4. **Storage Check**: Upload a banner during the conference creation process. Verify it displays correctly on the public conference page and appears in your Supabase Storage bucket.

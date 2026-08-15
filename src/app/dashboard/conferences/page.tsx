@@ -3,10 +3,9 @@ import { requireChurchUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PlusIcon, ExternalLinkIcon, Share2Icon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
+import { ConferenceTableClient } from "@/components/conference-table-client";
 import type { Database } from "@/types/database";
 
 type ConferenceWithCount = Database["public"]["Tables"]["conferences"]["Row"] & {
@@ -20,7 +19,7 @@ export default async function ConferencesPage() {
   const church = await getChurchByAdminEmail(adminClient, user.email!);
   
   if (!church) {
-    return <div>Church not found</div>;
+    return <div className="p-8 text-center text-slate-600">Church workspace not found.</div>;
   }
 
   // Fetch conferences and their subscriber counts
@@ -34,100 +33,37 @@ export default async function ConferencesPage() {
     console.error("Failed to load conferences", error);
   }
 
+  const typedConferences = (conferences as unknown as ConferenceWithCount[]) || [];
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-8 pb-12">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-3xl font-bold font-heading text-slate-900">Conferences</h1>
-          <p className="text-slate-600 mt-1">Manage your events and view their performance.</p>
+          <p className="text-slate-600 mt-1">
+            Create, edit, and manage all your live ministry events and registration links.
+          </p>
         </div>
-        <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-all">
+        <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-all bg-indigo-600 hover:bg-indigo-700 text-white gap-2">
           <Link href="/dashboard/conferences/new">
-            <PlusIcon className="w-5 h-5 mr-2" />
+            <PlusIcon className="w-5 h-5" />
             Create Conference
           </Link>
         </Button>
       </div>
 
-      <Card className="border-slate-200/70 shadow-sm">
-        <CardHeader>
+      <Card className="border-slate-200/70 shadow-sm bg-white">
+        <CardHeader className="pb-4">
           <CardTitle>All Conferences</CardTitle>
-          <CardDescription>A list of all your created conferences, both draft and published.</CardDescription>
+          <CardDescription>
+            Manage live public pages, update event details, view registrations, and delete past conferences.
+          </CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Title & Details</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Subscribers</TableHead>
-                  <TableHead className="text-right">Actions</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {conferences && conferences.length > 0 ? (
-                  (conferences as unknown as ConferenceWithCount[]).map((conf) => (
-                    <TableRow key={conf.id}>
-                      <TableCell>
-                        <p className="font-semibold text-slate-900">{conf.title}</p>
-                        <p className="text-sm text-slate-500">
-                          {conf.conference_date ? new Date(conf.conference_date).toLocaleDateString() : "No date"}
-                          {" · "}
-                          {conf.theme || "General"}
-                        </p>
-                      </TableCell>
-                      <TableCell>
-                        <Badge 
-                          variant="outline" 
-                          className={
-                            conf.status === "published" 
-                              ? "bg-green-50 text-green-700 border-green-200" 
-                              : "bg-amber-50 text-amber-700 border-amber-200"
-                          }
-                        >
-                          {conf.status}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>
-                        <Badge variant="secondary" className="font-mono">
-                          {conf.subscribers?.[0]?.count ?? 0}
-                        </Badge>
-                      </TableCell>
-                      <TableCell className="text-right space-x-2">
-                        {conf.status === "published" && (
-                          <>
-                            <Button asChild variant="outline" size="sm">
-                              <Link href={`/dashboard/conferences/${conf.id}/promote`}>
-                                <Share2Icon className="w-4 h-4 mr-2" />
-                                Promote
-                              </Link>
-                            </Button>
-                            <Button asChild variant="ghost" size="sm">
-                              <a href={`/c/${church.slug}/${conf.slug}`} target="_blank" rel="noopener noreferrer">
-                                <ExternalLinkIcon className="w-4 h-4" />
-                              </a>
-                            </Button>
-                          </>
-                        )}
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={4} className="text-center py-12">
-                      <div className="flex flex-col items-center justify-center space-y-3">
-                        <p className="text-slate-500">You haven&apos;t created any conferences yet.</p>
-                        <Button asChild variant="outline">
-                          <Link href="/dashboard/conferences/new">Create Your First Conference</Link>
-                        </Button>
-                      </div>
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
+          <ConferenceTableClient
+            conferences={typedConferences}
+            churchSlug={church.slug}
+          />
         </CardContent>
       </Card>
     </div>
