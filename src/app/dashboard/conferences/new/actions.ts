@@ -44,10 +44,6 @@ export async function saveConferenceAction(formData: FormData) {
     }
 
     const slug = await generateUniqueConferenceSlug(adminClient, name, church.id);
-    const publicAppUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com";
-    const longUrl = `${publicAppUrl}/c/${church.slug}/${slug}`;
-    const { shortenUrl } = await import("@/lib/bitly");
-    const shortUrl = await shortenUrl(longUrl);
 
     const { error: insertError } = await adminClient.from("conferences").insert({
       church_id: church.id,
@@ -61,7 +57,6 @@ export async function saveConferenceAction(formData: FormData) {
       stream_url: streamUrl || null,
       whatsapp_group_url: whatsappGroupUrl,
       whatsapp_channel_url: whatsappChannelUrl,
-      short_url: shortUrl !== longUrl ? shortUrl : null,
       enable_replay: enableReplay,
       full_description: generatedData.fullDescription || null,
       agenda: generatedData.agenda || [],

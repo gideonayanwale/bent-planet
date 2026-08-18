@@ -49,30 +49,14 @@ export default async function PromoteConferencePage({
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="border-indigo-200/80 bg-indigo-50/40 shadow-sm">
-          <CardHeader>
-            <div className="flex items-center justify-between">
-              <CardTitle>Shortened Conference Link</CardTitle>
-              {conference.short_url && (
-                <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-semibold">
-                  Bitly Shortened
-                </span>
-              )}
-            </div>
-            <CardDescription>Shareable URL for your attendees to register.</CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-3">
-            <div className="flex gap-3">
-              <Input readOnly value={displayUrl} className="bg-white font-mono text-sm" />
-              <CopyButton textToCopy={displayUrl} className="w-32" />
-            </div>
-            {conference.short_url && (
-              <p className="text-xs text-slate-500">
-                Original URL: <span className="font-mono">{publicUrl}</span>
-              </p>
-            )}
-          </CardContent>
-        </Card>
+        <LinkShortenerBox
+          conferenceId={conference.id}
+          baseUrl={baseUrl}
+          churchSlug={church.slug}
+          conferenceSlug={conference.slug}
+          initialShortUrl={conference.short_url}
+          initialCustomAlias={conference.custom_alias}
+        />
 
         <Card className="border-emerald-200/80 bg-emerald-50/40 shadow-sm">
           <CardHeader>

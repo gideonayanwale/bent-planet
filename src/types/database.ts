@@ -112,6 +112,7 @@ export interface Database {
           whatsapp_group_url: string | null;
           whatsapp_channel_url: string | null;
           short_url: string | null;
+          custom_alias: string | null;
           created_at: string | null;
         };
         Insert: {
@@ -141,6 +142,7 @@ export interface Database {
           whatsapp_group_url?: string | null;
           whatsapp_channel_url?: string | null;
           short_url?: string | null;
+          custom_alias?: string | null;
           created_at?: string | null;
         };
         Update: {
@@ -170,6 +172,7 @@ export interface Database {
           whatsapp_group_url?: string | null;
           whatsapp_channel_url?: string | null;
           short_url?: string | null;
+          custom_alias?: string | null;
           created_at?: string | null;
         };
         Relationships: [

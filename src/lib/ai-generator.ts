@@ -216,11 +216,57 @@ Please output strictly valid JSON matching this schema:
         }
       }
     } catch (err) {
-      console.warn("[AI Engine] Anthropic Claude failed, falling back...", err);
+      console.warn("[AI Engine] Anthropic Claude failed, trying next provider...", err);
     }
   }
 
-  // 5. Guaranteed Pre-built Faith Fallback Engine (Zero Uptime Failures)
+  // 5. Try Free OpenRouter Models if OPENROUTER_API_KEY is present
+  if (process.env.OPENROUTER_API_KEY) {
+    const freeModels = [
+      "google/gemini-2.0-flash-exp:free",
+      "meta-llama/llama-3.3-70b-instruct:free",
+      "deepseek/deepseek-r1:free",
+      "qwen/qwen-2.5-coder-32b-instruct:free",
+      "openrouter/auto",
+    ];
+
+    for (const freeModel of freeModels) {
+      try {
+        console.log(`[AI Engine] Attempting OpenRouter free model (${freeModel})...`);
+        const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+            "Content-Type": "application/json",
+            "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com",
+            "X-Title": "Bent Planet",
+          },
+          body: JSON.stringify({
+            model: freeModel,
+            messages: [
+              { role: "system", content: "You are a Christian copywriter. Output strictly valid JSON." },
+              { role: "user", content: prompt },
+            ],
+          }),
+        });
+
+        if (res.ok) {
+          const routerData = await res.json();
+          const content = routerData?.choices?.[0]?.message?.content;
+          if (content) {
+            const parsed = cleanAndParseJSON(content);
+            if (parsed) {
+              return { ...parsed, providerUsed: `OpenRouter Free (${freeModel})` };
+            }
+          }
+        }
+      } catch (err) {
+        console.warn(`[AI Engine] OpenRouter model ${freeModel} failed, trying next...`, err);
+      }
+    }
+  }
+
+  // 6. Guaranteed Pre-built Faith Fallback Engine (Zero Uptime Failures)
   console.log("[AI Engine] Serving rich pre-built variant for theme:", theme);
   const fallback = getVariantContent(theme, name, churchName, speaker, date || "Upcoming Date");
   return { ...fallback, providerUsed: "Pre-built Faith Engine (Guaranteed Fallback)" };
