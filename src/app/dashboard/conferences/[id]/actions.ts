@@ -28,6 +28,9 @@ export async function updateConferenceAction(conferenceId: string, formData: For
     const conference_date = formData.get("date") as string;
     const conference_time = formData.get("startTime") as string;
     const stream_url = formData.get("streamUrl") as string;
+    const whatsapp_group_url = formData.get("whatsappGroupUrl") as string;
+    const whatsapp_channel_url = formData.get("whatsappChannelUrl") as string;
+    const short_url = formData.get("shortUrl") as string;
     const caption = formData.get("caption") as string;
     const full_description = formData.get("fullDescription") as string;
     const speaker_bio = formData.get("speakerBio") as string;
@@ -66,6 +69,9 @@ export async function updateConferenceAction(conferenceId: string, formData: For
         conference_date: conference_date || conference.conference_date,
         conference_time: conference_time || conference.conference_time,
         stream_url: stream_url !== undefined ? stream_url : conference.stream_url,
+        whatsapp_group_url: whatsapp_group_url !== undefined ? whatsapp_group_url : conference.whatsapp_group_url,
+        whatsapp_channel_url: whatsapp_channel_url !== undefined ? whatsapp_channel_url : conference.whatsapp_channel_url,
+        short_url: short_url !== undefined ? short_url : conference.short_url,
         caption: caption !== undefined ? caption : conference.caption,
         full_description: full_description !== undefined ? full_description : conference.full_description,
         speaker_bio: speaker_bio !== undefined ? speaker_bio : conference.speaker_bio,

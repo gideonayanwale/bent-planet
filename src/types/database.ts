@@ -25,6 +25,9 @@ export interface Database {
           facebook_url: string | null;
           youtube_url: string | null;
           whatsapp_url: string | null;
+          whatsapp_channel_url: string | null;
+          whatsapp_group_url: string | null;
+          whatsapp_number: string | null;
           status: string | null;
           onboarding_token: string | null;
           onboarding_completed: boolean | null;
@@ -46,6 +49,9 @@ export interface Database {
           facebook_url?: string | null;
           youtube_url?: string | null;
           whatsapp_url?: string | null;
+          whatsapp_channel_url?: string | null;
+          whatsapp_group_url?: string | null;
+          whatsapp_number?: string | null;
           status?: string | null;
           onboarding_token?: string | null;
           onboarding_completed?: boolean | null;
@@ -67,6 +73,9 @@ export interface Database {
           facebook_url?: string | null;
           youtube_url?: string | null;
           whatsapp_url?: string | null;
+          whatsapp_channel_url?: string | null;
+          whatsapp_group_url?: string | null;
+          whatsapp_number?: string | null;
           status?: string | null;
           onboarding_token?: string | null;
           onboarding_completed?: boolean | null;
@@ -100,6 +109,9 @@ export interface Database {
           og_title: string | null;
           og_description: string | null;
           social_captions: Json | null;
+          whatsapp_group_url: string | null;
+          whatsapp_channel_url: string | null;
+          short_url: string | null;
           created_at: string | null;
         };
         Insert: {
@@ -126,6 +138,9 @@ export interface Database {
           og_title?: string | null;
           og_description?: string | null;
           social_captions?: Json | null;
+          whatsapp_group_url?: string | null;
+          whatsapp_channel_url?: string | null;
+          short_url?: string | null;
           created_at?: string | null;
         };
         Update: {
@@ -152,6 +167,9 @@ export interface Database {
           og_title?: string | null;
           og_description?: string | null;
           social_captions?: Json | null;
+          whatsapp_group_url?: string | null;
+          whatsapp_channel_url?: string | null;
+          short_url?: string | null;
           created_at?: string | null;
         };
         Relationships: [

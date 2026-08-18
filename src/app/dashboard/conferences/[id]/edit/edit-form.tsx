@@ -53,6 +53,9 @@ export function EditConferenceForm({
     startTime: conference.conference_time || "18:00",
     caption: conference.caption || "",
     streamUrl: conference.stream_url || "",
+    whatsappGroupUrl: conference.whatsapp_group_url || "",
+    whatsappChannelUrl: conference.whatsapp_channel_url || "",
+    shortUrl: conference.short_url || "",
     enableReplay: conference.enable_replay ?? true,
     fullDescription: conference.full_description || "",
     speakerBio: conference.speaker_bio || "",
@@ -360,6 +363,44 @@ export function EditConferenceForm({
                     value={formData.streamUrl}
                     onChange={(e) => setFormData({ ...formData, streamUrl: e.target.value })}
                   />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="whatsappGroupUrl">WhatsApp Group Invite Link</Label>
+                    <Input
+                      id="whatsappGroupUrl"
+                      type="url"
+                      placeholder="https://chat.whatsapp.com/..."
+                      value={formData.whatsappGroupUrl}
+                      onChange={(e) => setFormData({ ...formData, whatsappGroupUrl: e.target.value })}
+                    />
+                    <p className="text-[11px] text-slate-400">Invite attendees to join your conference WhatsApp group.</p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Label htmlFor="whatsappChannelUrl">WhatsApp Channel Link</Label>
+                    <Input
+                      id="whatsappChannelUrl"
+                      type="url"
+                      placeholder="https://whatsapp.com/channel/..."
+                      value={formData.whatsappChannelUrl}
+                      onChange={(e) => setFormData({ ...formData, whatsappChannelUrl: e.target.value })}
+                    />
+                    <p className="text-[11px] text-slate-400">Official church channel link for updates.</p>
+                  </div>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="shortUrl">Custom Shortened URL (Bitly / Custom Slug)</Label>
+                  <Input
+                    id="shortUrl"
+                    type="url"
+                    placeholder="https://bit.ly/..."
+                    value={formData.shortUrl}
+                    onChange={(e) => setFormData({ ...formData, shortUrl: e.target.value })}
+                  />
+                  <p className="text-[11px] text-slate-400">Bitly link or custom URL for sharing on social media.</p>
                 </div>
 
                 <div className="space-y-2">

@@ -29,35 +29,89 @@ export default async function PromoteConferencePage({
 
   const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com";
   const publicUrl = `${baseUrl}/c/${church.slug}/${conference.slug}`;
+  const displayUrl = conference.short_url || publicUrl;
   const socialCaptions = (conference.social_captions as Record<string, string>) || {};
 
   const utmLinks = [
-    { label: "Instagram Bio", url: `${publicUrl}?utm_source=instagram&utm_medium=bio&utm_campaign=launch` },
-    { label: "WhatsApp Broadcast", url: `${publicUrl}?utm_source=whatsapp&utm_medium=broadcast&utm_campaign=launch` },
-    { label: "Facebook Post", url: `${publicUrl}?utm_source=facebook&utm_medium=post&utm_campaign=launch` },
-    { label: "Twitter / X", url: `${publicUrl}?utm_source=twitter&utm_medium=tweet&utm_campaign=launch` },
-    { label: "Email Campaign", url: `${publicUrl}?utm_source=email&utm_medium=newsletter&utm_campaign=launch` },
+    { label: "Instagram Bio", url: `${displayUrl}?utm_source=instagram&utm_medium=bio&utm_campaign=launch` },
+    { label: "WhatsApp Broadcast", url: `${displayUrl}?utm_source=whatsapp&utm_medium=broadcast&utm_campaign=launch` },
+    { label: "WhatsApp Channel", url: `${displayUrl}?utm_source=whatsapp&utm_medium=channel&utm_campaign=launch` },
+    { label: "Facebook Post", url: `${displayUrl}?utm_source=facebook&utm_medium=post&utm_campaign=launch` },
+    { label: "Twitter / X", url: `${displayUrl}?utm_source=twitter&utm_medium=tweet&utm_campaign=launch` },
+    { label: "Email Campaign", url: `${displayUrl}?utm_source=email&utm_medium=newsletter&utm_campaign=launch` },
   ];
 
   return (
     <div className="space-y-8 max-w-5xl mx-auto pb-16">
       <div>
         <h1 className="text-3xl font-bold font-heading text-slate-900">Promote: {conference.title}</h1>
-        <p className="text-slate-600 mt-1">Share your conference with your audience using AI captions, UTM trackable links, and graphic posters.</p>
+        <p className="text-slate-600 mt-1">Share your conference with your audience using AI captions, WhatsApp channel updates, short Bitly links, and graphic posters.</p>
       </div>
 
-      <Card className="border-indigo-200/80 bg-indigo-50/40 shadow-sm">
-        <CardHeader>
-          <CardTitle>Main Conference Landing Page Link</CardTitle>
-          <CardDescription>Shareable URL for your attendees to register.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex gap-4">
-            <Input readOnly value={publicUrl} className="bg-white font-mono text-sm" />
-            <CopyButton textToCopy={publicUrl} className="w-32" />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <Card className="border-indigo-200/80 bg-indigo-50/40 shadow-sm">
+          <CardHeader>
+            <div className="flex items-center justify-between">
+              <CardTitle>Shortened Conference Link</CardTitle>
+              {conference.short_url && (
+                <span className="text-xs bg-indigo-100 text-indigo-700 px-2 py-0.5 rounded-full font-semibold">
+                  Bitly Shortened
+                </span>
+              )}
+            </div>
+            <CardDescription>Shareable URL for your attendees to register.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div className="flex gap-3">
+              <Input readOnly value={displayUrl} className="bg-white font-mono text-sm" />
+              <CopyButton textToCopy={displayUrl} className="w-32" />
+            </div>
+            {conference.short_url && (
+              <p className="text-xs text-slate-500">
+                Original URL: <span className="font-mono">{publicUrl}</span>
+              </p>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card className="border-emerald-200/80 bg-emerald-50/40 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-emerald-950 flex items-center gap-2">
+              WhatsApp Integration Links
+            </CardTitle>
+            <CardDescription className="text-emerald-800">Quick-join links for your attendees.</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <div>
+              <span className="text-xs font-semibold text-emerald-900 block mb-1">WhatsApp Group Invite Link</span>
+              <div className="flex gap-3">
+                <Input
+                  readOnly
+                  value={conference.whatsapp_group_url || church.whatsapp_group_url || "Not set"}
+                  className="bg-white font-mono text-xs"
+                />
+                {(conference.whatsapp_group_url || church.whatsapp_group_url) && (
+                  <CopyButton textToCopy={(conference.whatsapp_group_url || church.whatsapp_group_url)!} />
+                )}
+              </div>
+            </div>
+
+            <div>
+              <span className="text-xs font-semibold text-emerald-900 block mb-1">WhatsApp Channel Link</span>
+              <div className="flex gap-3">
+                <Input
+                  readOnly
+                  value={conference.whatsapp_channel_url || church.whatsapp_channel_url || "Not set"}
+                  className="bg-white font-mono text-xs"
+                />
+                {(conference.whatsapp_channel_url || church.whatsapp_channel_url) && (
+                  <CopyButton textToCopy={(conference.whatsapp_channel_url || church.whatsapp_channel_url)!} />
+                )}
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* Poster Generator */}
       <Card className="border-slate-200/80 bg-white shadow-sm">

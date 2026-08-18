@@ -21,6 +21,7 @@ const serverEnvSchema = publicEnvSchema.extend({
   CLOUDINARY_UPLOAD_PRESET: z.string().optional().default(""),
   EXTERNAL_STORAGE_GATEWAY_URL: z.string().optional().default(""),
   EXTERNAL_STORAGE_API_KEY: z.string().optional().default(""),
+  BITLY_ACCESS_TOKEN: z.string().optional().default(""),
 });
 
 export type ServerEnv = z.infer<typeof serverEnvSchema>;
@@ -55,6 +56,7 @@ export function getServerEnv(): ServerEnv {
       CLOUDINARY_UPLOAD_PRESET: process.env.CLOUDINARY_UPLOAD_PRESET || "",
       EXTERNAL_STORAGE_GATEWAY_URL: process.env.EXTERNAL_STORAGE_GATEWAY_URL || "",
       EXTERNAL_STORAGE_API_KEY: process.env.EXTERNAL_STORAGE_API_KEY || "",
+      BITLY_ACCESS_TOKEN: process.env.BITLY_ACCESS_TOKEN || "",
     };
   }
 
@@ -76,5 +78,6 @@ export function getServerEnv(): ServerEnv {
     CLOUDINARY_UPLOAD_PRESET: process.env.CLOUDINARY_UPLOAD_PRESET,
     EXTERNAL_STORAGE_GATEWAY_URL: process.env.EXTERNAL_STORAGE_GATEWAY_URL,
     EXTERNAL_STORAGE_API_KEY: process.env.EXTERNAL_STORAGE_API_KEY,
+    BITLY_ACCESS_TOKEN: process.env.BITLY_ACCESS_TOKEN,
   });
 }

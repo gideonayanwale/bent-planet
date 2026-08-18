@@ -91,6 +91,7 @@ Please output strictly valid JSON matching this schema:
   "socialCaptions": {
     "instagram": "Ready for a divine encounter? Join us for ${name}...",
     "whatsapp": "🙌 *${name.toUpperCase()}* 🙌\\n\\nJoin ${churchName} with ${speaker} on ${date}...",
+    "whatsappChannel": "📢 *CHANNEL UPDATE: ${name.toUpperCase()}*\\n\\nJoin ${churchName} with minister ${speaker} on ${date}... Tap below to save your spot:",
     "facebook": "We warmly invite you to join us for ${name}...",
     "twitter": "Expect signs & wonders! ${name} is coming on ${date}..."
   },

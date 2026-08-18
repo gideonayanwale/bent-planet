@@ -21,6 +21,8 @@ interface WelcomeEmailProps {
   conferenceDate?: string | null;
   conferenceTime?: string | null;
   streamUrl?: string | null;
+  whatsappGroupUrl?: string | null;
+  whatsappChannelUrl?: string | null;
   freeResourceUrl?: string | null;
   freeResourceName?: string | null;
 }
@@ -33,6 +35,8 @@ export const WelcomeEmail = ({
   conferenceDate,
   conferenceTime,
   streamUrl,
+  whatsappGroupUrl,
+  whatsappChannelUrl,
   freeResourceUrl,
   freeResourceName,
 }: WelcomeEmailProps) => {
@@ -73,6 +77,22 @@ export const WelcomeEmail = ({
               <Button style={button} href={streamUrl}>
                 Join Live Stream
               </Button>
+            </Section>
+          )}
+
+          {(whatsappGroupUrl || whatsappChannelUrl) && (
+            <Section style={whatsappContainer}>
+              <Text style={whatsappTitle}>💬 Stay Connected on WhatsApp</Text>
+              {whatsappGroupUrl && (
+                <Button style={whatsappGroupBtn} href={whatsappGroupUrl}>
+                  Join WhatsApp Group
+                </Button>
+              )}
+              {whatsappChannelUrl && (
+                <Button style={whatsappChannelBtn} href={whatsappChannelUrl}>
+                  Follow WhatsApp Channel
+                </Button>
+              )}
             </Section>
           )}
 
@@ -180,6 +200,46 @@ const button = {
   textAlign: "center" as const,
   display: "inline-block",
   padding: "12px 24px",
+};
+
+const whatsappContainer = {
+  backgroundColor: "#f0fdf4",
+  border: "1px solid #bbf7d0",
+  borderRadius: "12px",
+  padding: "18px",
+  margin: "20px 0",
+  textAlign: "center" as const,
+};
+
+const whatsappTitle = {
+  fontSize: "15px",
+  fontWeight: "700",
+  color: "#166534",
+  margin: "0 0 12px",
+};
+
+const whatsappGroupBtn = {
+  backgroundColor: "#16a34a",
+  borderRadius: "8px",
+  color: "#ffffff",
+  fontSize: "13px",
+  fontWeight: "600",
+  textDecoration: "none",
+  display: "inline-block",
+  padding: "10px 18px",
+  margin: "4px",
+};
+
+const whatsappChannelBtn = {
+  backgroundColor: "#065f46",
+  borderRadius: "8px",
+  color: "#ffffff",
+  fontSize: "13px",
+  fontWeight: "600",
+  textDecoration: "none",
+  display: "inline-block",
+  padding: "10px 18px",
+  margin: "4px",
 };
 
 const resourceBox = {

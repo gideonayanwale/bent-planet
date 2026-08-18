@@ -5,6 +5,7 @@ export interface ConferenceContentVariant {
   socialCaptions: {
     instagram: string;
     whatsapp: string;
+    whatsappChannel?: string;
     twitter: string;
     facebook: string;
     youtube?: string;
@@ -29,6 +30,7 @@ export const PREBUILT_VARIANTS: Record<
     socialCaptions: {
       instagram: `🔥 REVIVAL & HEALING IS HERE! Join us for ${name} hosted by ${churchName}.\n\nGod is moving in power, and we are believing for signs, wonders, and breakthroughs with minister ${speaker}.\n\n📅 Date: ${date}\n📍 Online Stream\n\n👉 Click the link in bio to register free! #Revival #Healing #${name.replace(/[^a-zA-Z0-9]/g, "")} #${churchName.replace(/[^a-zA-Z0-9]/g, "")}`,
       whatsapp: `🙌 *${name.toUpperCase()}* 🙌\n\n${churchName} invites you to an unmissable revival & healing conference with *${speaker}*!\n\nExpect worship, miracles, and the fire of God 🔥\n\n🗓 Date: ${date}\n💻 Online Stream\n\nRegister free here: `,
+      whatsappChannel: `📢 *CHANNEL UPDATE: ${name.toUpperCase()}*\n\nBeloved family, ${churchName} is hosting *${name}* featuring minister *${speaker}*!\n\n🗓 *Date:* ${date}\n🔥 *Theme:* Revival & Healing\n\nTap the link below to reserve your spot and receive live updates directly in this channel:\n`,
       twitter: `Ready for a fresh move of God? ${name} is coming up on ${date} with ${speaker}! Experience atmospheric revival and healing. Register now:`,
       facebook: `We invite you, your family, and friends to join ${churchName} for ${name}! We are believing God for salvation, physical healing, and spiritual renewal. Speaker: ${speaker}. Register free today!`,
       youtube: `Join ${churchName} for ${name} featuring minister ${speaker}. Live stream starting ${date}. Make sure to subscribe and click the bell for notifications!`,

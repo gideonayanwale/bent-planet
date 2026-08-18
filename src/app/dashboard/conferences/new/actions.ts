@@ -23,6 +23,8 @@ export async function saveConferenceAction(formData: FormData) {
     const startTime = formData.get("startTime") as string;
     const caption = formData.get("caption") as string;
     const streamUrl = formData.get("streamUrl") as string;
+    const whatsappGroupUrl = (formData.get("whatsappGroupUrl") as string) || church.whatsapp_group_url || null;
+    const whatsappChannelUrl = (formData.get("whatsappChannelUrl") as string) || church.whatsapp_channel_url || null;
     const enableReplay = formData.get("enableReplay") === "true";
     const status = (formData.get("status") as string) || "published";
 
@@ -42,6 +44,10 @@ export async function saveConferenceAction(formData: FormData) {
     }
 
     const slug = await generateUniqueConferenceSlug(adminClient, name, church.id);
+    const publicAppUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com";
+    const longUrl = `${publicAppUrl}/c/${church.slug}/${slug}`;
+    const { shortenUrl } = await import("@/lib/bitly");
+    const shortUrl = await shortenUrl(longUrl);
 
     const { error: insertError } = await adminClient.from("conferences").insert({
       church_id: church.id,
@@ -53,6 +59,9 @@ export async function saveConferenceAction(formData: FormData) {
       conference_date: date || null,
       conference_time: startTime || null,
       stream_url: streamUrl || null,
+      whatsapp_group_url: whatsappGroupUrl,
+      whatsapp_channel_url: whatsappChannelUrl,
+      short_url: shortUrl !== longUrl ? shortUrl : null,
       enable_replay: enableReplay,
       full_description: generatedData.fullDescription || null,
       agenda: generatedData.agenda || [],

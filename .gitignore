@@ -1,6 +1,7 @@
 .next
 node_modules
 .env
+.env.*
 .env.local
 .env.production
 .vercel
@@ -16,4 +17,9 @@ build-stdout.txt
 
 # Docker / Certbot
 certbot/
+
+.vscode
+.idea
+*.swp
+*.swo
 

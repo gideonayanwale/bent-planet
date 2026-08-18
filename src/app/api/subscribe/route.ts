@@ -45,8 +45,8 @@ export async function POST(req: Request) {
     if (conferenceId) {
       try {
         const [churchRes, confRes] = await Promise.all([
-          adminClient.from("churches").select("name, logo_url").eq("id", churchId).maybeSingle(),
-          adminClient.from("conferences").select("title, conference_date, conference_time, stream_url, free_resource_url, free_resource_name").eq("id", conferenceId).maybeSingle(),
+          adminClient.from("churches").select("name, logo_url, whatsapp_group_url, whatsapp_channel_url, whatsapp_url").eq("id", churchId).maybeSingle(),
+          adminClient.from("conferences").select("title, conference_date, conference_time, stream_url, whatsapp_group_url, whatsapp_channel_url, free_resource_url, free_resource_name").eq("id", churchId).maybeSingle(),
         ]);
 
         const church = churchRes.data;
@@ -62,6 +62,8 @@ export async function POST(req: Request) {
             conferenceDate: conf.conference_date,
             conferenceTime: conf.conference_time,
             streamUrl: conf.stream_url,
+            whatsappGroupUrl: conf.whatsapp_group_url || church.whatsapp_group_url || church.whatsapp_url,
+            whatsappChannelUrl: conf.whatsapp_channel_url || church.whatsapp_channel_url,
             freeResourceUrl: conf.free_resource_url,
             freeResourceName: conf.free_resource_name,
           });

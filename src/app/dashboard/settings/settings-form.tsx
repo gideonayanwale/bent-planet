@@ -273,14 +273,35 @@ export function SettingsForm({ church }: SettingsFormProps) {
             />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="whatsapp_url">WhatsApp Community / Group Invite</Label>
+            <Label htmlFor="whatsapp_channel_url">WhatsApp Channel Link</Label>
             <Input
-              id="whatsapp_url"
-              name="whatsapp_url"
+              id="whatsapp_channel_url"
+              name="whatsapp_channel_url"
               type="url"
-              defaultValue={church.whatsapp_url || ""}
+              defaultValue={church.whatsapp_channel_url || ""}
+              placeholder="https://whatsapp.com/channel/..."
+            />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="whatsapp_group_url">Default WhatsApp Group Link</Label>
+            <Input
+              id="whatsapp_group_url"
+              name="whatsapp_group_url"
+              type="url"
+              defaultValue={church.whatsapp_group_url || church.whatsapp_url || ""}
               placeholder="https://chat.whatsapp.com/..."
             />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="whatsapp_number">WhatsApp Phone / Registration Contact</Label>
+            <Input
+              id="whatsapp_number"
+              name="whatsapp_number"
+              type="tel"
+              defaultValue={church.whatsapp_number || ""}
+              placeholder="+2348012345678"
+            />
+            <p className="text-[11px] text-slate-400">Used for direct Click-to-Chat event registration on public pages.</p>
           </div>
         </CardContent>
       </Card>

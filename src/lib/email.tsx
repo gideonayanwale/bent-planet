@@ -42,6 +42,8 @@ type SendWelcomeEmailInput = {
   conferenceDate?: string | null;
   conferenceTime?: string | null;
   streamUrl?: string | null;
+  whatsappGroupUrl?: string | null;
+  whatsappChannelUrl?: string | null;
   freeResourceUrl?: string | null;
   freeResourceName?: string | null;
 };
@@ -58,6 +60,8 @@ export async function sendSubscriberWelcomeEmail(input: SendWelcomeEmailInput) {
       conferenceDate={input.conferenceDate}
       conferenceTime={input.conferenceTime}
       streamUrl={input.streamUrl}
+      whatsappGroupUrl={input.whatsappGroupUrl}
+      whatsappChannelUrl={input.whatsappChannelUrl}
       freeResourceUrl={input.freeResourceUrl}
       freeResourceName={input.freeResourceName}
     />,

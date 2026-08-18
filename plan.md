@@ -58,7 +58,7 @@ Each church gets their own isolated space. They log in and manage everything the
   - Country + timezone
   - Admin name + password
   - Short bio / description ("Who we are")
-  - Social links (Instagram, Facebook, YouTube, WhatsApp group link)
+  - Social links (Instagram, Facebook, YouTube, whatsapp channel link, WhatsApp group link)
 - After setup, they land on their dashboard
 
 ---
@@ -83,23 +83,29 @@ Church fills in a simple form — AI handles the rest.
 - Conference name
 - Short caption (2–4 sentences about the conference — AI expands this)
 - Banner image upload (stored in Supabase Storage)
-- Speaker(s) / preacher(s)/ minister(s) name
-- Date, start time, timezone
-- Conference theme / topic (dropdown: Revival, Prophetic, Healing, Youth, Leadership, Worship, Prayer, Evangelism, or custom)
-- Stream link (YouTube Live, Vimeo, or Zoom — URL input)
+-type of event(Church Programmes, Women conference, men conference, Youth conference, Revival, Monthly programes,retreat, others)
+- Speaker(s) / preacher(s)/ minister(s) name(allow multiple)
+- whatsapp group invite link 
+-Host(person in charge)
+- Date(start date, end date), start time per each day, timezone(default to the time set by the church during the signup ask for location)
+- Conference theme / topic (dropdown: Revival, Prophetic, Healing, Youth, Leadership, Worship, Prayer, Evangelism, or custom) allow the custom titles
+- Scheduled Stream or updated stream link (YouTube Live, Vimeo, or Zoom — URL input) for live viewong of videos.
+- allow uploads of flyers to two banner layout.
 - Enable Replay toggle (stream saved for on-demand viewing after conference)
-- Free resource toggle (upload a PDF — conference notes, devotional guide, or e-book — auto-sent to subscribers)
+- Free resource toggle (upload a PDF — conference notes, devotional guide, or e-book/ Ebook purchase link  — auto-sent to subscribers)
 
-**On Submit — AI Auto-Generates:**
+**On Submit — AI Auto-Generates:** should be editable
 - Full conference description (500–700 words, Spirit-filled, warm Christian tone)
-- Conference agenda (prayer, worship, ministration, altar call, closing — time-blocked)
+- Conference agenda (prayer, worship, ministration, altar call, closing — time-blocked)- not necessary except added. Allow upload of conference programme outline for this or a clean text area for the update.
 - Speaker bio (based on name + theme)
-- OG meta tags (title, description, image) — so the link looks rich when shared on WhatsApp or Instagram
+- OG meta tags (title(MARK IMPORTANT), description(USE THE ONE GIVEN), image(USE UPLOADED)) — so the link looks rich when shared on WhatsApp or Instagram
+- allow the SHORTENING OF LINKS TO THE SLUG IF AVAILABLE FOR FREE ON BIT.LY
 - A clean URL slug: `bentplanet.com/c/church-name/conference-slug`
-- Invite email copy (subject + body) — ready for the church to send to their subscribers
+- Invite email copy (subject + body) — ready for the church to send to their subscribers full of all the necessary details needed.
+Support whatsapp channel updates
 
 **After generation:**
-- Church reviews the AI content, edits anything, then clicks **Publish**
+- Church reviews the AI content, edits everything, then clicks **Publish**
 - Conference page goes live instantly
 - All existing subscribers of that church receive an automatic notification email
 
@@ -111,17 +117,19 @@ This is the public-facing page that gets shared everywhere.
 
 **Page sections:**
 - Church logo + name (top left, links to church profile)
-- Full-width banner image with gradient overlay
+- Full-width banner image (uploaded) with gradient overlay
 - Conference name (large, bold)
 - Speaker name + AI-generated bio
-- Date, time, timezone, format (Online / Livestream)
+- Date, time, timezone, format (Online / Livestream) for each day of the conference(if multiple days)
 - Full AI-generated description
-- Conference agenda (time-blocked)
-- Embedded stream player (YouTube/Vimeo) — shows countdown timer if event hasn't started, live player during event, replay player after
-- **Subscribe box** (name + email + phone — optional) with CTA: "Subscribe & Get Updates"
+- Conference agenda (time-blocked or any if available)
+- Working Embedded stream player (YouTube/Vimeo) — shows countdown timer if event hasn't started, live player during event, replay player after
+- **Subscribe box** (name + email + phone(optional)) with CTA: "Subscribe & Get Updates"
 - Free resource section (if church uploaded one): "Get the Conference Guide — Free" (auto-sent after subscribing)
-- Church social links (Instagram, Facebook, YouTube)
+- Church social links - just icons (Instagram, Facebook, YouTube, X and many more if available,Support whatsapp channel updates)
 - Related conferences from the same church (past or upcoming)
+- Show **Powered By Bent Planet**
+
 
 **OG Preview (when link is pasted in WhatsApp, Instagram bio, Twitter, etc.):**
 - Generates a rich link preview: conference banner, name, date, church name
@@ -138,6 +146,7 @@ After publishing, church sees a Promote tab.
 - Generic link: `bentplanet.com/c/house-of-glory/open-heavens-2025`
 - UTM-tagged links auto-generated for: Instagram Bio · WhatsApp Blast · Facebook Post · Twitter/X · Email Campaign · YouTube Description
 - One-click copy for each
+- allow shorten of links with custom back-HA urlLF
 
 **AI Social Media Captions (auto-generated on publish):**
 - **Instagram caption** — hook + description + hashtags + CTA (fits 2,200 char limit)
@@ -159,7 +168,7 @@ After publishing, church sees a Promote tab.
 
 - Table: Name · Email · Phone · Subscribed Date · Conferences Subscribed · Emails Received · Last Opened
 - Search and filter by name, email, date
-- Export CSV
+- import/Export CSV
 - Manually add a subscriber (for walk-in registrations or WhatsApp signups)
 - Remove a subscriber
 - View per-subscriber history (which conferences they subscribed to, which emails they opened)
@@ -168,7 +177,7 @@ After publishing, church sees a Promote tab.
 
 ### EMAIL CENTER (`/dashboard/emails`)
 
-Churches control their own email communication with their subscribers.
+Churches control their own email communication with their subscribers.(Provide onboarding guide for the new users and make it a chelist they had to do for a complete setup)always add "powered by bent planet" at the botom not the head.
 
 **Automated Emails (set-and-forget):**
 
@@ -181,7 +190,7 @@ Churches control their own email communication with their subscribers.
 - Subject: `Tomorrow! [Conference Name] goes live 🔥`
 - Content: Reminder of date/time, stream link, agenda preview, "invite a friend" share link
 
-**Email 3 — It's Live! (sent when church marks conference as started):**
+**Email 3 — It's Live! (sent when church marks conference per day has started):**
 - Subject: `We're LIVE now — Join us 🎙️`
 - Content: Direct stream link, one-click join button, quick word from the host
 
@@ -210,7 +219,7 @@ Churches control their own email communication with their subscribers.
 A public page for each church — acts as their Bent Planet home.
 
 - Church banner + logo
-- Church name, country, bio
+- Church name, country, bio, location 
 - Social links (Instagram, Facebook, YouTube, WhatsApp)
 - All published conferences (upcoming first, then past)
 - Total subscriber count (optional — church can hide this)
@@ -229,10 +238,12 @@ Attendees don't have accounts. They just subscribe and receive emails.
 - Saved to Supabase `subscribers` table linked to that church
 - Welcome email sent immediately
 - If conference has a free resource, download link included in welcome email
+- once subscribed they have
+only for them to be recieving email and i think we should provide turn on optional bells for notification about many other confrences within the church or auto get updtaes depending on what each subriber wants but they will certainly get updates when new confernce is created but may choose to ignore other mails in prep for the conference. 
 
 **What they receive after subscribing:**
 - Welcome email (immediate)
-- Conference reminder (24hrs before)
+- Conference reminder (once created, 7 days,24hrs before the start date)
 - It's Live email (when stream starts)
 - Post-conference email with replay + notes
 - New conference announcements (every time the church publishes something new)

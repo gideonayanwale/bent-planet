@@ -45,6 +45,8 @@ export default function NewConferencePage() {
     startTime: "18:00",
     caption: "",
     streamUrl: "",
+    whatsappGroupUrl: "",
+    whatsappChannelUrl: "",
     enableReplay: true,
   });
 
@@ -221,6 +223,32 @@ export default function NewConferencePage() {
                   value={formData.streamUrl}
                   onChange={(e) => setFormData({ ...formData, streamUrl: e.target.value })}
                 />
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="whatsappGroupUrl">WhatsApp Group Invite Link (Optional)</Label>
+                  <Input
+                    id="whatsappGroupUrl"
+                    type="url"
+                    placeholder="https://chat.whatsapp.com/..."
+                    value={formData.whatsappGroupUrl}
+                    onChange={(e) => setFormData({ ...formData, whatsappGroupUrl: e.target.value })}
+                  />
+                  <p className="text-[11px] text-slate-400">Attendees can join this WhatsApp group for live event updates.</p>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="whatsappChannelUrl">WhatsApp Channel Link (Optional)</Label>
+                  <Input
+                    id="whatsappChannelUrl"
+                    type="url"
+                    placeholder="https://whatsapp.com/channel/..."
+                    value={formData.whatsappChannelUrl}
+                    onChange={(e) => setFormData({ ...formData, whatsappChannelUrl: e.target.value })}
+                  />
+                  <p className="text-[11px] text-slate-400">Link to your official church WhatsApp channel for broadcast updates.</p>
+                </div>
               </div>
 
               <div className="space-y-2">

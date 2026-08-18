@@ -149,16 +149,17 @@ export default async function ChurchPublicProfilePage({
               </div>
             </div>
 
-            {/* Social Channels */}
-            <div className="flex flex-wrap items-center gap-2 pb-2">
+            {/* Social Channels & Icons */}
+            <div className="flex flex-wrap items-center gap-2.5 pb-2">
               {church.instagram_url && (
                 <a
                   href={church.instagram_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl border border-white/20 bg-white/10 px-3.5 py-2 text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/20 transition"
+                  title="Instagram"
+                  className="rounded-full border border-white/20 bg-white/10 p-2.5 text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/30 hover:scale-105 transition"
                 >
-                  Instagram
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
                 </a>
               )}
               {church.youtube_url && (
@@ -166,9 +167,10 @@ export default async function ChurchPublicProfilePage({
                   href={church.youtube_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl border border-white/20 bg-white/10 px-3.5 py-2 text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/20 transition"
+                  title="YouTube"
+                  className="rounded-full border border-white/20 bg-white/10 p-2.5 text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/30 hover:scale-105 transition"
                 >
-                  YouTube
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M19.615 3.184c-3.604-.246-11.631-.245-15.23 0-3.897.266-4.356 2.62-4.385 8.816.029 6.185.484 8.549 4.385 8.816 3.6.245 11.626.246 15.23 0 3.897-.266 4.356-2.62 4.385-8.816-.029-6.185-.484-8.549-4.385-8.816zm-10.615 12.816v-8l8 3.993-8 4.007z"/></svg>
                 </a>
               )}
               {church.facebook_url && (
@@ -176,17 +178,29 @@ export default async function ChurchPublicProfilePage({
                   href={church.facebook_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl border border-white/20 bg-white/10 px-3.5 py-2 text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/20 transition"
+                  title="Facebook"
+                  className="rounded-full border border-white/20 bg-white/10 p-2.5 text-xs font-semibold text-white backdrop-blur-sm hover:bg-white/30 hover:scale-105 transition"
                 >
-                  Facebook
+                  <svg className="w-4 h-4 fill-current" viewBox="0 0 24 24"><path d="M9 8H6v4h3v12h5V12h3.642L18 8h-4V6.333C14 5.374 14.5 5 15.5 5H18V0h-3.808C10.592 0 9 1.583 9 4.615V8z"/></svg>
                 </a>
               )}
-              {church.whatsapp_url && (
+              {church.whatsapp_channel_url && (
                 <a
-                  href={church.whatsapp_url}
+                  href={church.whatsapp_channel_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition shadow-sm"
+                  className="rounded-xl bg-emerald-600 px-3.5 py-2 text-xs font-bold text-white hover:bg-emerald-500 transition shadow-sm flex items-center gap-1.5"
+                >
+                  <svg className="w-3.5 h-3.5 fill-current" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.461c-3.255 0-6.241-1.312-8.423-3.44l-1.028 3.753 3.844-1.008c-2.193-2.146-3.535-5.116-3.535-8.406 0-6.617 5.383-12 12-12s12 5.383 12 12-5.383 12-12 12"/></svg>
+                  WhatsApp Channel
+                </a>
+              )}
+              {(church.whatsapp_group_url || church.whatsapp_url) && (
+                <a
+                  href={(church.whatsapp_group_url || church.whatsapp_url)!}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="rounded-xl border border-emerald-400/50 bg-emerald-950/60 px-3.5 py-2 text-xs font-bold text-emerald-200 hover:bg-emerald-900 transition shadow-sm flex items-center gap-1.5"
                 >
                   WhatsApp Group
                 </a>
