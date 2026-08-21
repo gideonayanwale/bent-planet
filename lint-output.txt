@@ -1,0 +1,4 @@
+
+> bent-planet@0.1.0 lint
+> node ./node_modules/next/dist/bin/next lint
+

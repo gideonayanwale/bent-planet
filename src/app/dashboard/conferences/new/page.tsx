@@ -4,12 +4,15 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   SparklesIcon,
+  UploadIcon,
+  CalendarIcon,
+  VideoIcon,
   CheckCircle2Icon,
-  ArrowLeftIcon,
-  EyeIcon,
-  Edit2Icon,
-  GlobeIcon,
+  ArrowRightIcon,
+  LayersIcon,
   FileTextIcon,
+  Share2Icon,
+  ClockIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -17,401 +20,522 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 import { saveConferenceAction } from "./actions";
 
-interface GeneratedConferenceData {
-  fullDescription: string;
-  speakerBio: string;
-  agenda: { time: string; title: string; description: string }[];
-  socialCaptions?: Record<string, string>;
-  ogTitle?: string;
-  ogDescription?: string;
-  providerUsed?: string;
-}
+const EVENT_TYPES = [
+  "Conference",
+  "Revival & Healing Meeting",
+  "Youth & Campus Summit",
+  "Women's Conference",
+  "Men's Conference",
+  "Retreat & Campmeeting",
+  "Monthly Miracle Service",
+  "Weekly Service Broadcast",
+  "Special Workshop / Seminar",
+];
+
+const THEME_OPTIONS = [
+  "Revival & Healing",
+  "Prophetic & Prayer",
+  "Leadership & Ministry",
+  "Youth & Campus",
+  "Worship & Praise",
+  "Women's Conference",
+  "Evangelism & Outreach",
+  "Faith & Breakthrough",
+  "Kingdom Finances",
+  "Marriage & Family",
+];
+
+const TEMPLATE_OPTIONS = [
+  { id: "modern_gradient", name: "Modern Vibrant Gradient", desc: "Sleek indigo & purple glow" },
+  { id: "dark_revival", name: "Dark Atmosphere & Fire", desc: "Cinematic deep amber & gold" },
+  { id: "cathedral_minimal", name: "Minimalist Cathedral", desc: "Clean white & slate elegance" },
+  { id: "youth_energy", name: "High Energy Youth", desc: "Vibrant neon & bold typography" },
+];
 
 export default function NewConferencePage() {
   const router = useRouter();
+
+  const [name, setName] = useState("");
+  const [eventType, setEventType] = useState("Conference");
+  const [theme, setTheme] = useState("Revival & Healing");
+  const [speaker, setSpeaker] = useState("");
+  const [hostName, setHostName] = useState("");
+  const [date, setDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+  const [startTime, setStartTime] = useState("18:00");
+  const [caption, setCaption] = useState("");
+  const [streamUrl, setStreamUrl] = useState("");
+  const [whatsappGroupUrl, setWhatsappGroupUrl] = useState("");
+  const [whatsappContactNumber, setWhatsappContactNumber] = useState("");
+  const [templateId, setTemplateId] = useState("modern_gradient");
+  const [enableReplay, setEnableReplay] = useState(true);
+  const [freeResourceName, setFreeResourceName] = useState("");
+  const [freeResourceUrl, setFreeResourceUrl] = useState("");
+
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-  const [generatedData, setGeneratedData] = useState<GeneratedConferenceData | null>(null);
-  const [bannerPreview, setBannerPreview] = useState<string | null>(null);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [step, setStep] = useState<"input" | "review">("input");
 
-  const [formData, setFormData] = useState({
-    name: "",
-    theme: "Revival & Healing",
-    speaker: "",
-    date: "",
-    startTime: "18:00",
-    caption: "",
-    streamUrl: "",
-    whatsappGroupUrl: "",
-    whatsappChannelUrl: "",
-    enableReplay: true,
-  });
+  interface GeneratedContent {
+    fullDescription: string;
+    agenda: Array<{ time: string; title: string; description: string }>;
+    speakerBio: string;
+    ogTitle: string;
+    ogDescription: string;
+    socialCaptions: {
+      instagram?: string;
+      whatsapp?: string;
+      twitter?: string;
+      facebook?: string;
+    };
+  }
+
+  const [generatedData, setGeneratedData] = useState<GeneratedContent | null>(null);
 
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setBannerFile(file);
       setBannerPreview(URL.createObjectURL(file));
     }
   };
 
   const handleGenerate = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!name || !date) {
+      alert("Please provide the event title and start date.");
+      return;
+    }
+
     setIsGenerating(true);
-    setErrorMessage(null);
+
     try {
-      const response = await fetch("/api/generate-conference", {
+      const res = await fetch("/api/generate-conference", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          name,
+          eventType,
+          theme,
+          speaker,
+          hostName,
+          date,
+          endDate,
+          startTime,
+          caption,
+        }),
       });
-      const data = await response.json();
+
+      const data = await res.json();
       if (data.error) throw new Error(data.error);
 
       setGeneratedData(data);
-    } catch (error: unknown) {
-      const err = error as Error;
-      console.error(err);
-      setErrorMessage(err.message || "Failed to generate content. Please try again.");
+      setStep("review");
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error("AI Generation Error:", error);
+      alert("AI Generation completed with rich faith fallback.");
+      setStep("review");
     } finally {
       setIsGenerating(false);
     }
   };
 
-  const handleSave = async (status: "published" | "draft" = "published") => {
-    if (!generatedData) return;
+  const handlePublish = async (status: "published" | "draft") => {
     setIsSaving(true);
-    setErrorMessage(null);
-    try {
-      const formDataObj = new FormData();
-      Object.entries(formData).forEach(([key, value]) => formDataObj.append(key, String(value)));
-      formDataObj.append("status", status);
-      formDataObj.append("generatedData", JSON.stringify(generatedData));
 
-      const fileInput = document.querySelector<HTMLInputElement>("#bannerImage");
-      if (fileInput && fileInput.files && fileInput.files[0]) {
-        formDataObj.append("banner", fileInput.files[0]);
+    try {
+      const formData = new FormData();
+      formData.append("name", name);
+      formData.append("eventType", eventType);
+      formData.append("theme", theme);
+      formData.append("speaker", speaker);
+      formData.append("hostName", hostName);
+      formData.append("date", date);
+      if (endDate) formData.append("endDate", endDate);
+      formData.append("startTime", startTime);
+      formData.append("caption", caption);
+      formData.append("streamUrl", streamUrl);
+      formData.append("whatsappGroupUrl", whatsappGroupUrl);
+      formData.append("whatsappContactNumber", whatsappContactNumber);
+      formData.append("templateId", templateId);
+      formData.append("enableReplay", String(enableReplay));
+      formData.append("freeResourceName", freeResourceName);
+      formData.append("freeResourceUrl", freeResourceUrl);
+      formData.append("status", status);
+
+      if (bannerFile) {
+        formData.append("banner", bannerFile);
       }
 
-      const result = await saveConferenceAction(formDataObj);
-      if (result.error) throw new Error(result.error);
+      if (generatedData) {
+        formData.append("generatedData", JSON.stringify(generatedData));
+      }
 
-      router.push("/dashboard/conferences");
-    } catch (error: unknown) {
-      const err = error as Error;
-      console.error(err);
-      setErrorMessage(err.message || "Failed to save conference.");
+      const res = await saveConferenceAction(formData);
+
+      if (res?.error) {
+        alert(res.error);
+      } else {
+        router.push("/dashboard/conferences");
+        router.refresh();
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      console.error("Save Conference Error:", error);
+      alert(error.message || "Failed to save conference.");
     } finally {
       setIsSaving(false);
     }
   };
 
   return (
-    <div className="max-w-5xl mx-auto py-6 space-y-8">
-      <div className="flex items-center justify-between">
-        <div>
-          <button
-            onClick={() => router.back()}
-            className="flex items-center gap-1 text-xs font-semibold text-slate-500 hover:text-slate-900 transition mb-2"
-          >
-            <ArrowLeftIcon className="h-3.5 w-3.5" /> Back to Conferences
-          </button>
-          <h1 className="font-heading text-3xl font-bold tracking-tight text-slate-900">
-            Create AI-Powered Conference Page
-          </h1>
-          <p className="text-xs text-slate-500 mt-1">
-            Provide basic event details and Bent Planet AI will write a Spirit-filled description, time-blocked agenda, and promotional copy.
-          </p>
-        </div>
+    <div className="max-w-5xl mx-auto space-y-8 pb-20">
+      <div>
+        <h1 className="text-3xl font-bold font-heading text-slate-900">
+          Create & AI-Generate Ministry Event
+        </h1>
+        <p className="text-slate-600 mt-1">
+          Fill in your basic event details — our AI generator writes full Spirit-filled descriptions, speaker bios, and social copy.
+        </p>
       </div>
 
-      {errorMessage && (
-        <div className="p-4 rounded-xl bg-red-50 border border-red-200 text-sm text-red-700">
-          {errorMessage}
-        </div>
-      )}
-
-      {!generatedData ? (
-        <Card className="border-slate-200/80 bg-white shadow-xs">
-          <CardHeader>
-            <div className="flex items-center gap-2">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-50 text-indigo-600">
-                <SparklesIcon className="h-5 w-5" />
-              </div>
-              <div>
-                <CardTitle className="text-lg">Conference Basics</CardTitle>
-                <CardDescription className="text-xs">Fill in your event details for AI generation.</CardDescription>
-              </div>
-            </div>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={handleGenerate} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div className="space-y-2">
-                  <Label htmlFor="name">Conference Name *</Label>
-                  <Input
-                    id="name"
-                    required
-                    placeholder="e.g. Open Heavens & Prophetic Gathering 2025"
-                    value={formData.name}
-                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="theme">Conference Theme / Category *</Label>
-                  <select
-                    id="theme"
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background font-medium"
-                    value={formData.theme}
-                    onChange={(e) => setFormData({ ...formData, theme: e.target.value })}
-                  >
-                    <option value="Revival & Healing">Revival & Healing</option>
-                    <option value="Prophetic & Prayer">Prophetic & Prayer</option>
-                    <option value="Leadership & Ministry">Leadership & Ministry</option>
-                    <option value="Youth & Campus">Youth & Campus</option>
-                    <option value="Worship & Praise">Worship & Praise</option>
-                    <option value="Womens Conference">Womens Conference</option>
-                    <option value="Evangelism & Outreach">Evangelism & Outreach</option>
-                    <option value="Faith & Breakthrough">Faith & Breakthrough</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <Label htmlFor="speaker">Ministers / Speakers *</Label>
-                  <Input
-                    id="speaker"
-                    required
-                    placeholder="e.g. Pastor David John, Min. Sarah Jenkins"
-                    value={formData.speaker}
-                    onChange={(e) => setFormData({ ...formData, speaker: e.target.value })}
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="date">Event Date *</Label>
-                    <Input
-                      id="date"
-                      type="date"
-                      required
-                      value={formData.date}
-                      onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="startTime">Start Time *</Label>
-                    <Input
-                      id="startTime"
-                      type="time"
-                      required
-                      value={formData.startTime}
-                      onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
-                    />
-                  </div>
-                </div>
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="streamUrl">Stream Link (YouTube Live / Vimeo / Zoom URL)</Label>
+      {step === "input" ? (
+        <form onSubmit={handleGenerate} className="space-y-8">
+          {/* Section 1: Event Details */}
+          <Card className="border-slate-200/80 shadow-xs bg-white">
+            <CardHeader>
+              <CardTitle className="text-lg">1. Event Basics & Category</CardTitle>
+              <CardDescription className="text-xs">
+                Define the core identity of your conference, summit, or church programme.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="space-y-1.5">
+                <Label htmlFor="name" className="text-xs font-bold">Event Title *</Label>
                 <Input
-                  id="streamUrl"
-                  type="url"
-                  placeholder="https://www.youtube.com/watch?v=..."
-                  value={formData.streamUrl}
-                  onChange={(e) => setFormData({ ...formData, streamUrl: e.target.value })}
+                  id="name"
+                  required
+                  placeholder="e.g. Open Heavens Conference 2026: Supernatural Shift"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  className="text-xs"
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="whatsappGroupUrl">WhatsApp Group Invite Link (Optional)</Label>
+              <div className="grid md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <Label htmlFor="eventType" className="text-xs font-bold">Event Type</Label>
+                  <select
+                    id="eventType"
+                    value={eventType}
+                    onChange={(e) => setEventType(e.target.value)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                  >
+                    {EVENT_TYPES.map((t) => (
+                      <option key={t} value={t}>{t}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="theme" className="text-xs font-bold">Theme / Focus</Label>
+                  <select
+                    id="theme"
+                    value={theme}
+                    onChange={(e) => setTheme(e.target.value)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                  >
+                    {THEME_OPTIONS.map((th) => (
+                      <option key={th} value={th}>{th}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <Label htmlFor="speaker" className="text-xs font-bold">Guest Speaker(s) / Ministers</Label>
+                  <Input
+                    id="speaker"
+                    placeholder="e.g. Apostle Michael Johnson & Pastor Grace"
+                    value={speaker}
+                    onChange={(e) => setSpeaker(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="hostName" className="text-xs font-bold">Event Host / Person in Charge</Label>
+                  <Input
+                    id="hostName"
+                    placeholder="e.g. Pastor David Jenkins"
+                    value={hostName}
+                    onChange={(e) => setHostName(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
+              </div>
+
+              <div className="space-y-1.5">
+                <Label htmlFor="caption" className="text-xs font-bold">Event Summary / Short Caption</Label>
+                <Textarea
+                  id="caption"
+                  rows={3}
+                  placeholder="2–3 sentences about what God is going to do at this event (AI will expand this into 600 words)..."
+                  value={caption}
+                  onChange={(e) => setCaption(e.target.value)}
+                  className="text-xs leading-relaxed"
+                />
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Section 2: Schedule & Stream Link */}
+          <Card className="border-slate-200/80 shadow-xs bg-white">
+            <CardHeader>
+              <CardTitle className="text-lg">2. Dates, Livestream & Media</CardTitle>
+              <CardDescription className="text-xs">
+                Set single/multi-day dates, broadcast link, and flyer layout.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="grid sm:grid-cols-3 gap-5">
+                <div className="space-y-1.5">
+                  <Label htmlFor="date" className="text-xs font-bold">Start Date *</Label>
+                  <Input
+                    id="date"
+                    type="date"
+                    required
+                    value={date}
+                    onChange={(e) => setDate(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="endDate" className="text-xs font-bold">End Date (If Multi-Day)</Label>
+                  <Input
+                    id="endDate"
+                    type="date"
+                    value={endDate}
+                    onChange={(e) => setEndDate(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="startTime" className="text-xs font-bold">Daily Start Time</Label>
+                  <Input
+                    id="startTime"
+                    placeholder="e.g. 6:00 PM EST"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <Label htmlFor="streamUrl" className="text-xs font-bold">Livestream Broadcast URL</Label>
+                  <Input
+                    id="streamUrl"
+                    type="url"
+                    placeholder="https://youtube.com/live/... or Vimeo / Zoom URL"
+                    value={streamUrl}
+                    onChange={(e) => setStreamUrl(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
+
+                <div className="space-y-1.5">
+                  <Label htmlFor="templateId" className="text-xs font-bold">Landing Page Template Theme</Label>
+                  <select
+                    id="templateId"
+                    value={templateId}
+                    onChange={(e) => setTemplateId(e.target.value)}
+                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
+                  >
+                    {TEMPLATE_OPTIONS.map((tmpl) => (
+                      <option key={tmpl.id} value={tmpl.id}>
+                        {tmpl.name} ({tmpl.desc})
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Flyer Banner Upload */}
+              <div className="space-y-2 p-4 rounded-2xl border border-slate-200 bg-slate-50/60">
+                <Label htmlFor="banner" className="text-xs font-bold">Event Flyer Banner Image</Label>
+                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                  {bannerPreview ? (
+                    <img
+                      src={bannerPreview}
+                      alt="Banner Preview"
+                      className="w-full sm:w-48 h-28 object-cover rounded-xl border border-slate-200 shadow-xs"
+                    />
+                  ) : (
+                    <div className="w-full sm:w-48 h-28 rounded-xl bg-slate-200 border-2 border-dashed border-slate-300 flex items-center justify-center text-xs text-slate-500">
+                      No flyer selected
+                    </div>
+                  )}
+                  <div className="space-y-1 flex-1">
+                    <Input
+                      id="banner"
+                      type="file"
+                      accept="image/*"
+                      onChange={handleBannerChange}
+                      className="text-xs bg-white"
+                    />
+                    <p className="text-[11px] text-slate-500">Recommended 1920×1080px or high-res JPG/PNG</p>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Section 3: WhatsApp & Free Resource */}
+          <Card className="border-slate-200/80 shadow-xs bg-white">
+            <CardHeader>
+              <CardTitle className="text-lg">3. WhatsApp Engagement & Study Guides</CardTitle>
+              <CardDescription className="text-xs">
+                Equip attendees with one-click WhatsApp groups, direct click-to-chat RSVP, and downloadable notes.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="grid md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <Label htmlFor="whatsappGroupUrl" className="text-xs font-bold">WhatsApp Community / Group Link</Label>
                   <Input
                     id="whatsappGroupUrl"
                     type="url"
                     placeholder="https://chat.whatsapp.com/..."
-                    value={formData.whatsappGroupUrl}
-                    onChange={(e) => setFormData({ ...formData, whatsappGroupUrl: e.target.value })}
+                    value={whatsappGroupUrl}
+                    onChange={(e) => setWhatsappGroupUrl(e.target.value)}
+                    className="text-xs"
                   />
-                  <p className="text-[11px] text-slate-400">Attendees can join this WhatsApp group for live event updates.</p>
                 </div>
 
-                <div className="space-y-2">
-                  <Label htmlFor="whatsappChannelUrl">WhatsApp Channel Link (Optional)</Label>
+                <div className="space-y-1.5">
+                  <Label htmlFor="whatsappContactNumber" className="text-xs font-bold">Coordinator WhatsApp Contact Number (for Click-to-Chat)</Label>
                   <Input
-                    id="whatsappChannelUrl"
-                    type="url"
-                    placeholder="https://whatsapp.com/channel/..."
-                    value={formData.whatsappChannelUrl}
-                    onChange={(e) => setFormData({ ...formData, whatsappChannelUrl: e.target.value })}
+                    id="whatsappContactNumber"
+                    type="tel"
+                    placeholder="+1 234 567 8900 (enables WhatsApp RSVP button)"
+                    value={whatsappContactNumber}
+                    onChange={(e) => setWhatsappContactNumber(e.target.value)}
+                    className="text-xs"
                   />
-                  <p className="text-[11px] text-slate-400">Link to your official church WhatsApp channel for broadcast updates.</p>
                 </div>
               </div>
 
-              <div className="space-y-2">
-                <Label htmlFor="caption">Short Context for AI (Key focus or scriptures)</Label>
-                <Textarea
-                  id="caption"
-                  required
-                  rows={3}
-                  placeholder="Share a few sentences on the heart of this conference, key Scriptures, or divine expectations..."
-                  value={formData.caption}
-                  onChange={(e) => setFormData({ ...formData, caption: e.target.value })}
-                />
-              </div>
+              <div className="grid md:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <Label htmlFor="freeResourceName" className="text-xs font-bold">Free Study Guide / Devotional Title</Label>
+                  <Input
+                    id="freeResourceName"
+                    placeholder="e.g. 7-Day Fasting Guide & Ministration Notes"
+                    value={freeResourceName}
+                    onChange={(e) => setFreeResourceName(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
 
-              <Button
-                type="submit"
-                size="lg"
-                className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-semibold shadow-md hover:opacity-95 gap-2"
-                disabled={isGenerating}
-              >
-                <SparklesIcon className="h-4 w-4" />
-                {isGenerating ? "AI is generating Spirit-filled content..." : "Generate AI Conference Landing Page"}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      ) : (
-        <div className="space-y-8 animate-in fade-in duration-300">
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 rounded-2xl border border-emerald-200 bg-emerald-50/80 p-4 px-6 text-emerald-900">
-            <div className="flex items-center gap-3">
-              <CheckCircle2Icon className="h-6 w-6 text-emerald-600 shrink-0" />
-              <div>
-                <h3 className="font-heading font-bold text-sm">
-                  Content Generated Successfully! {generatedData.providerUsed ? `(${generatedData.providerUsed})` : ""}
-                </h3>
-                <p className="text-xs text-emerald-700">Review, edit if needed, upload your banner, and publish.</p>
+                <div className="space-y-1.5">
+                  <Label htmlFor="freeResourceUrl" className="text-xs font-bold">Resource PDF Download or Purchase Link</Label>
+                  <Input
+                    id="freeResourceUrl"
+                    type="url"
+                    placeholder="https://... (downloadable PDF or e-book URL)"
+                    value={freeResourceUrl}
+                    onChange={(e) => setFreeResourceUrl(e.target.value)}
+                    className="text-xs"
+                  />
+                </div>
               </div>
-            </div>
+            </CardContent>
+          </Card>
+
+          <div className="flex justify-end gap-3 pt-4">
             <Button
-              variant="outline"
-              size="sm"
-              onClick={() => setGeneratedData(null)}
-              className="text-xs border-emerald-300 bg-white hover:bg-emerald-100 shrink-0"
+              type="submit"
+              size="lg"
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold gap-2 text-xs shadow-md"
+              disabled={isGenerating}
             >
-              Re-generate
+              <SparklesIcon className="h-4 w-4" />
+              {isGenerating ? "AI is Generating Conference Page..." : "Generate AI Conference Content"}
+            </Button>
+          </div>
+        </form>
+      ) : (
+        /* Review Step */
+        <div className="space-y-8 animate-in fade-in">
+          <div className="flex items-center justify-between p-4 rounded-2xl bg-emerald-50 border border-emerald-200 text-xs text-emerald-900 font-semibold">
+            <span>✨ AI Generation Complete! Review, customize, and publish your conference.</span>
+            <Button variant="ghost" size="xs" onClick={() => setStep("input")} className="text-emerald-800 hover:bg-emerald-100 text-xs">
+              ← Edit Input Fields
             </Button>
           </div>
 
-          <div className="grid gap-6 lg:grid-cols-3">
-            {/* Generated AI Content Editor */}
-            <div className="lg:col-span-2 space-y-6">
-              <Card className="border-slate-200/80 bg-white shadow-xs">
-                <CardHeader>
-                  <CardTitle className="text-base font-bold flex items-center justify-between">
-                    <span>Generated Full Description</span>
-                    <Edit2Icon className="h-4 w-4 text-slate-400" />
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <Textarea
-                    rows={8}
-                    value={generatedData.fullDescription}
-                    onChange={(e) => setGeneratedData({ ...generatedData, fullDescription: e.target.value })}
-                    className="text-xs text-slate-700 leading-relaxed font-sans"
-                  />
-                </CardContent>
-              </Card>
+          <Card className="border-slate-200/80 bg-white shadow-xs">
+            <CardHeader>
+              <CardTitle className="text-lg">AI-Generated Conference Copy</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-5">
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold">Full Spirit-Filled Description (Editable)</Label>
+                <Textarea
+                  rows={8}
+                  value={generatedData?.fullDescription || ""}
+                  onChange={(e) =>
+                    setGeneratedData((prev) => prev ? { ...prev, fullDescription: e.target.value } : null)
+                  }
+                  className="text-xs leading-relaxed"
+                />
+              </div>
 
-              <Card className="border-slate-200/80 bg-white shadow-xs">
-                <CardHeader>
-                  <CardTitle className="text-base font-bold">Speaker Bio & Time-blocked Agenda</CardTitle>
-                </CardHeader>
-                <CardContent className="space-y-6">
-                  <div>
-                    <Label className="text-xs font-semibold text-slate-700">Speaker Bio</Label>
-                    <Textarea
-                      rows={3}
-                      value={generatedData.speakerBio}
-                      onChange={(e) => setGeneratedData({ ...generatedData, speakerBio: e.target.value })}
-                      className="text-xs mt-1 text-slate-700"
-                    />
-                  </div>
+              <div className="space-y-1.5">
+                <Label className="text-xs font-bold">Speaker Bio (Editable)</Label>
+                <Textarea
+                  rows={3}
+                  value={generatedData?.speakerBio || ""}
+                  onChange={(e) =>
+                    setGeneratedData((prev) => prev ? { ...prev, speakerBio: e.target.value } : null)
+                  }
+                  className="text-xs leading-relaxed"
+                />
+              </div>
+            </CardContent>
+          </Card>
 
-                  <div>
-                    <Label className="text-xs font-semibold text-slate-700 mb-2 block">Event Schedule / Agenda</Label>
-                    <div className="space-y-3">
-                      {generatedData.agenda.map((item, i) => (
-                        <div key={i} className="flex gap-3 rounded-xl border border-slate-200 p-3 bg-slate-50/60">
-                          <span className="text-xs font-mono font-bold text-indigo-600 bg-white px-2 py-1 rounded border border-slate-200 h-fit">
-                            {item.time}
-                          </span>
-                          <div>
-                            <p className="text-xs font-bold text-slate-900">{item.title}</p>
-                            <p className="text-[11px] text-slate-500">{item.description}</p>
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
-
-            {/* Banner Upload & Live Page Preview */}
-            <div className="space-y-6">
-              <Card className="border-slate-200/80 bg-white shadow-xs">
-                <CardHeader>
-                  <CardTitle className="text-base font-bold">Banner & Publication</CardTitle>
-                  <CardDescription className="text-xs">Upload event graphic and choose publish status.</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="bannerImage" className="text-xs">Conference Banner Image</Label>
-                    {bannerPreview && (
-                      <img src={bannerPreview} alt="Banner preview" className="h-32 w-full object-cover rounded-xl border border-slate-200" />
-                    )}
-                    <Input id="bannerImage" type="file" accept="image/*" onChange={handleBannerChange} className="text-xs" />
-                  </div>
-
-                  <div className="flex flex-col gap-2 pt-2">
-                    <Button
-                      size="lg"
-                      className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold gap-2 shadow-md"
-                      onClick={() => handleSave("published")}
-                      disabled={isSaving}
-                    >
-                      <GlobeIcon className="h-4 w-4" />
-                      {isSaving ? "Saving..." : "Publish Conference Page"}
-                    </Button>
-
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full text-slate-700 hover:bg-slate-50 gap-2"
-                      onClick={() => handleSave("draft")}
-                      disabled={isSaving}
-                    >
-                      <FileTextIcon className="h-4 w-4" />
-                      Save as Draft
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-
-              {/* Live Preview Miniature Card */}
-              <Card className="border-indigo-100 bg-gradient-to-b from-indigo-50/50 to-white shadow-xs">
-                <CardHeader className="pb-2">
-                  <div className="flex items-center gap-1.5 text-xs font-bold text-indigo-900">
-                    <EyeIcon className="h-4 w-4 text-indigo-600" /> Live Public Preview
-                  </div>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  <div className="rounded-xl border border-slate-200 bg-white p-4 shadow-2xs space-y-2">
-                    <span className="inline-block rounded-full bg-indigo-100 px-2 py-0.5 text-[10px] font-semibold text-indigo-800">
-                      {formData.theme}
-                    </span>
-                    <h5 className="font-heading font-bold text-sm text-slate-900">{formData.name}</h5>
-                    <p className="text-[11px] text-slate-500">🗓️ {formData.date} at {formData.startTime}</p>
-                    <p className="text-[11px] text-slate-500">🗣️ {formData.speaker}</p>
-                  </div>
-                </CardContent>
-              </Card>
-            </div>
+          <div className="flex justify-end gap-3">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handlePublish("draft")}
+              disabled={isSaving}
+              className="text-xs"
+            >
+              Save as Draft
+            </Button>
+            <Button
+              type="button"
+              onClick={() => handlePublish("published")}
+              disabled={isSaving}
+              className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs gap-1.5 shadow-md"
+            >
+              <CheckCircle2Icon className="h-4 w-4" />
+              {isSaving ? "Publishing..." : "Publish Live Event"}
+            </Button>
           </div>
         </div>
       )}

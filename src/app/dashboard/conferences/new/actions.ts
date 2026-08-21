@@ -18,13 +18,19 @@ export async function saveConferenceAction(formData: FormData) {
 
     const name = formData.get("name") as string;
     const theme = (formData.get("theme") as string) || "Revival & Healing";
+    const eventType = (formData.get("eventType") as string) || "Conference";
     const speaker = formData.get("speaker") as string;
+    const hostName = (formData.get("hostName") as string) || church.admin_name || null;
     const date = formData.get("date") as string;
+    const endDate = (formData.get("endDate") as string) || null;
     const startTime = formData.get("startTime") as string;
     const caption = formData.get("caption") as string;
     const streamUrl = formData.get("streamUrl") as string;
     const whatsappGroupUrl = (formData.get("whatsappGroupUrl") as string) || church.whatsapp_group_url || null;
-    const whatsappChannelUrl = (formData.get("whatsappChannelUrl") as string) || church.whatsapp_channel_url || null;
+    const whatsappContactNumber = (formData.get("whatsappContactNumber") as string) || church.whatsapp_number || null;
+    const templateId = (formData.get("templateId") as string) || church.theme_preference || "modern_gradient";
+    const freeResourceName = (formData.get("freeResourceName") as string) || null;
+    const freeResourceUrl = (formData.get("freeResourceUrl") as string) || null;
     const enableReplay = formData.get("enableReplay") === "true";
     const status = (formData.get("status") as string) || "published";
 
@@ -51,12 +57,18 @@ export async function saveConferenceAction(formData: FormData) {
       slug,
       caption: caption || null,
       theme: theme || null,
+      event_type: eventType,
       speaker_name: speaker || null,
+      host_name: hostName,
       conference_date: date || null,
+      end_date: endDate,
       conference_time: startTime || null,
       stream_url: streamUrl || null,
       whatsapp_group_url: whatsappGroupUrl,
-      whatsapp_channel_url: whatsappChannelUrl,
+      whatsapp_contact_number: whatsappContactNumber,
+      template_id: templateId,
+      free_resource_name: freeResourceName,
+      free_resource_url: freeResourceUrl,
       enable_replay: enableReplay,
       full_description: generatedData.fullDescription || null,
       agenda: generatedData.agenda || [],

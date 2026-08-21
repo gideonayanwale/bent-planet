@@ -13,11 +13,15 @@ import {
   CpuIcon,
   LockIcon,
   ChevronRightIcon,
+  Building2Icon,
+  BookOpenIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandLogo } from "@/components/brand-logo";
+import { RequestAccessModal } from "@/components/request-access-modal";
+import { FeedbackModal } from "@/components/feedback-modal";
 
 export default function HomePage() {
   const features = [
@@ -35,7 +39,7 @@ export default function HomePage() {
       badge: "Audience CRM",
       title: "Church Subscriber Ownership",
       description:
-        "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, and export your audience to CSV anytime with 100% data sovereignty.",
+        "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, import from CSV with deduplication, and export your audience anytime with 100% data sovereignty.",
       color: "from-purple-500/20 to-pink-500/20",
       borderColor: "border-purple-500/30",
     },
@@ -62,13 +66,13 @@ export default function HomePage() {
   const steps = [
     {
       num: "01",
-      title: "Super Admin Invite",
-      desc: "Platform admin sends a secure one-time onboarding invitation link to your church leader.",
+      title: "Super Admin Invite or Access Request",
+      desc: "Churches receive a secure invitation or submit a verified access request to get their isolated workspace.",
     },
     {
       num: "02",
       title: "Guided Church Setup",
-      desc: "Complete your ministry profile, upload logo, set timezone, and link WhatsApp/YouTube channels in 3 steps.",
+      desc: "Complete your ministry profile, upload logo & cover banner, set timezone, and link WhatsApp/social channels.",
     },
     {
       num: "03",
@@ -98,169 +102,79 @@ export default function HomePage() {
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-            <a href="#features" className="hover:text-white transition">
-              Features
+            <a href="#features" className="hover:text-foreground transition-colors">
+              Platform Features
             </a>
-            <a href="#how-it-works" className="hover:text-white transition">
+            <a href="#how-it-works" className="hover:text-foreground transition-colors">
               How It Works
             </a>
-            <a href="#ai-engine" className="hover:text-white transition">
-              AI Engine
-            </a>
-            <a href="#security" className="hover:text-white transition">
-              Cloud & Security
-            </a>
+            <Link href="/docs" className="hover:text-foreground transition-colors flex items-center gap-1">
+              <BookOpenIcon className="h-3.5 w-3.5" />
+              Docs
+            </Link>
           </nav>
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground hover:text-foreground hover:bg-secondary">
-              <Link href="/super-admin" className="flex items-center gap-1.5 text-xs font-semibold">
-                <LockIcon className="h-3.5 w-3.5 text-primary" />
-                Super Admin
-              </Link>
-            </Button>
-            <Button asChild size="sm" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-500 hover:to-purple-500 text-white font-semibold shadow-lg shadow-indigo-600/30 border border-white/10">
-              <Link href="/login">Church Portal</Link>
+            <RequestAccessModal
+              triggerText="Request Access"
+              variant="outline"
+              className="text-xs h-9 font-semibold"
+            />
+            <Button asChild size="sm" className="btn-gradient text-xs font-semibold shadow-md">
+              <Link href="/login">Church Login</Link>
             </Button>
           </div>
         </div>
       </header>
 
       {/* Hero Section */}
-      <section className="relative pt-16 pb-24 sm:pt-24 sm:pb-32 px-6 sm:px-8 max-w-7xl mx-auto">
-        <div className="text-center space-y-8 max-w-4xl mx-auto">
-          {/* Glass Badge */}
-          <div className="inline-flex items-center gap-2 rounded-full glass-pill px-4 py-1.5 text-xs font-semibold text-indigo-200 border border-indigo-500/30 shadow-md animate-in fade-in slide-in-from-top-4 duration-500">
-            <SparklesIcon className="h-4 w-4 text-amber-300 animate-pulse" />
-            <span>The Premier AI Platform for Online Church Conferences</span>
-            <ChevronRightIcon className="h-3.5 w-3.5 text-indigo-400" />
-          </div>
-
-          {/* High-Impact Headline */}
-          <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-gradient leading-[1.1]">
-            Create, Publish & Grow Your Church Conferences with <span className="text-gradient-vibrant">Spirit-Filled AI</span>
-          </h1>
-
-          <p className="text-base sm:text-xl text-slate-300/90 leading-relaxed max-w-2xl mx-auto font-normal">
-            Bent Planet equips church ministry teams with an invite-only platform to publish AI-crafted landing pages, broadcast live streams, and auto-nurture attendees through automated email sequences.
-          </p>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button asChild size="lg" className="w-full sm:w-auto bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 hover:opacity-95 text-white font-bold text-base px-8 h-13 rounded-2xl shadow-xl shadow-indigo-600/40 border border-white/20 gap-2">
-              <Link href="/login">
-                Access Church Dashboard
-                <ArrowRightIcon className="h-5 w-5" />
-              </Link>
-            </Button>
-
-            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto glass-pill text-white hover:bg-white/10 font-semibold text-base px-8 h-13 rounded-2xl border-white/20 gap-2">
-              <Link href="/super-admin">
-                <ShieldCheckIcon className="h-5 w-5 text-indigo-400" />
-                Super Admin Portal
-              </Link>
-            </Button>
-          </div>
+      <section className="relative pt-20 pb-28 px-6 sm:px-8 max-w-7xl mx-auto text-center z-10">
+        <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-pill text-xs font-semibold text-primary mb-8 glow-indigo border border-indigo-500/20">
+          <SparklesIcon className="w-4 h-4 text-amber-400" />
+          <span>Invite-Only SaaS for Modern Ministries & Online Conferences</span>
         </div>
 
-        {/* Live Interactive Glass Showcase Mockup */}
-        <div className="mt-16 sm:mt-24 max-w-5xl mx-auto">
-          <div className="relative rounded-3xl glass-card p-3 sm:p-4 border border-white/15 shadow-2xl shadow-indigo-950/80 glow-indigo">
-            {/* Window Top Controls */}
-            <div className="flex items-center justify-between pb-3 px-3 border-b border-white/10 text-xs font-mono text-slate-400">
-              <div className="flex items-center gap-2">
-                <span className="h-3 w-3 rounded-full bg-rose-500/80 inline-block" />
-                <span className="h-3 w-3 rounded-full bg-amber-500/80 inline-block" />
-                <span className="h-3 w-3 rounded-full bg-emerald-500/80 inline-block" />
-                <span className="ml-2 text-[11px] text-slate-400 hidden sm:inline">bentplanet.com/c/grace-fellowship/open-heavens-2025</span>
-              </div>
-              <div className="flex items-center gap-2 text-[11px] font-semibold text-emerald-400">
-                <RadioIcon className="h-3.5 w-3.5 animate-pulse" /> LIVE STREAM READY
-              </div>
-            </div>
+        <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-[1.1]">
+          The Intelligent Operating System for{" "}
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
+            Church Conferences
+          </span>
+        </h1>
 
-            {/* Inner Live Page Preview */}
-            <div className="rounded-2xl bg-slate-900/90 p-6 sm:p-8 space-y-6 mt-3 text-left">
-              <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-6 border-b border-white/10">
-                <div className="space-y-1">
-                  <div className="flex items-center gap-2">
-                    <span className="inline-block rounded-full bg-indigo-500/20 px-3 py-1 text-xs font-bold text-indigo-300 border border-indigo-500/30 uppercase tracking-wider">
-                      Revival & Healing Encounter
-                    </span>
-                  </div>
-                  <h3 className="font-heading text-2xl sm:text-3xl font-bold text-white">
-                    Open Heavens & Miracles Gathering 2025
-                  </h3>
-                  <p className="text-xs sm:text-sm text-slate-400">
-                    Hosted by Grace Fellowship Ministry · Speaker: Pastor David John
-                  </p>
-                </div>
+        <p className="mt-6 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
+          Create high-converting conference landing pages in 60 seconds with AI, broadcast live streams seamlessly, and automatically nurture registered attendees into lifetime disciples.
+        </p>
 
-                <div className="flex items-center gap-3">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-2xl bg-indigo-600/30 text-indigo-300 border border-indigo-500/40">
-                    <PlayIcon className="h-5 w-5 fill-indigo-300" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-slate-400">Event Time:</div>
-                    <div className="text-xs font-mono font-bold text-white">Friday, 18:00 EST</div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Sample AI Agenda Preview */}
-              <div className="grid gap-4 sm:grid-cols-3">
-                <div className="rounded-xl glass-card p-4 space-y-1">
-                  <span className="text-[10px] font-mono text-indigo-400 font-bold">18:00 - 19:00</span>
-                  <div className="text-xs font-bold text-white">Worship & Intercession</div>
-                  <div className="text-[11px] text-slate-400">Atmosphere for signs & wonders</div>
-                </div>
-                <div className="rounded-xl glass-card p-4 space-y-1">
-                  <span className="text-[10px] font-mono text-purple-400 font-bold">19:00 - 20:30</span>
-                  <div className="text-xs font-bold text-white">Prophetic Ministration</div>
-                  <div className="text-[11px] text-slate-400">Word of Knowledge & Prayer</div>
-                </div>
-                <div className="rounded-xl glass-card p-4 space-y-1">
-                  <span className="text-[10px] font-mono text-emerald-400 font-bold">20:30 - 21:00</span>
-                  <div className="text-xs font-bold text-white">Altar Call & Replay</div>
-                  <div className="text-[11px] text-slate-400">Devotional PDF delivery</div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Feature Pillars Grid */}
-      <section id="features" className="py-20 px-6 sm:px-8 max-w-7xl mx-auto">
-        <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-indigo-400">Engineered for Ministry Excellence</span>
-          <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-gradient">
-            Everything Your Church Needs to Scale Online Impact
-          </h2>
-          <p className="text-sm sm:text-base text-slate-400">
-            A complete suite of tools designed specifically for church administrators and digital evangelism.
-          </p>
+        <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
+          <RequestAccessModal
+            triggerText="Request Church Workspace"
+            variant="default"
+            className="w-full sm:w-auto btn-gradient text-white font-bold text-sm px-8 h-12 rounded-2xl shadow-xl hover:opacity-90 transition"
+          />
+          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto glass-pill text-foreground hover:bg-accent/20 font-semibold text-sm px-8 h-12 rounded-2xl">
+            <Link href="/docs">
+              <BookOpenIcon className="mr-2 h-4 w-4 text-indigo-500" />
+              Explore Documentation
+            </Link>
+          </Button>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {features.map((f) => {
+        {/* Feature Highlights Grid */}
+        <div id="features" className="mt-28 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-left">
+          {features.map((f, i) => {
             const Icon = f.icon;
             return (
               <div
-                key={f.title}
-                className={`glass-card glass-card-hover rounded-3xl p-6 sm:p-8 space-y-5 relative overflow-hidden border ${f.borderColor}`}
+                key={i}
+                className="group relative rounded-3xl glass-card p-6 sm:p-8 hover:-translate-y-1.5 transition-all duration-300 border border-border/50 hover:border-indigo-500/40"
               >
-                <div className={`flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br ${f.color} border border-white/10 text-white`}>
-                  <Icon className="h-6 w-6" />
+                <div className={`w-12 h-12 rounded-2xl bg-gradient-to-br ${f.color} flex items-center justify-center mb-6 border ${f.borderColor}`}>
+                  <Icon className="w-6 h-6 text-foreground" />
                 </div>
-                <div className="space-y-2">
-                  <span className="inline-block rounded-full bg-white/5 px-2.5 py-0.5 text-[10px] font-bold text-indigo-300 border border-white/10">
-                    {f.badge}
-                  </span>
-                  <h3 className="font-heading text-lg font-bold text-white">{f.title}</h3>
-                  <p className="text-xs text-slate-400 leading-relaxed">{f.description}</p>
-                </div>
+                <span className="text-[11px] font-bold uppercase tracking-wider text-indigo-500">{f.badge}</span>
+                <h3 className="font-heading text-lg font-bold text-foreground mt-1 mb-2">{f.title}</h3>
+                <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{f.description}</p>
               </div>
             );
           })}
@@ -268,34 +182,36 @@ export default function HomePage() {
       </section>
 
       {/* How It Works Section */}
-      <section id="how-it-works" className="py-20 px-6 sm:px-8 max-w-7xl mx-auto border-t border-white/10">
-        <div className="text-center space-y-4 max-w-3xl mx-auto mb-16">
-          <span className="text-xs font-bold uppercase tracking-widest text-purple-400">Simple & Seamless Journey</span>
-          <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-gradient">
-            How Bent Planet Operates
+      <section id="how-it-works" className="py-24 px-6 sm:px-8 max-w-7xl mx-auto border-t border-border/40">
+        <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
+          <span className="text-xs font-bold uppercase tracking-wider text-indigo-500 bg-indigo-500/10 px-3.5 py-1.5 rounded-full">
+            Simple 4-Step Process
+          </span>
+          <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-foreground">
+            How Bent Planet Powers Your Ministry
           </h2>
-          <p className="text-sm sm:text-base text-slate-400">
-            From super admin invitation to automated lead nurturing in 4 steps.
+          <p className="text-sm sm:text-base text-muted-foreground">
+            From invitation to live stream and subscriber nurturing — completely hands-free.
           </p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
-          {steps.map((s) => (
-            <div key={s.num} className="glass-card rounded-3xl p-6 space-y-4 relative">
-              <div className="font-mono text-3xl font-extrabold text-gradient-vibrant">{s.num}</div>
-              <h4 className="font-heading text-base font-bold text-white">{s.title}</h4>
-              <p className="text-xs text-slate-400 leading-relaxed">{s.desc}</p>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {steps.map((s, idx) => (
+            <div key={idx} className="relative rounded-3xl glass-card p-6 sm:p-8 border border-border/50 space-y-4">
+              <span className="font-mono text-3xl font-extrabold text-indigo-500/40">{s.num}</span>
+              <h3 className="font-heading text-lg font-bold text-foreground">{s.title}</h3>
+              <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">{s.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
-      {/* AI & Security Section */}
-      <section id="ai-engine" className="py-20 px-6 sm:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl glass-card p-8 sm:p-12 border border-white/15 bg-gradient-to-r from-indigo-950/60 via-slate-900/80 to-purple-950/60 grid gap-8 lg:grid-cols-2 items-center">
-          <div className="space-y-6">
-            <span className="inline-flex items-center gap-2 rounded-full glass-pill px-3 py-1 text-xs font-semibold text-emerald-300 border border-emerald-500/30">
-              <ZapIcon className="h-3.5 w-3.5 text-emerald-400" /> Multi-API Resilient Engine
+      {/* Multi-Provider Architecture Callout */}
+      <section className="py-20 px-6 sm:px-8 max-w-7xl mx-auto">
+        <div className="rounded-3xl glass-card p-8 sm:p-12 border border-border/50 bg-gradient-to-br from-indigo-950/40 via-purple-950/20 to-slate-950 grid lg:grid-cols-2 gap-8 items-center">
+          <div className="space-y-4">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+              Zero-Fail AI Architecture
             </span>
             <h3 className="font-heading text-3xl sm:text-4xl font-bold text-white">
               Never Settle for Single Provider Downtime
@@ -347,27 +263,53 @@ export default function HomePage() {
             Ready to Empower Your Church Online?
           </h2>
           <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
-            Log in to your church dashboard or enter your invitation token to activate your Bent Planet workspace.
+            Log in to your church dashboard or submit an access request to activate your Bent Planet workspace.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button asChild size="lg" className="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
+            <RequestAccessModal
+              triggerText="Request Church Access"
+              variant="default"
+              className="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-bold text-base px-8 h-13 rounded-2xl shadow-xl"
+            />
+            <Button asChild size="lg" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
               <Link href="/login">Church Login Portal</Link>
-            </Button>
-            <Button asChild variant="outline" size="lg" className="w-full sm:w-auto glass-pill text-white hover:bg-white/10 font-semibold text-base px-8 h-13 rounded-2xl border-white/20">
-              <Link href="/super-admin">Super Admin Portal</Link>
             </Button>
           </div>
         </div>
       </section>
 
-      {/* Glassmorphic Footer */}
-      <footer className="py-8 px-6 sm:px-8 border-t border-white/10 glass-nav text-xs text-slate-400">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="flex items-center gap-2">
-            <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" />
-            <span className="font-medium text-slate-300">Bent Planet Platform — All Systems Operational</span>
+      {/* Standardized Glassmorphic Footer */}
+      <footer className="py-10 px-6 sm:px-8 border-t border-white/10 glass-nav text-xs text-slate-400">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="flex items-center gap-3">
+            <Link href="/" className="hover:opacity-85 transition">
+              <BrandLogo iconSize={32} />
+            </Link>
+            <span className="text-slate-500">|</span>
+            <div className="flex items-center gap-2">
+              <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" />
+              <span className="font-medium text-slate-300">All Systems Operational</span>
+            </div>
           </div>
-          <div>© {new Date().getFullYear()} Bent Planet Inc. All rights reserved.</div>
+
+          <div className="flex flex-wrap items-center gap-6 text-slate-400">
+            <Link href="/docs" className="hover:text-white transition">
+              Documentation
+            </Link>
+            <Link href="/privacy" className="hover:text-white transition">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="hover:text-white transition">
+              Terms of Service
+            </Link>
+            <FeedbackModal triggerText="Feedback" />
+          </div>
+
+          <div>
+            <Link href="/" className="hover:text-indigo-400 transition font-medium">
+              &copy; Bent Planet Inc. {new Date().getFullYear()}
+            </Link>
+          </div>
         </div>
       </footer>
     </div>

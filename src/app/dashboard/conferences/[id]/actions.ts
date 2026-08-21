@@ -1,61 +1,108 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
+import { z } from "zod";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { requireChurchUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { getConferenceById } from "@/lib/conferences";
 import { uploadConferenceBanner } from "@/lib/storage";
 
-export async function updateConferenceAction(conferenceId: string, formData: FormData) {
+const conferenceUpdateSchema = z.object({
+  title: z.string().min(2, "Title must be at least 2 characters"),
+  slug: z.string().min(2, "Slug must be at least 2 characters"),
+  caption: z.string().optional().nullable(),
+  theme: z.string().optional().nullable(),
+  event_type: z.string().optional().nullable(),
+  speaker_name: z.string().optional().nullable(),
+  host_name: z.string().optional().nullable(),
+  speaker_role: z.string().optional().nullable(),
+  speaker_bio: z.string().optional().nullable(),
+  conference_date: z.string().optional().nullable(),
+  end_date: z.string().optional().nullable(),
+  conference_time: z.string().optional().nullable(),
+  timezone: z.string().optional().nullable(),
+  stream_url: z.string().url().optional().or(z.literal("")).nullable(),
+  whatsapp_group_url: z.string().url().optional().or(z.literal("")).nullable(),
+  whatsapp_contact_number: z.string().optional().nullable(),
+  template_id: z.string().optional().nullable(),
+  free_resource_name: z.string().optional().nullable(),
+  free_resource_url: z.string().optional().nullable(),
+  enable_replay: z.boolean().optional(),
+  status: z.enum(["draft", "published", "archived"]).optional(),
+  full_description: z.string().optional().nullable(),
+  og_title: z.string().optional().nullable(),
+  og_description: z.string().optional().nullable(),
+});
+
+export async function updateConferenceAction(id: string, formData: FormData) {
   try {
     const user = await requireChurchUser();
     const adminClient = createAdminClient();
 
     const church = await getChurchByAdminEmail(adminClient, user.email!);
     if (!church) {
-      return { error: "Church workspace not found." };
+      return { error: "Church not found." };
     }
 
-    const conference = await getConferenceById(adminClient, conferenceId);
-    if (!conference || conference.church_id !== church.id) {
-      return { error: "Conference not found or unauthorized." };
+    const { data: existingConf } = await adminClient
+      .from("conferences")
+      .select("*")
+      .eq("id", id)
+      .eq("church_id", church.id)
+      .maybeSingle();
+
+    if (!existingConf) {
+      return { error: "Conference not found or access denied." };
     }
 
-    const title = formData.get("name") as string;
-    const theme = formData.get("theme") as string;
-    const speaker_name = formData.get("speaker") as string;
-    const conference_date = formData.get("date") as string;
-    const conference_time = formData.get("startTime") as string;
-    const stream_url = formData.get("streamUrl") as string;
-    const whatsapp_group_url = formData.get("whatsappGroupUrl") as string;
-    const whatsapp_channel_url = formData.get("whatsappChannelUrl") as string;
-    const short_url = formData.get("shortUrl") as string;
-    const caption = formData.get("caption") as string;
-    const full_description = formData.get("fullDescription") as string;
-    const speaker_bio = formData.get("speakerBio") as string;
-    const status = (formData.get("status") as string) || conference.status || "published";
-    const enable_replay = formData.get("enableReplay") === "true";
-    const free_resource_url = formData.get("freeResourceUrl") as string;
-    const free_resource_name = formData.get("freeResourceName") as string;
+    const rawData = {
+      title: formData.get("title") as string,
+      slug: formData.get("slug") as string,
+      caption: (formData.get("caption") as string) || null,
+      theme: (formData.get("theme") as string) || null,
+      event_type: (formData.get("event_type") as string) || "Conference",
+      speaker_name: (formData.get("speaker_name") as string) || null,
+      host_name: (formData.get("host_name") as string) || null,
+      speaker_role: (formData.get("speaker_role") as string) || null,
+      speaker_bio: (formData.get("speaker_bio") as string) || null,
+      conference_date: (formData.get("conference_date") as string) || null,
+      end_date: (formData.get("end_date") as string) || null,
+      conference_time: (formData.get("conference_time") as string) || null,
+      timezone: (formData.get("timezone") as string) || church.timezone || null,
+      stream_url: (formData.get("stream_url") as string) || null,
+      whatsapp_group_url: (formData.get("whatsapp_group_url") as string) || null,
+      whatsapp_contact_number: (formData.get("whatsapp_contact_number") as string) || null,
+      template_id: (formData.get("template_id") as string) || "modern_gradient",
+      free_resource_name: (formData.get("free_resource_name") as string) || null,
+      free_resource_url: (formData.get("free_resource_url") as string) || null,
+      enable_replay: formData.get("enable_replay") === "true",
+      status: (formData.get("status") as "draft" | "published" | "archived") || "published",
+      full_description: (formData.get("full_description") as string) || null,
+      og_title: (formData.get("og_title") as string) || null,
+      og_description: (formData.get("og_description") as string) || null,
+    };
 
+    const parsed = conferenceUpdateSchema.parse(rawData);
+
+    // Agenda handling
     const agendaStr = formData.get("agenda") as string;
-    let agenda = conference.agenda;
+    let agenda = existingConf.agenda;
     if (agendaStr) {
       try {
         agenda = JSON.parse(agendaStr);
-      } catch (e) {
-        console.warn("Failed to parse agenda JSON:", e);
+      } catch {
+        // Keep existing if parse fails
       }
     }
 
-    let banner_url = conference.banner_url;
-    const banner = formData.get("banner") as File;
-    if (banner && banner.size > 0) {
+    // Banner handling
+    const bannerFile = formData.get("banner") as File;
+    let bannerUrl = existingConf.banner_url;
+    if (bannerFile && bannerFile.size > 0) {
       try {
-        banner_url = await uploadConferenceBanner(adminClient, church.id, banner);
+        bannerUrl = await uploadConferenceBanner(adminClient, church.id, bannerFile);
       } catch (uploadErr) {
-        console.error("Conference banner upload error during update:", uploadErr);
+        console.error("Banner upload failed:", uploadErr);
         return { error: "Failed to upload new banner image." };
       }
     }
@@ -63,122 +110,79 @@ export async function updateConferenceAction(conferenceId: string, formData: For
     const { error: updateError } = await adminClient
       .from("conferences")
       .update({
-        title: title || conference.title,
-        theme: theme || conference.theme,
-        speaker_name: speaker_name || conference.speaker_name,
-        conference_date: conference_date || conference.conference_date,
-        conference_time: conference_time || conference.conference_time,
-        stream_url: stream_url !== undefined ? stream_url : conference.stream_url,
-        whatsapp_group_url: whatsapp_group_url !== undefined ? whatsapp_group_url : conference.whatsapp_group_url,
-        whatsapp_channel_url: whatsapp_channel_url !== undefined ? whatsapp_channel_url : conference.whatsapp_channel_url,
-        short_url: short_url !== undefined ? short_url : conference.short_url,
-        caption: caption !== undefined ? caption : conference.caption,
-        full_description: full_description !== undefined ? full_description : conference.full_description,
-        speaker_bio: speaker_bio !== undefined ? speaker_bio : conference.speaker_bio,
-        status,
-        enable_replay,
-        free_resource_url: free_resource_url !== undefined ? free_resource_url : conference.free_resource_url,
-        free_resource_name: free_resource_name !== undefined ? free_resource_name : conference.free_resource_name,
+        ...parsed,
+        banner_url: bannerUrl,
         agenda,
-        banner_url,
       })
-      .eq("id", conferenceId)
+      .eq("id", id)
       .eq("church_id", church.id);
 
     if (updateError) {
-      console.error("Update conference error:", updateError);
-      return { error: `Failed to update conference: ${updateError.message}` };
+      return { error: updateError.message };
     }
 
-    revalidatePath("/dashboard/conferences");
-    revalidatePath(`/dashboard/conferences/${conferenceId}/edit`);
-    revalidatePath(`/dashboard/conferences/${conferenceId}/promote`);
-    revalidatePath(`/c/${church.slug}/${conference.slug}`);
+    revalidatePath(`/dashboard/conferences`);
+    revalidatePath(`/dashboard/conferences/${id}/edit`);
+    revalidatePath(`/c/${church.slug}/${parsed.slug}`);
     revalidatePath(`/c/${church.slug}`);
 
     return { success: true };
   } catch (error: unknown) {
     const err = error as Error;
     console.error("updateConferenceAction error:", err);
-    return { error: err.message || "Something went wrong." };
+    return { error: err.message || "Failed to update conference." };
   }
 }
 
-export async function deleteConferenceAction(conferenceId: string) {
+export async function deleteConferenceAction(id: string) {
   try {
     const user = await requireChurchUser();
     const adminClient = createAdminClient();
 
     const church = await getChurchByAdminEmail(adminClient, user.email!);
     if (!church) {
-      return { error: "Church workspace not found." };
+      return { error: "Church not found." };
     }
 
-    const conference = await getConferenceById(adminClient, conferenceId);
-    if (!conference || conference.church_id !== church.id) {
-      return { error: "Conference not found or unauthorized." };
-    }
+    // Cascading cleanups
+    await adminClient.from("utm_clicks").delete().eq("conference_id", id);
+    await adminClient.from("email_log").delete().eq("conference_id", id);
+    await adminClient.from("subscribers").delete().eq("conference_id", id);
 
-    // 1. Clean up child relations safely before deleting conference
-    // Delete UTM clicks associated with this conference
-    await adminClient
-      .from("utm_clicks")
-      .delete()
-      .eq("conference_id", conferenceId)
-      .eq("church_id", church.id);
-
-    // Unlink or delete email logs associated with this conference
-    await adminClient
-      .from("email_log")
-      .delete()
-      .eq("conference_id", conferenceId)
-      .eq("church_id", church.id);
-
-    // Unlink subscribers associated with this conference (set conference_id to null) or keep church_id intact
-    await adminClient
-      .from("subscribers")
-      .delete()
-      .eq("conference_id", conferenceId)
-      .eq("church_id", church.id);
-
-    // 2. Delete the conference
     const { error: deleteError } = await adminClient
       .from("conferences")
       .delete()
-      .eq("id", conferenceId)
+      .eq("id", id)
       .eq("church_id", church.id);
 
     if (deleteError) {
-      console.error("Delete conference error:", deleteError);
-      return { error: `Failed to delete conference: ${deleteError.message}` };
+      return { error: deleteError.message };
     }
 
     revalidatePath("/dashboard/conferences");
-    revalidatePath("/dashboard");
     revalidatePath(`/c/${church.slug}`);
 
     return { success: true };
   } catch (error: unknown) {
     const err = error as Error;
-    console.error("deleteConferenceAction error:", err);
     return { error: err.message || "Failed to delete conference." };
   }
 }
 
-export async function toggleConferenceStatusAction(conferenceId: string, newStatus: string) {
+export async function toggleConferenceStatusAction(id: string, newStatus: "published" | "draft" | "archived") {
   try {
     const user = await requireChurchUser();
     const adminClient = createAdminClient();
 
     const church = await getChurchByAdminEmail(adminClient, user.email!);
     if (!church) {
-      return { error: "Church workspace not found." };
+      return { error: "Church not found." };
     }
 
     const { error } = await adminClient
       .from("conferences")
       .update({ status: newStatus })
-      .eq("id", conferenceId)
+      .eq("id", id)
       .eq("church_id", church.id);
 
     if (error) {
@@ -186,101 +190,11 @@ export async function toggleConferenceStatusAction(conferenceId: string, newStat
     }
 
     revalidatePath("/dashboard/conferences");
-    revalidatePath(`/dashboard/conferences/${conferenceId}/edit`);
+    revalidatePath(`/c/${church.slug}`);
+
     return { success: true };
   } catch (error: unknown) {
     const err = error as Error;
     return { error: err.message || "Failed to update status." };
-  }
-}
-
-export async function updateCustomAliasAction(conferenceId: string, rawAlias: string) {
-  try {
-    const user = await requireChurchUser();
-    const adminClient = createAdminClient();
-
-    const church = await getChurchByAdminEmail(adminClient, user.email!);
-    if (!church) {
-      return { error: "Church workspace not found." };
-    }
-
-    const cleanAlias = rawAlias.trim().replace(/^\/+|\/+$/g, "").replace(/\s+/g, "_");
-
-    if (cleanAlias.length < 2) {
-      return { error: "Custom back-half alias must be at least 2 characters." };
-    }
-
-    // Check if alias is reserved or taken
-    const reserved = ["dashboard", "super-admin", "login", "onboarding", "c", "api"];
-    if (reserved.includes(cleanAlias.toLowerCase())) {
-      return { error: "This custom back-half is reserved by the system." };
-    }
-
-    const { data: existing } = await adminClient
-      .from("conferences")
-      .select("id")
-      .ilike("custom_alias", cleanAlias)
-      .neq("id", conferenceId)
-      .maybeSingle();
-
-    if (existing) {
-      return { error: "This custom back-half is already in use by another conference." };
-    }
-
-    const { error: updateErr } = await adminClient
-      .from("conferences")
-      .update({ custom_alias: cleanAlias })
-      .eq("id", conferenceId)
-      .eq("church_id", church.id);
-
-    if (updateErr) {
-      return { error: updateErr.message };
-    }
-
-    revalidatePath(`/dashboard/conferences/${conferenceId}/promote`);
-    revalidatePath(`/dashboard/conferences/${conferenceId}/edit`);
-    return { success: true, alias: cleanAlias };
-  } catch (error: unknown) {
-    const err = error as Error;
-    return { error: err.message || "Failed to update custom alias." };
-  }
-}
-
-export async function generateBitlyUrlAction(conferenceId: string) {
-  try {
-    const user = await requireChurchUser();
-    const adminClient = createAdminClient();
-
-    const church = await getChurchByAdminEmail(adminClient, user.email!);
-    if (!church) {
-      return { error: "Church workspace not found." };
-    }
-
-    const conference = await getConferenceById(adminClient, conferenceId);
-    if (!conference || conference.church_id !== church.id) {
-      return { error: "Conference not found." };
-    }
-
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com";
-    const longUrl = `${baseUrl}/c/${church.slug}/${conference.slug}`;
-
-    const { shortenUrl } = await import("@/lib/bitly");
-    const shortUrl = await shortenUrl(longUrl);
-
-    const { error: updateErr } = await adminClient
-      .from("conferences")
-      .update({ short_url: shortUrl })
-      .eq("id", conferenceId)
-      .eq("church_id", church.id);
-
-    if (updateErr) {
-      return { error: updateErr.message };
-    }
-
-    revalidatePath(`/dashboard/conferences/${conferenceId}/promote`);
-    return { success: true, shortUrl };
-  } catch (error: unknown) {
-    const err = error as Error;
-    return { error: err.message || "Failed to generate Bitly short link." };
   }
 }
