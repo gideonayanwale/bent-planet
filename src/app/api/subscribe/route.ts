@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       try {
         const [churchRes, confRes] = await Promise.all([
           adminClient.from("churches").select("name, logo_url, whatsapp_group_url, whatsapp_channel_url, whatsapp_url").eq("id", churchId).maybeSingle(),
-          adminClient.from("conferences").select("title, conference_date, conference_time, stream_url, whatsapp_group_url, whatsapp_channel_url, free_resource_url, free_resource_name").eq("id", churchId).maybeSingle(),
+          adminClient.from("conferences").select("title, conference_date, conference_time, stream_url, whatsapp_group_url, whatsapp_channel_url, free_resource_url, free_resource_name").eq("id", conferenceId).maybeSingle(),
         ]);
 
         const church = churchRes.data;

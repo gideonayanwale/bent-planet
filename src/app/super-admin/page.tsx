@@ -159,8 +159,8 @@ export default async function SuperAdminPage() {
 
       {/* Platform Analytics Growth Chart */}
       <AnalyticsChart
-        subscribers={subscribers.map((s) => ({ subscribed_at: s.subscribed_at }))}
-        conferences={conferences.map((c) => ({ created_at: c.created_at }))}
+        initialSubscribers={subscribers.map((s) => ({ subscribed_at: s.subscribed_at }))}
+        initialConferences={conferences.map((c) => ({ created_at: c.created_at }))}
       />
 
       {/* All Churches CRM Table */}

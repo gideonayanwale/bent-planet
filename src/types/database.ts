@@ -142,7 +142,10 @@ export interface Database {
           free_resource_url: string | null;
           free_resource_name: string | null;
           whatsapp_group_url: string | null;
+          whatsapp_channel_url: string | null;
           whatsapp_contact_number: string | null;
+          short_url: string | null;
+          custom_alias: string | null;
           flyer_layout: string | null;
           template_id: string | null;
           rsvp_limit: number | null;
@@ -177,7 +180,10 @@ export interface Database {
           free_resource_url?: string | null;
           free_resource_name?: string | null;
           whatsapp_group_url?: string | null;
+          whatsapp_channel_url?: string | null;
           whatsapp_contact_number?: string | null;
+          short_url?: string | null;
+          custom_alias?: string | null;
           flyer_layout?: string | null;
           template_id?: string | null;
           rsvp_limit?: number | null;
@@ -212,7 +218,10 @@ export interface Database {
           free_resource_url?: string | null;
           free_resource_name?: string | null;
           whatsapp_group_url?: string | null;
+          whatsapp_channel_url?: string | null;
           whatsapp_contact_number?: string | null;
+          short_url?: string | null;
+          custom_alias?: string | null;
           flyer_layout?: string | null;
           template_id?: string | null;
           rsvp_limit?: number | null;

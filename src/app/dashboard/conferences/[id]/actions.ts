@@ -198,3 +198,99 @@ export async function toggleConferenceStatusAction(id: string, newStatus: "publi
     return { error: err.message || "Failed to update status." };
   }
 }
+
+export async function updateCustomAliasAction(conferenceId: string, rawAlias: string) {
+  try {
+    const user = await requireChurchUser();
+    const adminClient = createAdminClient();
+
+    const church = await getChurchByAdminEmail(adminClient, user.email!);
+    if (!church) {
+      return { error: "Church workspace not found." };
+    }
+
+    const cleanAlias = rawAlias.trim().replace(/^\/+|\/+$/g, "").replace(/\s+/g, "_");
+
+    if (cleanAlias.length < 2) {
+      return { error: "Custom back-half alias must be at least 2 characters." };
+    }
+
+    const reserved = ["dashboard", "super-admin", "login", "onboarding", "c", "api"];
+    if (reserved.includes(cleanAlias.toLowerCase())) {
+      return { error: "This custom back-half is reserved by the system." };
+    }
+
+    const { data: existing } = await adminClient
+      .from("conferences")
+      .select("id")
+      .ilike("custom_alias", cleanAlias)
+      .neq("id", conferenceId)
+      .maybeSingle();
+
+    if (existing) {
+      return { error: "This custom back-half is already in use by another conference." };
+    }
+
+    const { error: updateErr } = await adminClient
+      .from("conferences")
+      .update({ custom_alias: cleanAlias })
+      .eq("id", conferenceId)
+      .eq("church_id", church.id);
+
+    if (updateErr) {
+      return { error: updateErr.message };
+    }
+
+    revalidatePath(`/dashboard/conferences/${conferenceId}/promote`);
+    revalidatePath(`/dashboard/conferences/${conferenceId}/edit`);
+    return { success: true, alias: cleanAlias };
+  } catch (error: unknown) {
+    const err = error as Error;
+    return { error: err.message || "Failed to update custom alias." };
+  }
+}
+
+export async function generateBitlyUrlAction(conferenceId: string) {
+  try {
+    const user = await requireChurchUser();
+    const adminClient = createAdminClient();
+
+    const church = await getChurchByAdminEmail(adminClient, user.email!);
+    if (!church) {
+      return { error: "Church workspace not found." };
+    }
+
+    const { data: conference } = await adminClient
+      .from("conferences")
+      .select("slug")
+      .eq("id", conferenceId)
+      .eq("church_id", church.id)
+      .maybeSingle();
+
+    if (!conference) {
+      return { error: "Conference not found." };
+    }
+
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com";
+    const longUrl = `${baseUrl}/c/${church.slug}/${conference.slug}`;
+
+    const { shortenUrl } = await import("@/lib/bitly");
+    const shortUrl = await shortenUrl(longUrl);
+
+    const { error: updateErr } = await adminClient
+      .from("conferences")
+      .update({ short_url: shortUrl })
+      .eq("id", conferenceId)
+      .eq("church_id", church.id);
+
+    if (updateErr) {
+      return { error: updateErr.message };
+    }
+
+    revalidatePath(`/dashboard/conferences/${conferenceId}/promote`);
+    return { success: true, shortUrl };
+  } catch (error: unknown) {
+    const err = error as Error;
+    return { error: err.message || "Failed to generate Bitly short link." };
+  }
+}
