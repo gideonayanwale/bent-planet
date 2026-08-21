@@ -45,7 +45,7 @@ it is only when one vALUE CONTRADICT WHEN COMPARING ON THE DB, WILL YOU NOW WRIT
 The invite link sent to their email, or whatsapp should contain:
     **1st page**
     Sign in option(continue with email, sign up with gmail, sign up)
-    continuing by agreeing to terms and condtions.
+    continuing by agreeing to terms and conditions.
     **2nd page** after authentication
     -Ask for name of church,
     - denomination (pentecostal, catholic, baptist,methodist, others)
@@ -56,19 +56,19 @@ The invite link sent to their email, or whatsapp should contain:
     -phone number with country code
     -church website url (optional)
     - social media links(facebook,youtube,instagram, X, telegram, threads, tiktok,)
-    -allow the upload of church logo (optional)
-    -Church cover banner
-    -physical church address line 1 and optional address
+    - allow the upload of church logo (optional)
+    - Church cover banner
+    - physical church address line 1 and optional address
     -time zone
-    -country, state, town (pull list of countries and their states.but allow them to manually update the town)
-    -admin name, email address, password for login(not necessarily the church email)- auto send amgic link to set the password or reset it
+    - country, state, town (pull list of countries and their states.but allow them to manually update the town)
+    - admin name, email address, password for login(not necessarily the church email)- auto send amgic link to set the password or reset it
     -role of the admin
 
     -password and confirm if they actually use continue with email. but every body can connect the gmail and stil use password. sign ups with similar emails will classified as same account dont dreate a new account.
  and finally, sign up button for completing the registration.
 
-    instructions:
-    keepit short- dont ask for 20 fields at a time upfront. start with name, email,phone number, whatsapp address, password, and collect the rest later in settings and alert them to complete it in notifications on their dashboar.
+   **instructions:**
+    - keep it short- dont ask for 20 fields at a time upfront. start with name, email,phone number, whatsapp address, password, and collect the rest later in settings and alert them to complete it in notifications on their dashboar.
     and ofcourse most of the fields can be skipped and updated in settings
 
 
@@ -86,7 +86,8 @@ The invite link sent to their email, or whatsapp should contain:
             -ask for church whatsapp number, if not collected during registration. so that automated messages when someone wants to register/ subscribes.
 
 
-# **superadmins panel**
+# add to **superadmins page**
+Use better ui for beter viewing and user experience. 
 - i want admins to be able to manage all churches in terms of management
 - churches views(number of subscribers, analytics per church, CTR per months, ping rate)
 - allow the sending of messages updates from the super admin to the churches via in app notifications/emails and to all subscribers via emails(occassionally).
@@ -104,5 +105,5 @@ The invite link sent to their email, or whatsapp should contain:
 1. always keep all dependency files updated
 2. the supabase migrations can added for new entries 
 3. update both backend and frontend accordingly.
-4. Public pages apart from dashboard must have the footer with &copy; Bent planet Inc. {YEAR}
+4. Public pages apart from dashboard must have the footer with &copy; Bent planet Inc. {YEAR} and use it as a link to the main page.
 5. 

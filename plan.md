@@ -27,7 +27,8 @@ You (Super Admin)
 
 ## ROLE 1 — SUPER ADMIN (You / Bent Planet)
 
-**Dashboard at `/super-admin`**
+**Dashboard at `/super-admin`**     /*implement very fast and must show in the dashboard of the superadmin*
+follow the newplans write and rewrite to fit the state
 
 **Church Management:**
 - Invite a church by entering their name + admin email → system sends them a setup email with a one-time onboarding link
@@ -55,9 +56,10 @@ Each church gets their own isolated space. They log in and manage everything the
 - Church receives invite email → clicks link → sets up their profile:
   - Church name
   - Logo upload
+  - church banner upload 
   - Country + timezone
   - Admin name + password
-  - Short bio / description ("Who we are")
+  - Short bio / description ("Who we are")  /*allow up to 100 character limit.*
   - Social links (Instagram, Facebook, YouTube, whatsapp channel link, WhatsApp group link)
 - After setup, they land on their dashboard
 
@@ -77,16 +79,16 @@ Each church gets their own isolated space. They log in and manage everything the
 
 ### CONFERENCE CREATOR (`/dashboard/conferences/new`)
 
-Church fills in a simple form — AI handles the rest.
+Church fills in a simple form — AI handles the rest. make the form ui/ux friendly with all devices with clear visibility
 
-**Input fields:**
+**Input fields:** /always provide guides in the input areas.
 - Conference name
 - Short caption (2–4 sentences about the conference — AI expands this)
 - Banner image upload (stored in Supabase Storage)
 -type of event(Church Programmes, Women conference, men conference, Youth conference, Revival, Monthly programes,retreat, others)
 - Speaker(s) / preacher(s)/ minister(s) name(allow multiple)
 - whatsapp group invite link 
--Host(person in charge)
+- name of Host (person in charge)
 - Date(start date, end date), start time per each day, timezone(default to the time set by the church during the signup ask for location)
 - Conference theme / topic (dropdown: Revival, Prophetic, Healing, Youth, Leadership, Worship, Prayer, Evangelism, or custom) allow the custom titles
 - Scheduled Stream or updated stream link (YouTube Live, Vimeo, or Zoom — URL input) for live viewong of videos.
@@ -95,9 +97,10 @@ Church fills in a simple form — AI handles the rest.
 - Free resource toggle (upload a PDF — conference notes, devotional guide, or e-book/ Ebook purchase link  — auto-sent to subscribers)
 
 **On Submit — AI Auto-Generates:** should be editable
-- Full conference description (500–700 words, Spirit-filled, warm Christian tone)
-- Conference agenda (prayer, worship, ministration, altar call, closing — time-blocked)- not necessary except added. Allow upload of conference programme outline for this or a clean text area for the update.
-- Speaker bio (based on name + theme)
+- Full conference description (500–700 words, Spirit-filled, warm Christian tone with context from the uploaded banner when creating that conference and the input submissions)
+- Conference agenda (prayer, worship, ministration, altar call, closing — time-blocked)- not necessary except added. Allow upload of conference programme outline for this or a clean text area for the update + Date of commencement and time per day.
+- Speaker bio (based on name given(input or banner) + theme)
+-Host name
 - OG meta tags (title(MARK IMPORTANT), description(USE THE ONE GIVEN), image(USE UPLOADED)) — so the link looks rich when shared on WhatsApp or Instagram
 - allow the SHORTENING OF LINKS TO THE SLUG IF AVAILABLE FOR FREE ON BIT.LY
 - A clean URL slug: `bentplanet.com/c/church-name/conference-slug`
@@ -117,7 +120,7 @@ This is the public-facing page that gets shared everywhere.
 
 **Page sections:**
 - Church logo + name (top left, links to church profile)
-- Full-width banner image (uploaded) with gradient overlay
+- Full-width banner image (uploaded) with gradient overlay 
 - Conference name (large, bold)
 - Speaker name + AI-generated bio
 - Date, time, timezone, format (Online / Livestream) for each day of the conference(if multiple days)
@@ -128,7 +131,7 @@ This is the public-facing page that gets shared everywhere.
 - Free resource section (if church uploaded one): "Get the Conference Guide — Free" (auto-sent after subscribing)
 - Church social links - just icons (Instagram, Facebook, YouTube, X and many more if available,Support whatsapp channel updates)
 - Related conferences from the same church (past or upcoming)
-- Show **Powered By Bent Planet**
+- Show ** Powered By Bent Planet + {Year}**
 
 
 **OG Preview (when link is pasted in WhatsApp, Instagram bio, Twitter, etc.):**
@@ -229,7 +232,7 @@ A public page for each church — acts as their Bent Planet home.
 
 ## ROLE 3 — ATTENDEE (Subscriber)
 
-Attendees don't have accounts. They just subscribe and receive emails.
+Attendees don't have accounts. They just subscribe and receive emails/ alerts.
 
 **Subscribe Flow:**
 - Attendee lands on public conference page
@@ -243,17 +246,19 @@ only for them to be recieving email and i think we should provide turn on option
 
 **What they receive after subscribing:**
 - Welcome email (immediate)
-- Conference reminder (once created, 7 days,24hrs before the start date)
+- Conference reminder (once created, 7 days, 24hrs before the start date)
 - It's Live email (when stream starts)
 - Post-conference email with replay + notes
 - New conference announcements (every time the church publishes something new)
 - One-click unsubscribe link in every email footer
 
 **They never need to log in, create an account, or visit the site again** — everything comes to their inbox.
+- At every email invite for subscribers directl/via the conference page Encourage the users to view the main website in case they have programmes they want to host and From there they can **Request for Access** from the super admin and right from there they got registered as a church (Only the official events manager per church can register i.e 1 church 1 account.)
 
 ---
 
-## DATABASE SCHEMA
+## DATABASE SCHEMA **create new queries at will to suit the well and smooth running of the database**
+
 
 ```sql
 -- Churches

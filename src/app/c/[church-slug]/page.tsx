@@ -51,7 +51,6 @@ export default async function ChurchPublicProfilePage({
   // Find upcoming vs past conferences
   const todayStr = new Date().toISOString().split("T")[0];
   const upcomingConferences = typedConferences.filter((c) => !c.conference_date || c.conference_date >= todayStr);
-  const pastConferences = typedConferences.filter((c) => c.conference_date && c.conference_date < todayStr);
 
   const featuredConference = upcomingConferences[0] || typedConferences[0];
 

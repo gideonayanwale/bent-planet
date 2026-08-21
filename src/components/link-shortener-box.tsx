@@ -1,4 +1,4 @@
-"use "client"";
+"use client";
 
 import { useState } from "react";
 import { LinkIcon, SparklesIcon, CheckCircle2Icon, AlertCircleIcon } from "lucide-react";
@@ -26,7 +26,7 @@ export function LinkShortenerBox({
   initialCustomAlias,
 }: LinkShortenerBoxProps) {
   const defaultLongUrl = `${baseUrl}/c/${churchSlug}/${conferenceSlug}`;
-  
+
   const [customAlias, setCustomAlias] = useState(initialCustomAlias || "");
   const [shortUrl, setShortUrl] = useState(initialShortUrl || "");
   const [isSavingAlias, setIsSavingAlias] = useState(false);
@@ -95,11 +95,10 @@ export function LinkShortenerBox({
       <CardContent className="space-y-6">
         {message && (
           <div
-            className={`flex items-center gap-2 p-3 rounded-xl text-xs font-medium ${
-              message.type === "success"
+            className={`flex items-center gap-2 p-3 rounded-xl text-xs font-medium ${message.type === "success"
                 ? "bg-emerald-50 text-emerald-800 border border-emerald-200"
                 : "bg-red-50 text-red-800 border border-red-200"
-            }`}
+              }`}
           >
             {message.type === "success" ? (
               <CheckCircle2Icon className="h-4 w-4 text-emerald-600 shrink-0" />

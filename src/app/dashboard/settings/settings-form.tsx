@@ -10,7 +10,6 @@ import {
   SaveIcon,
   CheckCircle2Icon,
   AlertCircleIcon,
-  UploadIcon,
   GlobeIcon,
 } from "lucide-react";
 
