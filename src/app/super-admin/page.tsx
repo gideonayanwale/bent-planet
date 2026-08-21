@@ -3,8 +3,6 @@ import {
   Building2Icon,
   UsersIcon,
   CalendarIcon,
-  MailIcon,
-  SendIcon,
   SparklesIcon,
   InboxIcon,
   MessageSquareIcon,
@@ -23,7 +21,6 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { createAdminClient } from "@/lib/supabase/admin";
 import { AnalyticsChart } from "@/components/super-admin/analytics-chart";
 import { AccessRequestsTable } from "@/components/super-admin/access-requests-table";
-import { sendSystemAnnouncementAction } from "./actions";
 import type { Database } from "@/types/database";
 
 export default async function SuperAdminPage() {

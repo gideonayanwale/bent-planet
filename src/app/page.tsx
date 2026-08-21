@@ -1,19 +1,11 @@
 import Link from "next/link";
 import {
   SparklesIcon,
-  ShieldCheckIcon,
-  ZapIcon,
   UsersIcon,
   MailIcon,
-  ArrowRightIcon,
   CheckCircle2Icon,
-  PlayIcon,
-  RadioIcon,
   HardDriveIcon,
   CpuIcon,
-  LockIcon,
-  ChevronRightIcon,
-  Building2Icon,
   BookOpenIcon,
 } from "lucide-react";
 

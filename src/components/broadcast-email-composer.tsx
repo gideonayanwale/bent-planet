@@ -41,7 +41,7 @@ const PREBUILT_EMAIL_TEMPLATES: EmailTemplate[] = [
     category: "Reminders",
     subject: (church) => `🔥 Tomorrow! Our live conference goes live — ${church}`,
     body: (church) =>
-      `Greetings in Christ!\n\nThis is a quick reminder that our special conference starts tomorrow! We encourage you to prepare your heart and tune in on time.\n\nClick the link below to access the livestream and download the conference guide.`,
+      `Greetings in Christ from ${church}!\n\nThis is a quick reminder that our special conference starts tomorrow! We encourage you to prepare your heart and tune in on time.\n\nClick the link below to access the livestream and download the conference guide.`,
     ctaText: "Access Livestream & Guide",
     ctaUrlPlaceholder: "https://bentplanet.com/c/...",
   },
@@ -50,7 +50,7 @@ const PREBUILT_EMAIL_TEMPLATES: EmailTemplate[] = [
     category: "Live Alerts",
     subject: (church) => `🎙️ We are LIVE right now — Join ${church}!`,
     body: (church) =>
-      `The broadcast has started! Worship is underway and the Word is about to be ministered.\n\nClick below to jump straight into the livestream now!`,
+      `The broadcast from ${church} has started! Worship is underway and the Word is about to be ministered.\n\nClick below to jump straight into the livestream now!`,
     ctaText: "Watch Live Stream",
     ctaUrlPlaceholder: "https://youtube.com/watch?v=...",
   },
@@ -59,7 +59,7 @@ const PREBUILT_EMAIL_TEMPLATES: EmailTemplate[] = [
     category: "Follow-up",
     subject: (church) => `🙏 Thank you for joining! Watch the replay & notes — ${church}`,
     body: (church) =>
-      `What a powerful encounter we had in God's presence!\n\nIf you missed any session or want to revisit the revelations shared, the full on-demand replay and free conference notes are now available.`,
+      `What a powerful encounter we had in God's presence at ${church}!\n\nIf you missed any session or want to revisit the revelations shared, the full on-demand replay and free conference notes are now available.`,
     ctaText: "Watch Replay & Download Notes",
     ctaUrlPlaceholder: "https://bentplanet.com/c/...",
   },
@@ -68,7 +68,7 @@ const PREBUILT_EMAIL_TEMPLATES: EmailTemplate[] = [
     category: "Weekly",
     subject: (church) => `✨ Join us this week for fellowship at ${church}`,
     body: (church) =>
-      `Beloved in Christ,\n\nWe welcome you to worship with us this week as we grow together in God's word and fellowship. We are believing for your continued spiritual growth and victory in every area of life.`,
+      `Beloved in Christ,\n\nWe welcome you to worship with us this week at ${church} as we grow together in God's word and fellowship. We are believing for your continued spiritual growth and victory in every area of life.`,
     ctaText: "Join Online Service",
     ctaUrlPlaceholder: "https://bentplanet.com/c/...",
   },

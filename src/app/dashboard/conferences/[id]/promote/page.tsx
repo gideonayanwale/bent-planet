@@ -7,6 +7,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { CopyButton } from "@/components/copy-button";
 import { Input } from "@/components/ui/input";
 import { PosterGenerator } from "@/components/poster-generator";
+import { LinkShortenerBox } from "@/components/link-shortener-box";
 
 export default async function PromoteConferencePage({
   params,

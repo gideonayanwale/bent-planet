@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CheckIcon, XIcon, Building2Icon } from "lucide-react";
+import { CheckIcon, XIcon } from "lucide-react";
 import { approveAccessRequestAction, rejectAccessRequestAction } from "@/app/super-admin/actions";
 import type { Database } from "@/types/database";
 

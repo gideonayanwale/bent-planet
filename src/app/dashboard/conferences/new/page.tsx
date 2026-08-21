@@ -4,15 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   SparklesIcon,
-  UploadIcon,
-  CalendarIcon,
-  VideoIcon,
   CheckCircle2Icon,
-  ArrowRightIcon,
-  LayersIcon,
-  FileTextIcon,
-  Share2Icon,
-  ClockIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -20,7 +12,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import { saveConferenceAction } from "./actions";
 
 const EVENT_TYPES = [
@@ -353,6 +344,18 @@ export default function NewConferencePage() {
                     onChange={(e) => setStreamUrl(e.target.value)}
                     className="text-xs"
                   />
+                  <div className="flex items-center gap-2 pt-1">
+                    <input
+                      type="checkbox"
+                      id="enableReplay"
+                      checked={enableReplay}
+                      onChange={(e) => setEnableReplay(e.target.checked)}
+                      className="rounded border-slate-300 text-indigo-600 focus:ring-indigo-500 h-3.5 w-3.5"
+                    />
+                    <Label htmlFor="enableReplay" className="text-[11px] text-slate-600 font-medium">
+                      Enable on-demand replay player after conference ends
+                    </Label>
+                  </div>
                 </div>
 
                 <div className="space-y-1.5">

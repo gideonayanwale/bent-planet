@@ -6,7 +6,6 @@ import {
   CheckCircle2Icon,
   XIcon,
   Building2Icon,
-  ArrowRightIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";

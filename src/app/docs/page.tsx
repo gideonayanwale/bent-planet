@@ -3,10 +3,8 @@ import { BrandLogo } from "@/components/brand-logo";
 import {
   SparklesIcon,
   CalendarIcon,
-  UsersIcon,
   MailIcon,
   Share2Icon,
-  ArrowRightIcon,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
