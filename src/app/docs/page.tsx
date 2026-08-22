@@ -8,6 +8,7 @@ import {
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { PublicFooter } from "@/components/public-footer";
 
 export default function DocsPage() {
   return (
@@ -97,9 +98,7 @@ export default function DocsPage() {
         </div>
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500">
-        <p>© {new Date().getFullYear()} Bent Planet Inc. All rights reserved.</p>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

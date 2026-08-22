@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
+import { PublicFooter } from "@/components/public-footer";
 
 export default function PrivacyPolicyPage() {
   return (
@@ -60,9 +61,7 @@ export default function PrivacyPolicyPage() {
         </div>
       </main>
 
-      <footer className="border-t border-slate-200 bg-white py-8 text-center text-xs text-slate-500">
-        <p>© {new Date().getFullYear()} Bent Planet Inc. All rights reserved.</p>
-      </footer>
+      <PublicFooter />
     </div>
   );
 }

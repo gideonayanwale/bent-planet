@@ -11,7 +11,10 @@ export interface BulkImportItem {
   phone?: string;
 }
 
-export async function bulkImportSubscribersAction(items: BulkImportItem[]) {
+export async function bulkImportSubscribersAction(
+  items: BulkImportItem[],
+  overwriteConflicts: boolean = false
+) {
   try {
     const user = await requireChurchUser();
     const adminClient = createAdminClient();
@@ -24,6 +27,17 @@ export async function bulkImportSubscribersAction(items: BulkImportItem[]) {
     if (!items || items.length === 0) {
       return { error: "No subscriber records provided." };
     }
+
+    // Fetch existing subscribers for deduplication & reconciliation
+    const { data: existingSubscribers } = await adminClient
+      .from("subscribers")
+      .select("email, phone, full_name")
+      .eq("church_id", church.id);
+
+    const existingMap = new Map(existingSubscribers?.map((s) => [s.email.toLowerCase(), s]) || []);
+
+    let newCount = 0;
+    let mergedCount = 0;
 
     // Deduplicate in payload first
     const emailMap = new Map<string, BulkImportItem>();
@@ -46,13 +60,28 @@ export async function bulkImportSubscribersAction(items: BulkImportItem[]) {
       }
     }
 
-    const recordsToInsert = Array.from(emailMap.values()).map((item) => ({
-      church_id: church.id,
-      full_name: item.fullName,
-      email: item.email,
-      phone: item.phone || null,
-      unsubscribed: false,
-    }));
+    const recordsToInsert = Array.from(emailMap.values()).map((item) => {
+      const existing = existingMap.get(item.email);
+      if (existing) {
+        mergedCount++;
+        return {
+          church_id: church.id,
+          full_name: overwriteConflicts ? item.fullName : existing.full_name || item.fullName,
+          email: item.email,
+          phone: overwriteConflicts ? (item.phone || existing.phone) : (existing.phone || item.phone || null),
+          unsubscribed: false,
+        };
+      } else {
+        newCount++;
+        return {
+          church_id: church.id,
+          full_name: item.fullName,
+          email: item.email,
+          phone: item.phone || null,
+          unsubscribed: false,
+        };
+      }
+    });
 
     // Upsert on conflict (church_id, email)
     const { error: upsertError } = await adminClient
@@ -67,13 +96,14 @@ export async function bulkImportSubscribersAction(items: BulkImportItem[]) {
     revalidatePath("/dashboard/subscribers");
     revalidatePath("/dashboard");
 
-    return { success: true, count: recordsToInsert.length };
+    return { success: true, count: recordsToInsert.length, inserted: newCount, merged: mergedCount, failed: 0 };
   } catch (error: unknown) {
     const err = error as Error;
     console.error("bulkImportSubscribersAction error:", err);
     return { error: err.message || "Failed to import subscribers." };
   }
 }
+
 
 export async function deleteSubscriberAction(subscriberId: string) {
   try {
