@@ -39,23 +39,23 @@ export default async function ConferencesPage() {
     <div className="space-y-8 pb-12">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-3xl font-bold font-heading text-slate-900">Conferences</h1>
-          <p className="text-slate-600 mt-1">
+          <h1 className="text-3xl font-bold font-heading text-foreground">Conferences</h1>
+          <p className="text-muted-foreground mt-1 text-sm">
             Create, edit, and manage all your live ministry events and registration links.
           </p>
         </div>
-        <Button asChild size="lg" className="shadow-md hover:shadow-lg transition-all bg-indigo-600 hover:bg-indigo-700 text-white gap-2">
+        <Button asChild size="default" className="shadow-md hover:shadow-lg transition-all bg-indigo-600 hover:bg-indigo-700 text-white gap-2 font-semibold">
           <Link href="/dashboard/conferences/new">
-            <PlusIcon className="w-5 h-5" />
+            <PlusIcon className="w-4 h-4" />
             Create Conference
           </Link>
         </Button>
       </div>
 
-      <Card className="border-slate-200/70 shadow-sm bg-white">
+      <Card className="border-border shadow-xs bg-card">
         <CardHeader className="pb-4">
-          <CardTitle>All Conferences</CardTitle>
-          <CardDescription>
+          <CardTitle className="text-card-foreground">All Conferences</CardTitle>
+          <CardDescription className="text-muted-foreground">
             Manage live public pages, update event details, view registrations, and delete past conferences.
           </CardDescription>
         </CardHeader>

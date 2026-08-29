@@ -9,7 +9,7 @@ export default async function SuperAdminLayout({
   const user = await requireSuperAdminUser();
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background text-foreground transition-colors">
       <DashboardNav adminEmail={user.email} isSuperAdmin={true} />
       <main className="container py-8 sm:py-10 px-4 sm:px-8 max-w-7xl mx-auto">{children}</main>
     </div>

@@ -15,8 +15,8 @@ export default async function ChurchSettingsPage() {
   return (
     <div className="space-y-8 max-w-4xl mx-auto pb-16">
       <div>
-        <h1 className="text-3xl font-bold font-heading text-slate-900">Workspace Settings</h1>
-        <p className="text-slate-600 mt-1">
+        <h1 className="text-3xl font-bold font-heading text-foreground">Workspace Settings</h1>
+        <p className="text-muted-foreground mt-1 text-sm">
           Customize your church branding (logo & cover banner), mission statement, and social channels.
         </p>
       </div>

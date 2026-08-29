@@ -13,7 +13,7 @@ export default async function DashboardLayout({
   const church = await getChurchByAdminEmail(adminClient, user.email!);
 
   return (
-    <div className="min-h-screen bg-slate-50">
+    <div className="min-h-screen bg-background text-foreground transition-colors">
       <DashboardNav
         churchName={church?.name}
         churchLogo={church?.logo_url}

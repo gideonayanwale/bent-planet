@@ -86,15 +86,15 @@ export function SettingsForm({ church }: SettingsFormProps) {
       )}
 
       {/* Visual Branding: Logo & Banner */}
-      <Card className="border-slate-200/80 shadow-xs bg-white">
+      <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80 dark:text-indigo-400">
               <ImageIcon className="h-5 w-5" />
             </div>
             <div>
-              <CardTitle className="text-lg">Visual Branding & Assets</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle className="text-lg text-card-foreground">Visual Branding & Assets</CardTitle>
+              <CardDescription className="text-xs text-muted-foreground">
                 Upload your official church logo and homepage cover banner.
               </CardDescription>
             </div>
@@ -103,17 +103,17 @@ export function SettingsForm({ church }: SettingsFormProps) {
         <CardContent className="space-y-6">
           <div className="grid md:grid-cols-2 gap-6 items-start">
             {/* Logo Upload */}
-            <div className="space-y-3 p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-              <Label className="text-xs font-bold text-slate-700 block">Church Logo</Label>
+            <div className="space-y-3 p-4 rounded-2xl border border-border bg-secondary/30">
+              <Label className="text-xs font-bold text-foreground block">Church Logo</Label>
               <div className="flex items-center gap-4">
                 {logoPreview ? (
                   <img
                     src={logoPreview}
                     alt="Logo preview"
-                    className="w-20 h-20 rounded-full object-cover border-2 border-indigo-200 bg-white shadow-xs shrink-0"
+                    className="w-20 h-20 rounded-full object-cover border-2 border-indigo-200 dark:border-indigo-800 bg-background shadow-xs shrink-0"
                   />
                 ) : (
-                  <div className="w-20 h-20 rounded-full bg-slate-200 border-2 border-dashed border-slate-300 flex items-center justify-center text-xs text-slate-500 font-bold shrink-0">
+                  <div className="w-20 h-20 rounded-full bg-muted border-2 border-dashed border-border flex items-center justify-center text-xs text-muted-foreground font-bold shrink-0">
                     {church.name ? church.name.charAt(0) : "Logo"}
                   </div>
                 )}
@@ -124,25 +124,25 @@ export function SettingsForm({ church }: SettingsFormProps) {
                     type="file"
                     accept="image/*"
                     onChange={handleLogoChange}
-                    className="text-xs bg-white"
+                    className="text-xs bg-background"
                   />
-                  <p className="text-[11px] text-slate-500">Recommended: Square PNG/JPEG, min 400×400px</p>
+                  <p className="text-[11px] text-muted-foreground">Recommended: Square PNG/JPEG, min 400×400px</p>
                 </div>
               </div>
             </div>
 
             {/* Banner Upload */}
-            <div className="space-y-3 p-4 rounded-2xl border border-slate-200 bg-slate-50/50">
-              <Label className="text-xs font-bold text-slate-700 block">Homepage Cover Banner</Label>
+            <div className="space-y-3 p-4 rounded-2xl border border-border bg-secondary/30">
+              <Label className="text-xs font-bold text-foreground block">Homepage Cover Banner</Label>
               <div className="space-y-2">
                 {bannerPreview ? (
                   <img
                     src={bannerPreview}
                     alt="Banner preview"
-                    className="w-full h-24 rounded-xl object-cover border border-slate-200 shadow-xs"
+                    className="w-full h-24 rounded-xl object-cover border border-border shadow-xs"
                   />
                 ) : (
-                  <div className="w-full h-24 rounded-xl bg-slate-200 border-2 border-dashed border-slate-300 flex items-center justify-center text-xs text-slate-500">
+                  <div className="w-full h-24 rounded-xl bg-muted border-2 border-dashed border-border flex items-center justify-center text-xs text-muted-foreground">
                     No banner set (default gradient will be used)
                   </div>
                 )}
@@ -152,7 +152,7 @@ export function SettingsForm({ church }: SettingsFormProps) {
                   type="file"
                   accept="image/*"
                   onChange={handleBannerChange}
-                  className="text-xs bg-white"
+                  className="text-xs bg-background"
                 />
               </div>
             </div>
@@ -161,15 +161,15 @@ export function SettingsForm({ church }: SettingsFormProps) {
       </Card>
 
       {/* Church Profile */}
-      <Card className="border-slate-200/80 shadow-xs bg-white">
+      <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80 dark:text-indigo-400">
               <Building2Icon className="h-5 w-5" />
             </div>
             <div>
-              <CardTitle className="text-lg">Church Information</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle className="text-lg text-card-foreground">Church Information</CardTitle>
+              <CardDescription className="text-xs text-muted-foreground">
                 Public details displayed on your Bent Planet ministry homepage.
               </CardDescription>
             </div>
@@ -188,9 +188,9 @@ export function SettingsForm({ church }: SettingsFormProps) {
                   id="slug"
                   defaultValue={`bentplanet.com/c/${church.slug}`}
                   disabled
-                  className="bg-slate-50 font-mono text-xs text-slate-600"
+                  className="bg-muted font-mono text-xs text-muted-foreground"
                 />
-                <Button asChild variant="outline" size="sm" className="shrink-0 text-xs">
+                <Button asChild variant="outline" size="sm" className="shrink-0 text-xs font-semibold">
                   <a href={`/c/${church.slug}`} target="_blank" rel="noopener noreferrer">
                     <GlobeIcon className="h-3.5 w-3.5 mr-1" />
                     Visit
@@ -226,15 +226,15 @@ export function SettingsForm({ church }: SettingsFormProps) {
       </Card>
 
       {/* Social Links */}
-      <Card className="border-slate-200/80 shadow-xs bg-white">
+      <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80 dark:text-indigo-400">
               <Share2Icon className="h-5 w-5" />
             </div>
             <div>
-              <CardTitle className="text-lg">Social & Community Links</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle className="text-lg text-card-foreground">Social & Community Links</CardTitle>
+              <CardDescription className="text-xs text-muted-foreground">
                 Buttons shown on your church homepage and conference pages.
               </CardDescription>
             </div>
@@ -300,21 +300,21 @@ export function SettingsForm({ church }: SettingsFormProps) {
               defaultValue={church.whatsapp_number || ""}
               placeholder="+2348012345678"
             />
-            <p className="text-[11px] text-slate-400">Used for direct Click-to-Chat event registration on public pages.</p>
+            <p className="text-[11px] text-muted-foreground">Used for direct Click-to-Chat event registration on public pages.</p>
           </div>
         </CardContent>
       </Card>
 
       {/* Admin Details */}
-      <Card className="border-slate-200/80 shadow-xs bg-white">
+      <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
-            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600">
+            <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80 dark:text-indigo-400">
               <UserCheckIcon className="h-5 w-5" />
             </div>
             <div>
-              <CardTitle className="text-lg">Admin Account Information</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle className="text-lg text-card-foreground">Admin Account Information</CardTitle>
+              <CardDescription className="text-xs text-muted-foreground">
                 Internal administrator contact details.
               </CardDescription>
             </div>
@@ -327,7 +327,7 @@ export function SettingsForm({ church }: SettingsFormProps) {
           </div>
           <div className="space-y-2">
             <Label htmlFor="admin_email">Admin Email (Login Identity)</Label>
-            <Input id="admin_email" defaultValue={church.admin_email} disabled className="bg-slate-50 text-slate-500" />
+            <Input id="admin_email" defaultValue={church.admin_email} disabled className="bg-muted text-muted-foreground" />
           </div>
         </CardContent>
       </Card>

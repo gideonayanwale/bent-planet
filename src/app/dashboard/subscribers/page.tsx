@@ -34,18 +34,18 @@ export default async function SubscribersPage() {
     <div className="space-y-8 max-w-6xl mx-auto pb-16">
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
         <div>
-          <h1 className="text-3xl font-bold font-heading text-slate-900">Subscribers & Leads</h1>
-          <p className="text-slate-600 mt-1">Manage your ministry audience, export email lists, and add offline registrations.</p>
+          <h1 className="text-3xl font-bold font-heading text-foreground">Subscribers & Leads</h1>
+          <p className="text-muted-foreground mt-1 text-sm">Manage your ministry audience, export email lists, and add offline registrations.</p>
         </div>
-        <Badge variant="outline" className="text-sm px-4 py-1.5 font-semibold bg-white shadow-sm border-slate-200">
+        <Badge variant="outline" className="text-sm px-4 py-1.5 font-semibold bg-card shadow-xs border-border">
           Total Subscribers: {subscribers?.length || 0}
         </Badge>
       </div>
 
-      <Card className="border-slate-200/80 bg-white shadow-sm">
+      <Card className="border-border bg-card shadow-xs">
         <CardHeader>
-          <CardTitle>Subscriber Roster</CardTitle>
-          <CardDescription>All registered attendees who receive your conference updates and automated emails.</CardDescription>
+          <CardTitle className="text-card-foreground">Subscriber Roster</CardTitle>
+          <CardDescription className="text-muted-foreground">All registered attendees who receive your conference updates and automated emails.</CardDescription>
         </CardHeader>
         <CardContent>
           <SubscriberTableClient

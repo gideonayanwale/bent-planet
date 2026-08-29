@@ -43,46 +43,46 @@ export default async function EmailsPage() {
   return (
     <div className="space-y-8 max-w-6xl mx-auto pb-16">
       <div>
-        <h1 className="text-3xl font-bold font-heading text-slate-900">Email Center & Communication</h1>
-        <p className="text-slate-600 mt-1">Send broadcast announcements to your subscribers and view delivery analytics.</p>
+        <h1 className="text-3xl font-bold font-heading text-foreground">Email Center & Communication</h1>
+        <p className="text-muted-foreground mt-1 text-sm">Send broadcast announcements to your subscribers and view delivery analytics.</p>
       </div>
 
       {/* Metrics Row */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-        <Card className="border-indigo-100 bg-gradient-to-br from-indigo-50/50 to-white shadow-sm">
+        <Card className="border-border bg-card shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-xs font-semibold text-indigo-900 uppercase tracking-wider">Total Emails Sent</CardTitle>
+            <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Emails Sent</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold font-heading text-indigo-950">{emails.length}</p>
+            <p className="text-3xl font-bold font-heading text-foreground">{emails.length}</p>
           </CardContent>
         </Card>
 
-        <Card className="border-emerald-100 bg-gradient-to-br from-emerald-50/50 to-white shadow-sm">
+        <Card className="border-border bg-card shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-xs font-semibold text-emerald-900 uppercase tracking-wider">Subscriber List Size</CardTitle>
+            <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Subscriber List Size</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold font-heading text-emerald-950">{subscriberCount}</p>
+            <p className="text-3xl font-bold font-heading text-foreground">{subscriberCount}</p>
           </CardContent>
         </Card>
 
-        <Card className="border-purple-100 bg-gradient-to-br from-purple-50/50 to-white shadow-sm">
+        <Card className="border-border bg-card shadow-xs">
           <CardHeader className="pb-2">
-            <CardTitle className="text-xs font-semibold text-purple-900 uppercase tracking-wider">Avg Open Rate</CardTitle>
+            <CardTitle className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Avg Open Rate</CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-3xl font-bold font-heading text-purple-950">{openRate}%</p>
-            <p className="text-xs text-purple-700 mt-1 font-medium">Welcome & Announcement Sequences</p>
+            <p className="text-3xl font-bold font-heading text-foreground">{openRate}%</p>
+            <p className="text-xs text-primary mt-1 font-medium">Welcome & Announcement Sequences</p>
           </CardContent>
         </Card>
       </div>
 
       {/* Broadcast Composer */}
-      <Card className="border-slate-200/80 bg-white shadow-sm">
+      <Card className="border-border bg-card shadow-xs">
         <CardHeader>
-          <CardTitle>Send Email Broadcast</CardTitle>
-          <CardDescription>Compose and dispatch an instant announcement email to all your church subscribers.</CardDescription>
+          <CardTitle className="text-card-foreground">Send Email Broadcast</CardTitle>
+          <CardDescription className="text-muted-foreground">Compose and dispatch an instant announcement email to all your church subscribers.</CardDescription>
         </CardHeader>
         <CardContent>
           <BroadcastEmailComposer
@@ -93,15 +93,15 @@ export default async function EmailsPage() {
       </Card>
 
       {/* Email Delivery Log Table */}
-      <Card className="border-slate-200/80 bg-white shadow-sm">
+      <Card className="border-border bg-card shadow-xs">
         <CardHeader>
-          <CardTitle>Email Delivery Log</CardTitle>
-          <CardDescription>Comprehensive history of all welcome emails, reminders, and broadcasts sent from your workspace.</CardDescription>
+          <CardTitle className="text-card-foreground">Email Delivery Log</CardTitle>
+          <CardDescription className="text-muted-foreground">Comprehensive history of all welcome emails, reminders, and broadcasts sent from your workspace.</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="rounded-xl border border-slate-200 overflow-hidden">
+          <div className="rounded-xl border border-border overflow-hidden">
             <Table>
-              <TableHeader className="bg-slate-50">
+              <TableHeader className="bg-secondary/50">
                 <TableRow>
                   <TableHead>Recipient</TableHead>
                   <TableHead>Subject</TableHead>
@@ -113,31 +113,31 @@ export default async function EmailsPage() {
               <TableBody>
                 {emails.length > 0 ? (
                   emails.map((emailLog) => (
-                    <TableRow key={emailLog.id} className="hover:bg-slate-50/50">
+                    <TableRow key={emailLog.id} className="hover:bg-secondary/40">
                       <TableCell>
-                        <p className="font-semibold text-slate-900 text-sm">{emailLog.subscribers?.full_name || "Subscriber"}</p>
-                        <p className="text-xs text-slate-500 font-mono">{emailLog.subscribers?.email || "—"}</p>
+                        <p className="font-semibold text-foreground text-sm">{emailLog.subscribers?.full_name || "Subscriber"}</p>
+                        <p className="text-xs text-muted-foreground font-mono">{emailLog.subscribers?.email || "—"}</p>
                       </TableCell>
-                      <TableCell className="max-w-[280px] truncate text-slate-800 text-sm font-medium">
+                      <TableCell className="max-w-[280px] truncate text-foreground text-sm font-medium">
                         {emailLog.subject || "No Subject"}
                       </TableCell>
                       <TableCell>
-                        <Badge variant="outline" className="capitalize text-xs font-normal bg-slate-50 text-slate-700">
+                        <Badge variant="outline" className="capitalize text-xs font-normal bg-secondary text-foreground">
                           {emailLog.email_type.replace(/_/g, " ")}
                         </Badge>
                       </TableCell>
                       <TableCell>
                         {emailLog.opened ? (
-                          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 font-normal text-xs">
+                          <Badge className="bg-emerald-100 text-emerald-800 border-emerald-200 dark:bg-emerald-950 dark:text-emerald-300 dark:border-emerald-800 font-normal text-xs">
                             Opened
                           </Badge>
                         ) : (
-                          <Badge variant="secondary" className="font-normal text-xs bg-slate-100 text-slate-600">
+                          <Badge variant="secondary" className="font-normal text-xs text-muted-foreground">
                             Delivered
                           </Badge>
                         )}
                       </TableCell>
-                      <TableCell className="text-slate-500 text-xs">
+                      <TableCell className="text-muted-foreground text-xs">
                         {emailLog.sent_at
                           ? new Date(emailLog.sent_at).toLocaleDateString("en-US", {
                               month: "short",
@@ -152,7 +152,7 @@ export default async function EmailsPage() {
                   ))
                 ) : (
                   <TableRow>
-                    <TableCell colSpan={5} className="text-center py-12 text-slate-500">
+                    <TableCell colSpan={5} className="text-center py-12 text-muted-foreground">
                       No emails logged yet. Automated welcome emails will log here when subscribers sign up!
                     </TableCell>
                   </TableRow>
