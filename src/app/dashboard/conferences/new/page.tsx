@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { TemplatePicker } from "@/components/template-picker";
 import { saveConferenceAction } from "./actions";
 
 const EVENT_TYPES = [
@@ -358,20 +359,11 @@ export default function NewConferencePage() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5">
-                  <Label htmlFor="templateId" className="text-xs font-bold">Landing Page Template Theme</Label>
-                  <select
-                    id="templateId"
+                <div className="space-y-1.5 md:col-span-2">
+                  <TemplatePicker
                     value={templateId}
-                    onChange={(e) => setTemplateId(e.target.value)}
-                    className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
-                  >
-                    {TEMPLATE_OPTIONS.map((tmpl) => (
-                      <option key={tmpl.id} value={tmpl.id}>
-                        {tmpl.name} ({tmpl.desc})
-                      </option>
-                    ))}
-                  </select>
+                    onChange={setTemplateId}
+                  />
                 </div>
               </div>
 

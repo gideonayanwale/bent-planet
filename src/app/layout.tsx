@@ -25,9 +25,9 @@ export default function RootLayout({
       <body className="min-h-screen bg-background font-body text-foreground antialiased selection:bg-primary/30 selection:text-primary">
         <ThemeProvider
           attribute="class"
-          defaultTheme="system"
-          enableSystem
-          disableTransitionOnChange
+          defaultTheme="dark"
+          enableSystem={false}
+          disableTransitionOnChange={false}
         >
           {children}
           <Analytics />

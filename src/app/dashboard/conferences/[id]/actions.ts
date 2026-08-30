@@ -44,6 +44,10 @@ export async function updateConferenceAction(id: string, formData: FormData) {
       return { error: "Church not found." };
     }
 
+    if (church.status === "suspended") {
+      return { error: "This workspace has been suspended. Please contact operations support." };
+    }
+
     const { data: existingConf } = await adminClient
       .from("conferences")
       .select("*")

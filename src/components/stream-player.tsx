@@ -64,27 +64,31 @@ export function StreamPlayer({
     return () => clearInterval(timer);
   }, [conferenceDate, conferenceTime]);
 
-  const getEmbedUrl = (url?: string | null) => {
+  const [showEmbedOverride, setShowEmbedOverride] = useState(false);
+
+  const getEmbedUrl = (url?: string | null, autoplay = true) => {
     if (!url) return null;
 
-    // YouTube
+    // YouTube (handles normal video, live streams, scheduled premieres, shorts)
     const ytMatch = url.match(
-      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
+      /(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?|live|premiere)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/\s]{11})/
     );
     if (ytMatch && ytMatch[1]) {
-      return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=1`;
+      const ap = autoplay ? "1" : "0";
+      return `https://www.youtube.com/embed/${ytMatch[1]}?autoplay=${ap}&rel=0&modestbranding=1`;
     }
 
     // Vimeo
     const vimeoMatch = url.match(/vimeo\.com\/(?:.*\/)?([0-9]+)/);
     if (vimeoMatch && vimeoMatch[1]) {
-      return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=1`;
+      const ap = autoplay ? "1" : "0";
+      return `https://player.vimeo.com/video/${vimeoMatch[1]}?autoplay=${ap}`;
     }
 
     return url;
   };
 
-  const embedUrl = getEmbedUrl(streamUrl);
+  const embedUrl = getEmbedUrl(streamUrl, isLive);
 
   return (
     <div className="w-full overflow-hidden rounded-2xl border border-slate-800 bg-slate-950 shadow-2xl">
@@ -109,16 +113,28 @@ export function StreamPlayer({
           )}
         </div>
 
-        {conferenceDate && (
-          <div className="text-xs text-slate-400">
-            {conferenceDate} {conferenceTime ? `at ${conferenceTime}` : ""}
-          </div>
-        )}
+        <div className="flex items-center gap-3">
+          {!isLive && !isEnded && embedUrl && (
+            <button
+              type="button"
+              onClick={() => setShowEmbedOverride((prev) => !prev)}
+              className="text-xs font-semibold text-indigo-400 hover:text-indigo-300 underline transition-colors"
+            >
+              {showEmbedOverride ? "Show Countdown" : "Watch Premiere Waiting Room"}
+            </button>
+          )}
+
+          {conferenceDate && (
+            <div className="text-xs text-slate-400">
+              {conferenceDate} {conferenceTime ? `at ${conferenceTime}` : ""}
+            </div>
+          )}
+        </div>
       </div>
 
       {/* Main Video / Countdown Player Viewport */}
       <div className="relative aspect-video w-full bg-slate-950 flex items-center justify-center">
-        {isLive || isEnded || !timeLeft ? (
+        {isLive || isEnded || !timeLeft || showEmbedOverride ? (
           embedUrl ? (
             <iframe
               src={embedUrl}

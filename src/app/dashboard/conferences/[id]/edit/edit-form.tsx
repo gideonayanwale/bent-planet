@@ -20,6 +20,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { TemplatePicker } from "@/components/template-picker";
 import type { Database } from "@/types/database";
 import { updateConferenceAction, deleteConferenceAction } from "../actions";
 
@@ -418,23 +419,15 @@ export function EditConferenceForm({
                 />
               </div>
 
-              <div className="space-y-1.5">
-                <Label htmlFor="template_id" className="text-xs font-bold">Template Layout</Label>
-                <select
-                  id="template_id"
-                  name="template_id"
-                  value={formData.templateId}
-                  onChange={(e) => setFormData({ ...formData, templateId: e.target.value })}
-                  className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-xs"
-                >
-                  {TEMPLATE_OPTIONS.map((tmpl) => (
-                    <option key={tmpl.id} value={tmpl.id}>{tmpl.name}</option>
-                  ))}
-                </select>
+                <div className="space-y-1.5 md:col-span-2">
+                  <TemplatePicker
+                    value={formData.templateId}
+                    onChange={(val) => setFormData({ ...formData, templateId: val })}
+                  />
+                </div>
               </div>
-            </div>
 
-            {/* Banner Flyer Upload */}
+              {/* Banner Flyer Upload */}
             <div className="space-y-2 p-4 rounded-2xl border border-slate-200 bg-slate-50/60">
               <Label className="text-xs font-bold">Event Flyer Banner</Label>
               <div className="flex flex-col sm:flex-row gap-4 items-center">

@@ -24,12 +24,12 @@ const config = {
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
         primary: {
-          DEFAULT: "#0f172a",
-          foreground: "#f8fafc",
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
         },
         accent: {
-          DEFAULT: "#2563eb",
-          foreground: "#eff6ff",
+          DEFAULT: "hsl(var(--accent))",
+          foreground: "hsl(var(--accent-foreground))",
         },
         highlight: {
           DEFAULT: "#f59e0b",

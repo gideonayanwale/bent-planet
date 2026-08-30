@@ -53,6 +53,22 @@ export async function POST(req: Request) {
       );
     }
 
+    // Trigger super-admin notification
+    try {
+      await adminClient
+        .from("notifications")
+        .insert({
+          church_id: null,
+          type: "request",
+          title: "New Access Request",
+          message: `${adminName} has requested a workspace for "${churchName}" (${email.toLowerCase().trim()}).`,
+          action_url: "/super-admin",
+          read: false,
+        });
+    } catch (notifErr) {
+      console.error("Failed to create super-admin notification:", notifErr);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     const err = error as Error;

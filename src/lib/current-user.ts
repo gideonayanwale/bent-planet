@@ -36,8 +36,22 @@ export async function requireChurchUser() {
   const user = await requireAuthenticatedUser();
 
   if (isSuperAdmin(user.email)) {
+    const { cookies } = require("next/headers");
+    const cookieStore = cookies();
+    const impersonateEmail = cookieStore.get("impersonate_church_email")?.value;
+
+    if (impersonateEmail) {
+      return {
+        ...user,
+        email: impersonateEmail,
+        isImpersonating: true,
+      };
+    }
     redirect("/super-admin");
   }
 
-  return user;
+  return {
+    ...user,
+    isImpersonating: false,
+  };
 }

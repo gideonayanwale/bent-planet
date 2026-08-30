@@ -32,6 +32,18 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
     facebookUrl: getFormValue(formData, "facebookUrl"),
     youtubeUrl: getFormValue(formData, "youtubeUrl"),
     whatsappUrl: getFormValue(formData, "whatsappUrl"),
+    denomination: getFormValue(formData, "denomination") || null,
+    yearFounded: getFormValue(formData, "yearFounded") || null,
+    motto: getFormValue(formData, "motto") || null,
+    adminRole: getFormValue(formData, "adminRole") || null,
+    phoneNumber: getFormValue(formData, "phoneNumber") || null,
+    churchWebsiteUrl: getFormValue(formData, "churchWebsiteUrl"),
+    state: getFormValue(formData, "state") || null,
+    town: getFormValue(formData, "town") || null,
+    xUrl: getFormValue(formData, "xUrl"),
+    telegramUrl: getFormValue(formData, "telegramUrl"),
+    tiktokUrl: getFormValue(formData, "tiktokUrl"),
+    threadsUrl: getFormValue(formData, "threadsUrl"),
   });
 
   if (!parsed.success) {
@@ -100,6 +112,18 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
         facebook_url: parsed.data.facebookUrl,
         youtube_url: parsed.data.youtubeUrl,
         whatsapp_url: parsed.data.whatsappUrl,
+        denomination: parsed.data.denomination,
+        year_founded: parsed.data.yearFounded,
+        motto: parsed.data.motto,
+        admin_role: parsed.data.adminRole,
+        phone_number: parsed.data.phoneNumber,
+        church_website_url: parsed.data.churchWebsiteUrl,
+        state: parsed.data.state,
+        town: parsed.data.town,
+        x_url: parsed.data.xUrl,
+        telegram_url: parsed.data.telegramUrl,
+        tiktok_url: parsed.data.tiktokUrl,
+        threads_url: parsed.data.threadsUrl,
         logo_url: logoUrl,
         onboarding_token: null,
         onboarding_completed: true,
@@ -121,6 +145,22 @@ export async function completeOnboardingAction(formData: FormData): Promise<Acti
 
     if (updateInviteError) {
       throw new Error(updateInviteError.message);
+    }
+
+    // Trigger in-app notification for the newly onboarded church
+    try {
+      await adminClient
+        .from("notifications")
+        .insert({
+          church_id: church.id,
+          type: "announcement",
+          title: "Workspace Activated!",
+          message: `Welcome to Bent Planet! Your church workspace for "${parsed.data.churchName}" is now active. Get started by scheduling your first event.`,
+          action_url: "/dashboard/conferences/new",
+          read: false,
+        });
+    } catch (notifErr) {
+      console.error("Failed to create welcome notification for church:", notifErr);
     }
 
     revalidatePath("/super-admin");

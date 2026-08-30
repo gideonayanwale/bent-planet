@@ -16,6 +16,10 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Church not found." }, { status: 403 });
     }
 
+    if (church.status === "suspended") {
+      return NextResponse.json({ error: "This workspace has been suspended. Please contact operations support." }, { status: 403 });
+    }
+
     const { subject, bodyContent, ctaUrl, ctaText } = await req.json();
 
     if (!subject || !bodyContent) {
@@ -30,7 +34,33 @@ export async function POST(req: Request) {
       .eq("unsubscribed", false);
 
     if (fetchErr || !subscribers || subscribers.length === 0) {
-      return NextResponse.json({ error: "No subscribers available to send broadcast." }, { status: 400 });
+      return NextResponse.json({ error: "No active subscribers available to send broadcast." }, { status: 400 });
+    }
+
+    // Check monthly email limits
+    const startOfMonth = new Date();
+    startOfMonth.setDate(1);
+    startOfMonth.setHours(0, 0, 0, 0);
+
+    const { count: sentThisMonth } = await adminClient
+      .from("email_log")
+      .select("id", { count: "exact", head: true })
+      .eq("church_id", church.id)
+      .gte("sent_at", startOfMonth.toISOString());
+
+    const maxEmails = church.max_emails_limit ?? 5000;
+    const currentSent = sentThisMonth ?? 0;
+
+    if (currentSent >= maxEmails) {
+      return NextResponse.json({
+        error: `Monthly email limit reached. Your church has sent ${currentSent}/${maxEmails} emails this month. Contact support to upgrade your limits.`
+      }, { status: 429 });
+    }
+
+    if (currentSent + subscribers.length > maxEmails) {
+      return NextResponse.json({
+        error: `This broadcast exceeds your monthly limit. You have ${maxEmails - currentSent} remaining emails but this batch has ${subscribers.length} recipients.`
+      }, { status: 429 });
     }
 
     let sentCount = 0;

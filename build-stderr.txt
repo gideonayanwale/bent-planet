@@ -1,0 +1,1 @@
+ ⚠ Using edge runtime on a page currently disables static generation for that page

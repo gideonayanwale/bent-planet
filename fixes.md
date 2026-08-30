@@ -1,0 +1,2 @@
+allow the ui balance on the hompage for both white and dark themes making sure all components becomes more visible and tolerant to the ui color changes (ui/ux friendly)
+/request-access link on the /docs page should be the same for the one on the 4

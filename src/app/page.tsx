@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandLogo } from "@/components/brand-logo";
-import { RequestAccessModal } from "@/components/request-access-modal";
 import { FeedbackModal } from "@/components/feedback-modal";
 
 export default function HomePage() {
@@ -108,11 +107,9 @@ export default function HomePage() {
 
           <div className="flex items-center gap-3">
             <ThemeToggle />
-            <RequestAccessModal
-              triggerText="Request Access"
-              variant="outline"
-              className="text-xs h-9 font-semibold"
-            />
+            <Button asChild variant="outline" size="sm" className="text-xs h-9 font-semibold">
+              <Link href="/request-access">Request Access</Link>
+            </Button>
             <Button asChild size="sm" className="btn-gradient text-xs font-semibold shadow-md">
               <Link href="/login">Church Login</Link>
             </Button>
@@ -139,11 +136,9 @@ export default function HomePage() {
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-          <RequestAccessModal
-            triggerText="Request Church Workspace"
-            variant="default"
-            className="w-full sm:w-auto btn-gradient text-white font-bold text-sm px-8 h-12 rounded-2xl shadow-xl hover:opacity-90 transition"
-          />
+          <Button asChild size="lg" className="w-full sm:w-auto btn-gradient text-white font-bold text-sm px-8 h-12 rounded-2xl shadow-xl hover:opacity-90 transition">
+            <Link href="/request-access">Request Church Workspace</Link>
+          </Button>
           <Button asChild variant="outline" size="lg" className="w-full sm:w-auto glass-pill text-foreground hover:bg-accent/20 font-semibold text-sm px-8 h-12 rounded-2xl">
             <Link href="/docs">
               <BookOpenIcon className="mr-2 h-4 w-4 text-indigo-500" />
@@ -258,11 +253,9 @@ export default function HomePage() {
             Log in to your church dashboard or submit an access request to activate your Bent Planet workspace.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <RequestAccessModal
-              triggerText="Request Church Access"
-              variant="default"
-              className="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-bold text-base px-8 h-13 rounded-2xl shadow-xl"
-            />
+            <Button asChild size="lg" className="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
+              <Link href="/request-access">Request Church Access</Link>
+            </Button>
             <Button asChild size="lg" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
               <Link href="/login">Church Login Portal</Link>
             </Button>
@@ -271,34 +264,34 @@ export default function HomePage() {
       </section>
 
       {/* Standardized Glassmorphic Footer */}
-      <footer className="py-10 px-6 sm:px-8 border-t border-white/10 glass-nav text-xs text-slate-400">
+      <footer className="py-10 px-6 sm:px-8 border-t border-border glass-nav text-xs text-muted-foreground">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-6">
           <div className="flex items-center gap-3">
             <Link href="/" className="hover:opacity-85 transition">
               <BrandLogo iconSize={32} />
             </Link>
-            <span className="text-slate-500">|</span>
+            <span className="text-muted-foreground/60">|</span>
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" />
-              <span className="font-medium text-slate-300">All Systems Operational</span>
+              <span className="font-medium text-foreground/80">All Systems Operational</span>
             </div>
           </div>
 
-          <div className="flex flex-wrap items-center gap-6 text-slate-400">
-            <Link href="/docs" className="hover:text-white transition">
+          <div className="flex flex-wrap items-center gap-6 text-muted-foreground">
+            <Link href="/docs" className="hover:text-foreground transition">
               Documentation
             </Link>
-            <Link href="/privacy" className="hover:text-white transition">
+            <Link href="/privacy" className="hover:text-foreground transition">
               Privacy Policy
             </Link>
-            <Link href="/terms" className="hover:text-white transition">
+            <Link href="/terms" className="hover:text-foreground transition">
               Terms of Service
             </Link>
             <FeedbackModal triggerText="Feedback" />
           </div>
 
           <div>
-            <Link href="/" className="hover:text-indigo-400 transition font-medium">
+            <Link href="/" className="hover:text-primary transition font-medium">
               &copy; Bent Planet Inc. {new Date().getFullYear()}
             </Link>
           </div>

@@ -7,6 +7,7 @@ import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandIcon } from "@/components/brand-logo";
+import { NotificationBell } from "@/components/notification-bell";
 import {
   CalendarIcon,
   HomeIcon,
@@ -98,6 +99,7 @@ export function DashboardNav({
 
         <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
+          <NotificationBell />
           
           {!isSuperAdmin && (
             <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground text-xs font-semibold">

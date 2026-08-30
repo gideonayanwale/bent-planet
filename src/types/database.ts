@@ -44,6 +44,17 @@ export interface Database {
           onboarding_completed: boolean | null;
           invited_at: string | null;
           created_at: string | null;
+          motto: string | null;
+          mission_vision: string | null;
+          alternate_email: string | null;
+          address_line1: string | null;
+          address_line2: string | null;
+          admin_role: string | null;
+          max_conferences_limit: number | null;
+          max_emails_limit: number | null;
+          phone_number: string | null;
+          church_website_url: string | null;
+          onboarding_tour_completed: boolean | null;
         };
         Insert: {
           id?: string;
@@ -79,6 +90,17 @@ export interface Database {
           onboarding_completed?: boolean | null;
           invited_at?: string | null;
           created_at?: string | null;
+          motto?: string | null;
+          mission_vision?: string | null;
+          alternate_email?: string | null;
+          address_line1?: string | null;
+          address_line2?: string | null;
+          admin_role?: string | null;
+          max_conferences_limit?: number | null;
+          max_emails_limit?: number | null;
+          phone_number?: string | null;
+          church_website_url?: string | null;
+          onboarding_tour_completed?: boolean | null;
         };
         Update: {
           id?: string;
@@ -114,6 +136,17 @@ export interface Database {
           onboarding_completed?: boolean | null;
           invited_at?: string | null;
           created_at?: string | null;
+          motto?: string | null;
+          mission_vision?: string | null;
+          alternate_email?: string | null;
+          address_line1?: string | null;
+          address_line2?: string | null;
+          admin_role?: string | null;
+          max_conferences_limit?: number | null;
+          max_emails_limit?: number | null;
+          phone_number?: string | null;
+          church_website_url?: string | null;
+          onboarding_tour_completed?: boolean | null;
         };
         Relationships: [];
       };
@@ -254,6 +287,9 @@ export interface Database {
           last_email_opened_at: string | null;
           unsubscribed: boolean | null;
           subscribed_at: string | null;
+          reminder_7d_sent: boolean | null;
+          reminder_24h_sent: boolean | null;
+          replay_email_sent: boolean | null;
         };
         Insert: {
           id?: string;
@@ -266,6 +302,9 @@ export interface Database {
           last_email_opened_at?: string | null;
           unsubscribed?: boolean | null;
           subscribed_at?: string | null;
+          reminder_7d_sent?: boolean | null;
+          reminder_24h_sent?: boolean | null;
+          replay_email_sent?: boolean | null;
         };
         Update: {
           id?: string;
@@ -278,6 +317,9 @@ export interface Database {
           last_email_opened_at?: string | null;
           unsubscribed?: boolean | null;
           subscribed_at?: string | null;
+          reminder_7d_sent?: boolean | null;
+          reminder_24h_sent?: boolean | null;
+          replay_email_sent?: boolean | null;
         };
         Relationships: [
           {
@@ -536,6 +578,47 @@ export interface Database {
           sent_at?: string | null;
         };
         Relationships: [];
+      };
+      notifications: {
+        Row: {
+          id: string;
+          church_id: string | null;
+          type: string;
+          title: string;
+          message: string;
+          action_url: string | null;
+          read: boolean | null;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          church_id?: string | null;
+          type: string;
+          title: string;
+          message: string;
+          action_url?: string | null;
+          read?: boolean | null;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          church_id?: string | null;
+          type?: string;
+          title?: string;
+          message?: string;
+          action_url?: string | null;
+          read?: boolean | null;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "notifications_church_id_fkey";
+            columns: ["church_id"];
+            isOneToOne: false;
+            referencedRelation: "churches";
+            referencedColumns: ["id"];
+          }
+        ];
       };
     };
     Views: Record<string, never>;

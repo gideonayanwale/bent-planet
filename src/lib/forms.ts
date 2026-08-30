@@ -36,6 +36,18 @@ export const onboardingSchema = z
     facebookUrl: optionalUrlSchema,
     youtubeUrl: optionalUrlSchema,
     whatsappUrl: optionalUrlSchema,
+    denomination: z.string().trim().max(80).optional().nullable(),
+    yearFounded: z.string().trim().max(10).optional().nullable(),
+    motto: z.string().trim().max(100).optional().nullable(),
+    adminRole: z.string().trim().max(100).optional().nullable(),
+    phoneNumber: z.string().trim().max(40).optional().nullable(),
+    churchWebsiteUrl: optionalUrlSchema.optional(),
+    state: z.string().trim().max(80).optional().nullable(),
+    town: z.string().trim().max(80).optional().nullable(),
+    xUrl: optionalUrlSchema.optional(),
+    telegramUrl: optionalUrlSchema.optional(),
+    tiktokUrl: optionalUrlSchema.optional(),
+    threadsUrl: optionalUrlSchema.optional(),
   })
   .refine((values) => values.password === values.confirmPassword, {
     message: "Passwords do not match.",

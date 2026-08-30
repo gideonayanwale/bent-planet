@@ -16,6 +16,23 @@ export async function saveConferenceAction(formData: FormData) {
       return { error: "Church not found." };
     }
 
+    if (church.status === "suspended") {
+      return { error: "This workspace has been suspended. Please contact operations support." };
+    }
+
+    // Check maximum conferences limit
+    const { count: currentCount } = await adminClient
+      .from("conferences")
+      .select("id", { count: "exact", head: true })
+      .eq("church_id", church.id);
+
+    const maxLimit = church.max_conferences_limit ?? 20;
+    if (currentCount !== null && currentCount >= maxLimit) {
+      return {
+        error: `Limit reached. Your church is allowed a maximum of ${maxLimit} events. Contact support to increase limits.`,
+      };
+    }
+
     const name = formData.get("name") as string;
     const theme = (formData.get("theme") as string) || "Revival & Healing";
     const eventType = (formData.get("eventType") as string) || "Conference";
