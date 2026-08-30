@@ -78,7 +78,7 @@ export function DashboardNav({
           <nav className="hidden md:flex items-center gap-1">
             {items.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/super-admin" && pathname.startsWith(item.href));
+              const isActive = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/super-admin" && (pathname?.startsWith(item.href) ?? false));
               return (
                 <Link
                   key={item.href}
@@ -136,7 +136,7 @@ export function DashboardNav({
           <div className="grid grid-cols-2 gap-2">
             {items.map((item) => {
               const Icon = item.icon;
-              const isActive = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/super-admin" && pathname.startsWith(item.href));
+              const isActive = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/super-admin" && (pathname?.startsWith(item.href) ?? false));
               return (
                 <Link
                   key={item.href}

@@ -12,7 +12,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandLogo } from "@/components/brand-logo";
-import { FeedbackModal } from "@/components/feedback-modal";
 
 export default function HomePage() {
   const features = [
@@ -287,7 +286,9 @@ export default function HomePage() {
             <Link href="/terms" className="hover:text-foreground transition">
               Terms of Service
             </Link>
-            <FeedbackModal triggerText="Feedback" />
+            <Link href="/feedback" className="hover:text-foreground transition">
+              Feedback & Support
+            </Link>
           </div>
 
           <div>
