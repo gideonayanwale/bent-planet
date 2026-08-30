@@ -20,6 +20,12 @@ const settingsSchema = z.object({
   whatsapp_channel_url: z.string().url().optional().or(z.literal("")),
   whatsapp_group_url: z.string().url().optional().or(z.literal("")),
   whatsapp_number: z.string().optional().or(z.literal("")),
+  denomination: z.string().optional().or(z.literal("")),
+  motto: z.string().optional().or(z.literal("")),
+  year_founded: z.string().optional().or(z.literal("")),
+  address_line1: z.string().optional().or(z.literal("")),
+  address_line2: z.string().optional().or(z.literal("")),
+  church_website_url: z.string().url().optional().or(z.literal("")),
 });
 
 export async function saveChurchSettings(formData: FormData) {
@@ -45,6 +51,12 @@ export async function saveChurchSettings(formData: FormData) {
       whatsapp_channel_url: formData.get("whatsapp_channel_url") as string,
       whatsapp_group_url: formData.get("whatsapp_group_url") as string,
       whatsapp_number: formData.get("whatsapp_number") as string,
+      denomination: formData.get("denomination") as string,
+      motto: formData.get("motto") as string,
+      year_founded: formData.get("year_founded") as string,
+      address_line1: formData.get("address_line1") as string,
+      address_line2: formData.get("address_line2") as string,
+      church_website_url: formData.get("church_website_url") as string,
     };
 
     const parsed = settingsSchema.parse(data);

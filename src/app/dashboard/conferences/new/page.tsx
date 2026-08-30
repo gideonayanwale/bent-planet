@@ -394,6 +394,21 @@ export default function NewConferencePage() {
                   </div>
                 </div>
               </div>
+
+              {/* RSVP & Capacity Limit */}
+              <div className="space-y-2 p-4 rounded-2xl border border-slate-200 bg-slate-50/60">
+                <Label htmlFor="rsvpLimit" className="text-xs font-bold">In-Person Capacity / RSVP Limit (Optional)</Label>
+                <Input
+                  id="rsvpLimit"
+                  type="number"
+                  min={1}
+                  placeholder="Leave empty for unlimited (e.g. 500)"
+                  value={rsvpLimit}
+                  onChange={(e) => setRsvpLimit(e.target.value)}
+                  className="text-xs bg-white max-w-sm"
+                />
+                <p className="text-[11px] text-slate-500">Adds an RSVP progress bar to the public conference page when capacity is set.</p>
+              </div>
             </CardContent>
           </Card>
 

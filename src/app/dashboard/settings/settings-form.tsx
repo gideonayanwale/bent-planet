@@ -206,10 +206,42 @@ export function SettingsForm({ church }: SettingsFormProps) {
               id="bio"
               name="bio"
               defaultValue={church.bio || ""}
-              rows={4}
+              rows={3}
               placeholder="Share your church's mission, mandate, or a warm welcome message..."
               className="text-sm leading-relaxed"
             />
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <Label htmlFor="motto">Motto / Tagline</Label>
+              <Input id="motto" name="motto" defaultValue={church.motto || ""} placeholder="e.g. Preparing a people for the Lord" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="denomination">Denomination</Label>
+              <Input id="denomination" name="denomination" defaultValue={church.denomination || ""} placeholder="e.g. Pentecostal" />
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <Label htmlFor="year_founded">Year Founded</Label>
+              <Input id="year_founded" name="year_founded" defaultValue={church.year_founded || ""} placeholder="e.g. 1995" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="church_website_url">Official Website</Label>
+              <Input id="church_website_url" name="church_website_url" type="url" defaultValue={church.church_website_url || ""} placeholder="https://..." />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="address_line1">Physical Address (Line 1)</Label>
+            <Input id="address_line1" name="address_line1" defaultValue={church.address_line1 || ""} placeholder="123 Faith Avenue" />
+          </div>
+          
+          <div className="space-y-2">
+            <Label htmlFor="address_line2">Physical Address (Line 2 / City / State)</Label>
+            <Input id="address_line2" name="address_line2" defaultValue={church.address_line2 || ""} placeholder="Lagos, Nigeria" />
           </div>
 
           <div className="grid md:grid-cols-2 gap-5">
