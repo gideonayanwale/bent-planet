@@ -17,9 +17,62 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { SubscribeForm } from "@/components/subscribe-form";
+import { Metadata } from "next";
 import type { Database } from "@/types/database";
 
 type ConferenceRow = Database["public"]["Tables"]["conferences"]["Row"];
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { "church-slug": string };
+}): Promise<Metadata> {
+  const adminClient = createAdminClient();
+  const { data: church } = await adminClient
+    .from("churches")
+    .select("*")
+    .eq("slug", params["church-slug"])
+    .single();
+
+  if (!church) {
+    return { title: "Church Not Found" };
+  }
+
+  const title = `${church.name} | Bent Planet`;
+  const description = church.bio || `Welcome to ${church.name}'s digital ministry hub on Bent Planet. Join our upcoming conferences and live streams.`;
+  
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "profile",
+      siteName: "Bent Planet",
+      images: church.cover_url ? [
+        {
+          url: church.cover_url,
+          width: 1200,
+          height: 630,
+          alt: `${church.name} Cover`,
+        }
+      ] : church.logo_url ? [
+        {
+          url: church.logo_url,
+          width: 800,
+          height: 800,
+          alt: `${church.name} Logo`,
+        }
+      ] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: church.cover_url ? [church.cover_url] : [],
+    },
+  };
+}
 
 export default async function ChurchPublicProfilePage({
   params,

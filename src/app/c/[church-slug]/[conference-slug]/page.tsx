@@ -16,11 +16,58 @@ import {
   MessageCircleIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Metadata } from "next";
 
 interface AgendaItem {
   time?: string;
   title?: string;
   description?: string;
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { "church-slug": string; "conference-slug": string };
+}): Promise<Metadata> {
+  const adminClient = createAdminClient();
+  const conference = await getPublicConference(
+    adminClient,
+    params["church-slug"],
+    params["conference-slug"]
+  );
+
+  if (!conference) {
+    return { title: "Conference Not Found" };
+  }
+
+  const church = conference.churches;
+  const title = `${conference.title} | ${church?.name}`;
+  const description = conference.caption || conference.full_description || `Join ${church?.name} for ${conference.title}.`;
+  
+  return {
+    title,
+    description,
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      siteName: church?.name || "Bent Planet",
+      images: conference.banner_url ? [
+        {
+          url: conference.banner_url,
+          width: 1200,
+          height: 630,
+          alt: conference.title,
+        }
+      ] : [],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: conference.banner_url ? [conference.banner_url] : [],
+    },
+  };
 }
 
 export default async function PublicConferencePage({
@@ -42,6 +89,7 @@ export default async function PublicConferencePage({
   const church = conference.churches;
   const agenda = (conference.agenda as unknown as AgendaItem[]) || [];
   const theme = getThemeConfig(conference.template_id);
+  const subscriberCount = conference.subscribers?.[0]?.count || 0;
 
   // Coordinator WhatsApp RSVP Phone
   const coordinatorPhone = conference.whatsapp_contact_number || church?.whatsapp_number;
@@ -260,7 +308,34 @@ export default async function PublicConferencePage({
                   </div>
 
                   <div className="pt-5 border-t border-slate-100/20">
-                    <SubscribeForm churchId={church?.id || ""} conferenceId={conference.id} />
+                    {/* RSVP Limit Display */}
+                    {conference.rsvp_limit ? (
+                      <div className="mb-6 space-y-2">
+                        <div className="flex items-center justify-between text-xs font-bold font-mono">
+                          <span className={theme.sidebarText}>RSVP CAPACITY</span>
+                          <span className={`${theme.accentColor}`}>
+                            {subscriberCount} / {conference.rsvp_limit}
+                          </span>
+                        </div>
+                        <div className="h-2.5 w-full bg-slate-200/50 rounded-full overflow-hidden">
+                          <div 
+                            className={`h-full ${theme.accentBg} transition-all duration-1000 ease-out`}
+                            style={{ width: `${Math.min(100, Math.max(0, (subscriberCount / (conference.rsvp_limit as number)) * 100))}%` }}
+                          />
+                        </div>
+                        {subscriberCount >= (conference.rsvp_limit as number) ? (
+                          <p className="text-[11px] text-rose-500 font-bold uppercase tracking-wide mt-1">Registration Full</p>
+                        ) : null}
+                      </div>
+                    ) : null}
+
+                    {(!conference.rsvp_limit || subscriberCount < (conference.rsvp_limit as number)) ? (
+                      <SubscribeForm churchId={church?.id || ""} conferenceId={conference.id} />
+                    ) : (
+                      <div className="p-4 rounded-xl bg-slate-100 text-slate-500 text-center text-xs font-semibold">
+                        We have reached maximum in-person capacity. Please join via livestream!
+                      </div>
+                    )}
                   </div>
                 </div>
 
