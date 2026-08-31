@@ -18,6 +18,7 @@ import {
   startImpersonatingAction,
   updateChurchLimitsAction,
   updateChurchStatusAction,
+  updateChurchPremiumStatusAction,
 } from "@/app/super-admin/actions";
 
 interface ChurchActionsMenuProps {
@@ -27,6 +28,7 @@ interface ChurchActionsMenuProps {
   currentStatus: string;
   maxConferences: number;
   maxEmails: number;
+  isPremium: boolean;
 }
 
 export function ChurchActionsMenu({
@@ -36,6 +38,7 @@ export function ChurchActionsMenu({
   currentStatus,
   maxConferences,
   maxEmails,
+  isPremium,
 }: ChurchActionsMenuProps) {
   const router = useRouter();
   const [open, setOpen] = useState(false);
@@ -81,6 +84,16 @@ export function ChurchActionsMenu({
     setOpen(false);
   };
 
+  const handleTogglePremium = async () => {
+    setIsPending(true);
+    const res = await updateChurchPremiumStatusAction(churchId, !isPremium);
+    if (res?.error) {
+      alert(res.error);
+    }
+    setIsPending(false);
+    setOpen(false);
+  };
+
   return (
     <div className="relative">
       <Button
@@ -118,6 +131,18 @@ export function ChurchActionsMenu({
             >
               <SlidersIcon className="h-3.5 w-3.5 text-amber-600" />
               Edit Limits
+            </button>
+
+            <button
+              onClick={handleTogglePremium}
+              className={`flex w-full items-center gap-2 rounded-lg px-2.5 py-1.5 text-xs font-medium transition ${
+                isPremium
+                  ? "text-slate-600 hover:bg-slate-100"
+                  : "text-amber-600 hover:bg-amber-50"
+              }`}
+            >
+              <SparklesIcon className={`h-3.5 w-3.5 ${isPremium ? "text-slate-400" : "text-amber-500"}`} />
+              {isPremium ? "Revoke Premium" : "Grant Premium Access"}
             </button>
 
             <div className="h-px bg-slate-100 my-1" />

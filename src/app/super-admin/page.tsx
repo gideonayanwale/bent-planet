@@ -22,6 +22,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { AnalyticsChart } from "@/components/super-admin/analytics-chart";
 import { AccessRequestsTable } from "@/components/super-admin/access-requests-table";
 import { ChurchActionsMenu } from "@/components/super-admin/church-actions-menu";
+import { SuperAdminHeaderActions } from "@/components/super-admin/header-actions";
 import type { Database } from "@/types/database";
 
 export default async function SuperAdminPage() {
@@ -47,7 +48,7 @@ export default async function SuperAdminPage() {
       .order("created_at", { ascending: false }),
     adminClient
       .from("churches")
-      .select("id, name, slug, admin_email, country, denomination, onboarding_completed, status, max_conferences_limit, max_emails_limit, created_at")
+      .select("id, name, slug, admin_email, country, denomination, onboarding_completed, status, max_conferences_limit, max_emails_limit, is_premium, created_at")
       .order("created_at", { ascending: false }),
     adminClient.from("subscribers").select("id, church_id, subscribed_at"),
     adminClient.from("conferences").select("id, church_id, created_at"),
@@ -105,14 +106,7 @@ export default async function SuperAdminPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Button asChild className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md">
-            <Link href="/super-admin/invite">
-              <Building2Icon className="mr-1.5 h-4 w-4" />
-              Invite Church Directly
-            </Link>
-          </Button>
-        </div>
+        <SuperAdminHeaderActions />
       </div>
 
       {/* Overview Stat Cards */}
@@ -248,6 +242,7 @@ export default async function SuperAdminPage() {
                           currentStatus={church.status || "active"}
                           maxConferences={church.max_conferences_limit ?? 20}
                           maxEmails={church.max_emails_limit ?? 5000}
+                          isPremium={church.is_premium || false}
                         />
                       </TableCell>
                     </TableRow>

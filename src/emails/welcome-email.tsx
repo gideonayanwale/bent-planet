@@ -7,6 +7,7 @@ import {
   Hr,
   Html,
   Img,
+  Link,
   Preview,
   Section,
   Text,
@@ -112,6 +113,12 @@ export const WelcomeEmail = ({
 
           <Text style={footer}>
             Sent with love from {churchName} via Bent Planet — The Online Conference Platform for Churches.
+          </Text>
+          <Text style={subFooter}>
+            Hosting a church conference or live ministry event?{" "}
+            <Link href="https://bentplanet.com/request-access" style={footerLink}>
+              Request Access on Bent Planet
+            </Link>
           </Text>
         </Container>
       </Body>
@@ -276,8 +283,23 @@ const hr = {
 };
 
 const footer = {
-  color: "#94a3b8",
+  color: "#64748b",
   fontSize: "12px",
   lineHeight: "18px",
   textAlign: "center" as const,
+  margin: "0 0 6px",
+};
+
+const subFooter = {
+  color: "#94a3b8",
+  fontSize: "11px",
+  lineHeight: "16px",
+  textAlign: "center" as const,
+  margin: "0",
+};
+
+const footerLink = {
+  color: "#4f46e5",
+  textDecoration: "underline",
+  fontWeight: "600",
 };

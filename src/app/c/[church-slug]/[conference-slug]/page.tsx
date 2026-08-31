@@ -420,9 +420,12 @@ export default async function PublicConferencePage({
       <footer className={`border-t ${theme.footerBorder} ${theme.footerBg} py-8 text-center text-xs ${theme.footerText}`}>
         <div className="container mx-auto max-w-7xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p>© {new Date().getFullYear()} {church?.name}. All rights reserved.</p>
-          <Link href="/" className="hover:text-indigo-600 transition font-medium">
-            &copy; Bent Planet Inc. {new Date().getFullYear()}
-          </Link>
+          <p className="flex items-center gap-1 font-medium">
+            Powered by{" "}
+            <Link href="/" className="font-bold hover:underline transition">
+              Bent Planet
+            </Link>
+          </p>
         </div>
       </footer>
     </div>

@@ -12,6 +12,7 @@ import {
   CheckCircle2Icon,
   AlertCircleIcon,
   SparklesIcon,
+  Loader2Icon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -112,6 +113,8 @@ export function EditConferenceForm({
   });
 
   const [bannerPreview, setBannerPreview] = useState<string | null>(conference.banner_url || null);
+  const [bannerFile, setBannerFile] = useState<File | null>(null);
+  const [isExtracting, setIsExtracting] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -120,7 +123,73 @@ export function EditConferenceForm({
   const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setBannerFile(file);
       setBannerPreview(URL.createObjectURL(file));
+    }
+  };
+
+  const handleExtractFlyer = async () => {
+    if (!bannerFile) return;
+
+    setIsExtracting(true);
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(bannerFile);
+      reader.onloadend = async () => {
+        const base64data = reader.result;
+        
+        try {
+          const res = await fetch("/api/extract-flyer", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imageBase64: base64data }),
+          });
+          
+          const json = await res.json();
+          if (json.error) throw new Error(json.error);
+          
+          const data = json.data;
+          if (data) {
+            setFormData((prev) => ({
+              ...prev,
+              name: data.name || prev.name,
+              theme: data.theme || prev.theme,
+              speaker: data.speaker || prev.speaker,
+              hostName: data.hostName || prev.hostName,
+              eventType: data.eventType || prev.eventType,
+              date: data.date || prev.date,
+              endDate: data.endDate || prev.endDate,
+              startTime: data.startTime || prev.startTime,
+              caption: data.caption || prev.caption,
+              whatsappContactNumber: data.whatsappContactNumber || prev.whatsappContactNumber,
+              freeResourceName: data.freeResourceName || prev.freeResourceName,
+            }));
+          }
+          
+          setStatusMessage({
+            type: "success",
+            text: "Flyer scanned successfully! Form fields have been updated with extracted details.",
+          });
+        } catch (err: unknown) {
+          const error = err as Error;
+          console.error("Flyer extraction failed:", error);
+          setStatusMessage({
+            type: "error",
+            text: error.message || "Failed to extract details from flyer",
+          });
+        } finally {
+          setIsExtracting(false);
+        }
+      };
+      reader.onerror = () => {
+        setStatusMessage({ type: "error", text: "Failed to read the uploaded image file." });
+        setIsExtracting(false);
+      };
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error(err);
+      setStatusMessage({ type: "error", text: err.message || "Extraction failed." });
+      setIsExtracting(false);
     }
   };
 
@@ -442,7 +511,7 @@ export function EditConferenceForm({
                     No flyer banner
                   </div>
                 )}
-                <div className="space-y-1.5 flex-1">
+                <div className="space-y-2 flex-1">
                   <Input
                     id="banner"
                     name="banner"
@@ -452,6 +521,29 @@ export function EditConferenceForm({
                     className="text-xs bg-white"
                   />
                   <p className="text-[11px] text-slate-500">Select a file to replace the current banner.</p>
+
+                  {bannerFile && (
+                    <Button 
+                      type="button" 
+                      variant="secondary" 
+                      size="sm"
+                      disabled={isExtracting}
+                      className="w-full sm:w-auto text-xs bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200 mt-1"
+                      onClick={handleExtractFlyer}
+                    >
+                      {isExtracting ? (
+                        <>
+                          <Loader2Icon className="h-3 w-3 mr-1.5 animate-spin" />
+                          Analyzing Flyer Image...
+                        </>
+                      ) : (
+                        <>
+                          <SparklesIcon className="h-3 w-3 mr-1.5" />
+                          Autofill details from Flyer
+                        </>
+                      )}
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>

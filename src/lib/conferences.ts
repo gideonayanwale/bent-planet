@@ -34,7 +34,7 @@ export async function getPublicConference(
 ) {
   const { data, error } = await adminClient
     .from("conferences")
-    .select("*, churches!inner(*)")
+    .select("*, churches!inner(*), subscribers(count)")
     .eq("slug", conferenceSlug)
     .eq("churches.slug", churchSlug)
     .eq("status", "published")

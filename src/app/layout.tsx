@@ -14,6 +14,7 @@ export const metadata: Metadata = {
 
 import { Analytics } from "@vercel/analytics/react";
 import { ThemeProvider } from "@/components/theme-provider";
+import { GlobalFeedbackWidget } from "@/components/global-feedback-widget";
 
 export default function RootLayout({
   children,
@@ -31,6 +32,7 @@ export default function RootLayout({
         >
           {children}
           <Analytics />
+          <GlobalFeedbackWidget />
         </ThemeProvider>
       </body>
     </html>

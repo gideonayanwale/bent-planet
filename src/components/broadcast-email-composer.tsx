@@ -10,73 +10,24 @@ import {
   CheckIcon,
   AlertCircleIcon,
   LayoutTemplateIcon,
+  Loader2Icon,
 } from "lucide-react";
+import {
+  EmailTemplatesGalleryModal,
+  VISUAL_EMAIL_TEMPLATES,
+  TemplateGalleryItem,
+} from "@/components/email-templates-gallery-modal";
 
 interface BroadcastEmailComposerProps {
   churchName: string;
   subscriberCount: number;
+  isPremium?: boolean;
 }
-
-interface EmailTemplate {
-  name: string;
-  category: string;
-  subject: (church: string) => string;
-  body: (church: string) => string;
-  ctaText: string;
-  ctaUrlPlaceholder: string;
-}
-
-const PREBUILT_EMAIL_TEMPLATES: EmailTemplate[] = [
-  {
-    name: "New Event Announcement",
-    category: "Events",
-    subject: (church) => `📢 Announcing our upcoming conference at ${church}!`,
-    body: (church) =>
-      `Dear beloved family,\n\nWe are thrilled to invite you to our upcoming gathering at ${church}! God has prepared a catalytic word and an extraordinary atmosphere of worship, teaching, and divine breakthrough for you.\n\nReserve your free spot online today and invite your friends and loved ones to join us livestreaming.`,
-    ctaText: "Reserve Your Free Spot",
-    ctaUrlPlaceholder: "https://bentplanet.com/c/...",
-  },
-  {
-    name: "24h Event Reminder",
-    category: "Reminders",
-    subject: (church) => `🔥 Tomorrow! Our live conference goes live — ${church}`,
-    body: (church) =>
-      `Greetings in Christ from ${church}!\n\nThis is a quick reminder that our special conference starts tomorrow! We encourage you to prepare your heart and tune in on time.\n\nClick the link below to access the livestream and download the conference guide.`,
-    ctaText: "Access Livestream & Guide",
-    ctaUrlPlaceholder: "https://bentplanet.com/c/...",
-  },
-  {
-    name: "We Are LIVE Now!",
-    category: "Live Alerts",
-    subject: (church) => `🎙️ We are LIVE right now — Join ${church}!`,
-    body: (church) =>
-      `The broadcast from ${church} has started! Worship is underway and the Word is about to be ministered.\n\nClick below to jump straight into the livestream now!`,
-    ctaText: "Watch Live Stream",
-    ctaUrlPlaceholder: "https://youtube.com/watch?v=...",
-  },
-  {
-    name: "Post-Event Replay & Study Notes",
-    category: "Follow-up",
-    subject: (church) => `🙏 Thank you for joining! Watch the replay & notes — ${church}`,
-    body: (church) =>
-      `What a powerful encounter we had in God's presence at ${church}!\n\nIf you missed any session or want to revisit the revelations shared, the full on-demand replay and free conference notes are now available.`,
-    ctaText: "Watch Replay & Download Notes",
-    ctaUrlPlaceholder: "https://bentplanet.com/c/...",
-  },
-  {
-    name: "Weekly Service Invitation",
-    category: "Weekly",
-    subject: (church) => `✨ Join us this week for fellowship at ${church}`,
-    body: (church) =>
-      `Beloved in Christ,\n\nWe welcome you to worship with us this week at ${church} as we grow together in God's word and fellowship. We are believing for your continued spiritual growth and victory in every area of life.`,
-    ctaText: "Join Online Service",
-    ctaUrlPlaceholder: "https://bentplanet.com/c/...",
-  },
-];
 
 export function BroadcastEmailComposer({
   churchName,
   subscriberCount,
+  isPremium = false,
 }: BroadcastEmailComposerProps) {
   const [subject, setSubject] = useState("");
   const [bodyContent, setBodyContent] = useState("");
@@ -84,11 +35,12 @@ export function BroadcastEmailComposer({
   const [ctaText, setCtaText] = useState("");
 
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null);
+  const [showGalleryModal, setShowGalleryModal] = useState(false);
   const [isDrafting, setIsDrafting] = useState(false);
   const [isSending, setIsSending] = useState(false);
   const [statusMsg, setStatusMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
-  const applyTemplate = (template: EmailTemplate) => {
+  const applyTemplate = (template: TemplateGalleryItem) => {
     setSelectedTemplate(template.name);
     setSubject(template.subject(churchName));
     setBodyContent(template.body(churchName));
@@ -98,16 +50,48 @@ export function BroadcastEmailComposer({
     }
   };
 
-  const handleAIDraft = () => {
+  const handleAIDraft = async () => {
     setIsDrafting(true);
-    setTimeout(() => {
-      setSubject(`Important Ministry Update & Fellowship — ${churchName} 🙏`);
-      setBodyContent(
-        `Grace and peace to you in the name of our Lord Jesus Christ!\n\nWe wanted to reach out and share an exciting update about what God is doing in our ministry. Thank you for being a valued part of the ${churchName} family.\n\nBe on the lookout for our upcoming conference sessions and live streams. We look forward to gathering with you online soon!`
-      );
-      setCtaText("View Conference Page");
+    setStatusMsg(null);
+
+    try {
+      const res = await fetch("/api/generate-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          topic: subject || "Important Ministry Update & Fellowship",
+          templateType: selectedTemplate || "General Announcement",
+          keyPoints: bodyContent || "",
+        }),
+      });
+
+      const json = await res.json();
+      if (!res.ok || json.error) {
+        throw new Error(json.error || "Failed to generate AI draft.");
+      }
+
+      if (json.data) {
+        setSubject(json.data.subject);
+        setBodyContent(json.data.bodyContent);
+        if (json.data.ctaText) setCtaText(json.data.ctaText);
+        setStatusMsg({
+          type: "success",
+          text: `AI Copy drafted using ${json.data.providerUsed || "Collaborative AI Engine"}${
+            json.rateLimit?.remaining !== undefined
+              ? ` (${json.rateLimit.remaining} hourly generation(s) remaining)`
+              : ""
+          }`,
+        });
+      }
+    } catch (err: unknown) {
+      const error = err as Error;
+      setStatusMsg({
+        type: "error",
+        text: error.message || "Failed to generate AI email copy.",
+      });
+    } finally {
       setIsDrafting(false);
-    }, 500);
+    }
   };
 
   const handleSend = async (e: React.FormEvent) => {
@@ -160,14 +144,25 @@ export function BroadcastEmailComposer({
 
   return (
     <div className="space-y-6">
-      {/* Template Selection Pills */}
+      {/* Template Selection Pills and Gallery Button */}
       <div className="space-y-2">
-        <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-          <LayoutTemplateIcon className="h-4 w-4 text-indigo-600" />
-          <span>Quick Ministry Email Templates:</span>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
+            <LayoutTemplateIcon className="h-4 w-4 text-indigo-600" />
+            <span>Ministry Email Templates:</span>
+          </div>
+          <Button
+            type="button"
+            variant="ghost"
+            size="xs"
+            className="text-xs text-indigo-600 font-semibold hover:text-indigo-700 hover:bg-indigo-50"
+            onClick={() => setShowGalleryModal(true)}
+          >
+            Browse Full Gallery ↗
+          </Button>
         </div>
         <div className="flex flex-wrap gap-2">
-          {PREBUILT_EMAIL_TEMPLATES.map((tmpl) => (
+          {VISUAL_EMAIL_TEMPLATES.map((tmpl) => (
             <button
               key={tmpl.name}
               type="button"
@@ -183,6 +178,13 @@ export function BroadcastEmailComposer({
           ))}
         </div>
       </div>
+
+      <EmailTemplatesGalleryModal
+        isOpen={showGalleryModal}
+        onClose={() => setShowGalleryModal(false)}
+        churchName={churchName}
+        onSelectTemplate={applyTemplate}
+      />
 
       <form onSubmit={handleSend} className="space-y-6">
         {statusMsg && (
@@ -215,10 +217,19 @@ export function BroadcastEmailComposer({
             size="sm"
             onClick={handleAIDraft}
             disabled={isDrafting}
-            className="flex items-center gap-1.5 bg-white text-indigo-700 border-indigo-200 hover:bg-indigo-50 text-xs shrink-0"
+            className="flex items-center gap-1.5 bg-white text-indigo-700 border-indigo-200 hover:bg-indigo-50 text-xs shrink-0 font-semibold"
           >
-            <SparklesIcon className="w-3.5 h-3.5 text-indigo-600" />
-            {isDrafting ? "Drafting..." : "Generate AI Copy"}
+            {isDrafting ? (
+              <>
+                <Loader2Icon className="w-3.5 h-3.5 text-indigo-600 animate-spin" />
+                Drafting Copy...
+              </>
+            ) : (
+              <>
+                <SparklesIcon className="w-3.5 h-3.5 text-indigo-600" />
+                Generate AI Copy
+              </>
+            )}
           </Button>
         </div>
 

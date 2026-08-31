@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import {
   SparklesIcon,
   CheckCircle2Icon,
+  Loader2Icon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -66,6 +67,7 @@ export default function NewConferencePage() {
   const [enableReplay, setEnableReplay] = useState(true);
   const [freeResourceName, setFreeResourceName] = useState("");
   const [freeResourceUrl, setFreeResourceUrl] = useState("");
+  const [rsvpLimit, setRsvpLimit] = useState("");
 
   const [bannerFile, setBannerFile] = useState<File | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
@@ -139,6 +141,64 @@ export default function NewConferencePage() {
     }
   };
 
+  const [isExtracting, setIsExtracting] = useState(false);
+
+  const handleExtractFlyer = async () => {
+    if (!bannerFile) return;
+
+    setIsExtracting(true);
+    try {
+      const reader = new FileReader();
+      reader.readAsDataURL(bannerFile);
+      reader.onloadend = async () => {
+        const base64data = reader.result;
+        
+        try {
+          const res = await fetch("/api/extract-flyer", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ imageBase64: base64data }),
+          });
+          
+          const json = await res.json();
+          if (json.error) throw new Error(json.error);
+          
+          const data = json.data;
+          if (data) {
+            if (data.name) setName(data.name);
+            if (data.eventType && EVENT_TYPES.includes(data.eventType)) setEventType(data.eventType);
+            if (data.theme) setTheme(data.theme);
+            if (data.speaker) setSpeaker(data.speaker);
+            if (data.hostName) setHostName(data.hostName);
+            if (data.date) setDate(data.date);
+            if (data.endDate) setEndDate(data.endDate);
+            if (data.startTime) setStartTime(data.startTime);
+            if (data.caption) setCaption(data.caption);
+            if (data.whatsappContactNumber) setWhatsappContactNumber(data.whatsappContactNumber);
+            if (data.freeResourceName) setFreeResourceName(data.freeResourceName);
+          }
+          
+          alert("Flyer scanned successfully! Event details have been autofilled.");
+        } catch (err: unknown) {
+          const error = err as Error;
+          console.error("Flyer extraction failed:", error);
+          alert(error.message || "Failed to extract details from flyer");
+        } finally {
+          setIsExtracting(false);
+        }
+      };
+      reader.onerror = () => {
+        alert("Failed to read the image file.");
+        setIsExtracting(false);
+      };
+    } catch (error: unknown) {
+      const err = error as Error;
+      console.error(err);
+      alert(err.message || "Extraction failed");
+      setIsExtracting(false);
+    }
+  };
+
   const handlePublish = async (status: "published" | "draft") => {
     setIsSaving(true);
 
@@ -161,6 +221,7 @@ export default function NewConferencePage() {
       formData.append("freeResourceName", freeResourceName);
       formData.append("freeResourceUrl", freeResourceUrl);
       formData.append("status", status);
+      if (rsvpLimit) formData.append("rsvpLimit", rsvpLimit);
 
       if (bannerFile) {
         formData.append("banner", bannerFile);
@@ -368,9 +429,9 @@ export default function NewConferencePage() {
               </div>
 
               {/* Flyer Banner Upload */}
-              <div className="space-y-2 p-4 rounded-2xl border border-slate-200 bg-slate-50/60">
+              <div className="space-y-3 p-4 rounded-2xl border border-slate-200 bg-slate-50/60">
                 <Label htmlFor="banner" className="text-xs font-bold">Event Flyer Banner Image</Label>
-                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center">
                   {bannerPreview ? (
                     <img
                       src={bannerPreview}
@@ -382,15 +443,40 @@ export default function NewConferencePage() {
                       No flyer selected
                     </div>
                   )}
-                  <div className="space-y-1 flex-1">
-                    <Input
-                      id="banner"
-                      type="file"
-                      accept="image/*"
-                      onChange={handleBannerChange}
-                      className="text-xs bg-white"
-                    />
-                    <p className="text-[11px] text-slate-500">Recommended 1920×1080px or high-res JPG/PNG</p>
+                  <div className="space-y-3 flex-1 w-full">
+                    <div>
+                      <Input
+                        id="banner"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleBannerChange}
+                        className="text-xs bg-white"
+                      />
+                      <p className="text-[11px] text-slate-500 mt-1">Recommended 1920×1080px or high-res JPG/PNG</p>
+                    </div>
+                    
+                    {bannerPreview && (
+                      <Button 
+                        type="button" 
+                        variant="secondary" 
+                        size="sm"
+                        disabled={isExtracting}
+                        className="w-full sm:w-auto text-xs bg-indigo-50 text-indigo-700 hover:bg-indigo-100 border border-indigo-200"
+                        onClick={handleExtractFlyer}
+                      >
+                        {isExtracting ? (
+                          <>
+                            <Loader2Icon className="h-3 w-3 mr-1.5 animate-spin" />
+                            Analyzing Flyer Image...
+                          </>
+                        ) : (
+                          <>
+                            <SparklesIcon className="h-3 w-3 mr-1.5" />
+                            Autofill details from Flyer
+                          </>
+                        )}
+                      </Button>
+                    )}
                   </div>
                 </div>
               </div>

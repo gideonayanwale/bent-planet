@@ -50,6 +50,9 @@ export async function saveConferenceAction(formData: FormData) {
     const freeResourceUrl = (formData.get("freeResourceUrl") as string) || null;
     const enableReplay = formData.get("enableReplay") === "true";
     const status = (formData.get("status") as string) || "published";
+    
+    const rsvpLimitRaw = formData.get("rsvpLimit");
+    const rsvpLimit = rsvpLimitRaw ? parseInt(rsvpLimitRaw as string, 10) : null;
 
     const generatedDataStr = formData.get("generatedData") as string;
     const generatedData = generatedDataStr ? JSON.parse(generatedDataStr) : {};
@@ -87,6 +90,7 @@ export async function saveConferenceAction(formData: FormData) {
       free_resource_name: freeResourceName,
       free_resource_url: freeResourceUrl,
       enable_replay: enableReplay,
+      rsvp_limit: isNaN(rsvpLimit as number) ? null : rsvpLimit,
       full_description: generatedData.fullDescription || null,
       agenda: generatedData.agenda || [],
       speaker_bio: generatedData.speakerBio || null,

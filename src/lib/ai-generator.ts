@@ -271,3 +271,152 @@ Please output strictly valid JSON matching this schema:
   const fallback = getVariantContent(theme, name, churchName, speaker, date || "Upcoming Date");
   return { ...fallback, providerUsed: "Pre-built Faith Engine (Guaranteed Fallback)" };
 }
+
+export interface GenerateEmailPromptInput {
+  churchName: string;
+  topic?: string;
+  templateType?: string;
+  keyPoints?: string;
+}
+
+export interface GeneratedEmailOutput {
+  subject: string;
+  bodyContent: string;
+  ctaText: string;
+  providerUsed: string;
+}
+
+export async function generateBroadcastEmailContentWithFallbacks(
+  input: GenerateEmailPromptInput
+): Promise<GeneratedEmailOutput> {
+  const { churchName, topic = "Ministry Update & Fellowship", templateType = "General Announcement", keyPoints = "" } = input;
+
+  const prompt = `You are an anointed, compassionate Christian ministry copywriter.
+Generate an engaging, warm, inspiring email broadcast for church subscribers.
+Church Name: ${churchName}
+Email Purpose / Type: ${templateType}
+Specific Topic / Announcement: ${topic}
+Additional Key Information / Notes: ${keyPoints || "None"}
+
+Please output strictly valid JSON matching this schema:
+{
+  "subject": "Compelling, Spirit-filled email subject line with an emoji",
+  "bodyContent": "Warm, inspiring Christian ministry body text (3-4 paragraphs), formatted with line breaks (\n\n) and signed off on behalf of the ministry.",
+  "ctaText": "Short action-oriented button text, e.g. 'View Conference Details', 'Join Us Online', 'Read Announcement'"
+}`;
+
+  // 1. Try OpenAI
+  if (process.env.OPENAI_API_KEY) {
+    try {
+      const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        messages: [
+          { role: "system", content: "You are a Christian copywriter. Output valid JSON only." },
+          { role: "user", content: prompt },
+        ],
+        response_format: { type: "json_object" },
+        temperature: 0.7,
+      });
+
+      const content = completion.choices[0]?.message?.content;
+      if (content) {
+        const parsed = JSON.parse(content);
+        if (parsed.subject && parsed.bodyContent) {
+          return {
+            subject: parsed.subject,
+            bodyContent: parsed.bodyContent,
+            ctaText: parsed.ctaText || "Learn More",
+            providerUsed: "OpenAI gpt-4o-mini",
+          };
+        }
+      }
+    } catch (e) {
+      console.warn("[AI Engine] Email OpenAI draft failed:", e);
+    }
+  }
+
+  // 2. Try Google Gemini
+  const geminiKey = process.env.GEMINI_API_KEY || process.env.GOOGLE_AI_API_KEY;
+  if (geminiKey) {
+    try {
+      const res = await fetch(
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            contents: [{ parts: [{ text: prompt + "\nStrictly valid JSON only." }] }],
+            generationConfig: { responseMimeType: "application/json" },
+          }),
+        }
+      );
+      if (res.ok) {
+        const gData = await res.json();
+        const text = gData?.candidates?.[0]?.content?.parts?.[0]?.text;
+        if (text) {
+          const parsed = JSON.parse(text);
+          if (parsed.subject && parsed.bodyContent) {
+            return {
+              subject: parsed.subject,
+              bodyContent: parsed.bodyContent,
+              ctaText: parsed.ctaText || "Learn More",
+              providerUsed: "Google Gemini 1.5 Flash",
+            };
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("[AI Engine] Email Gemini draft failed:", e);
+    }
+  }
+
+  // 3. Try OpenRouter
+  if (process.env.OPENROUTER_API_KEY) {
+    try {
+      const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          Authorization: `Bearer ${process.env.OPENROUTER_API_KEY}`,
+          "Content-Type": "application/json",
+          "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com",
+          "X-Title": "Bent Planet",
+        },
+        body: JSON.stringify({
+          model: "google/gemini-2.0-flash-exp:free",
+          messages: [
+            { role: "system", content: "You are a Christian copywriter. Output valid JSON only." },
+            { role: "user", content: prompt },
+          ],
+        }),
+      });
+      if (res.ok) {
+        const rData = await res.json();
+        const content = rData?.choices?.[0]?.message?.content;
+        if (content) {
+          let clean = content.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
+          const parsed = JSON.parse(clean);
+          if (parsed.subject && parsed.bodyContent) {
+            return {
+              subject: parsed.subject,
+              bodyContent: parsed.bodyContent,
+              ctaText: parsed.ctaText || "Learn More",
+              providerUsed: "OpenRouter Free",
+            };
+          }
+        }
+      }
+    } catch (e) {
+      console.warn("[AI Engine] Email OpenRouter draft failed:", e);
+    }
+  }
+
+  // 4. Guaranteed High Quality Fallback
+  return {
+    subject: `Grace & Peace from ${churchName} — Special Ministry Update 🙏`,
+    bodyContent: `Dear beloved family in Christ,\n\nGrace and peace to you from our Lord Jesus Christ! We are writing to share what the Lord is doing in our midst and to encourage your faith in this season.\n\nWe invite you to stay connected, prepare your heart for our upcoming gatherings, and continue walking in the abundance of God's grace.\n\nIn Christ's Love,\n${churchName} Leadership Team`,
+    ctaText: "Visit Church Hub",
+    providerUsed: "Pre-built Faith Engine (Guaranteed Fallback)",
+  };
+}
+

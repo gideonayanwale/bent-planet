@@ -53,6 +53,15 @@ export async function POST(req: Request) {
         const conf = confRes.data;
 
         if (church && conf) {
+          // Trigger in-app notification for church admin
+          await adminClient.from("notifications").insert({
+            church_id: churchId,
+            type: "subscriber",
+            title: "New Attendee Registered",
+            message: `${fullName} registered for ${conf.title}.`,
+            action_url: "/dashboard/subscribers",
+          });
+
           const resendId = await sendSubscriberWelcomeEmail({
             toEmail: email,
             subscriberName: fullName,
@@ -78,9 +87,31 @@ export async function POST(req: Request) {
               resend_email_id: resendId,
             });
           }
+        } else if (church) {
+          // General church subscriber
+          await adminClient.from("notifications").insert({
+            church_id: churchId,
+            type: "subscriber",
+            title: "New Church Subscriber",
+            message: `${fullName} joined ${church.name}'s general update list.`,
+            action_url: "/dashboard/subscribers",
+          });
         }
       } catch (emailErr) {
-        console.error("Welcome email error (non-fatal):", emailErr);
+        console.error("Welcome email / notification error (non-fatal):", emailErr);
+      }
+    } else {
+      // Direct general subscriber without specific conference
+      try {
+        await adminClient.from("notifications").insert({
+          church_id: churchId,
+          type: "subscriber",
+          title: "New Subscriber",
+          message: `${fullName} joined your subscriber list.`,
+          action_url: "/dashboard/subscribers",
+        });
+      } catch (notifErr) {
+        console.error("Notification insert error:", notifErr);
       }
     }
 

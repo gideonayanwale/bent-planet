@@ -88,6 +88,7 @@ export default async function EmailsPage() {
           <BroadcastEmailComposer
             churchName={church.name}
             subscriberCount={subscriberCount}
+            isPremium={church.is_premium || false}
           />
         </CardContent>
       </Card>

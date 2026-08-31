@@ -34,6 +34,22 @@ export async function POST(req: Request) {
       );
     }
 
+    // Trigger super-admin notification
+    try {
+      await adminClient
+        .from("notifications")
+        .insert({
+          church_id: null,
+          type: "feedback",
+          title: `New Feedback (${category || "General"})`,
+          message: `${name ? `${name} (${email})` : email}: ${message.slice(0, 80)}${message.length > 80 ? "..." : ""}`,
+          action_url: "/super-admin",
+          read: false,
+        });
+    } catch (notifErr) {
+      console.error("Failed to create super-admin feedback notification:", notifErr);
+    }
+
     return NextResponse.json({ success: true });
   } catch (error: unknown) {
     const err = error as Error;

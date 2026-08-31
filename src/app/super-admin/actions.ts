@@ -244,3 +244,26 @@ export async function updateChurchStatusAction(churchId: string, status: string)
     return { error: err.message || "Failed to update church status." };
   }
 }
+
+export async function updateChurchPremiumStatusAction(churchId: string, isPremium: boolean) {
+  try {
+    await requireSuperAdminUser();
+    const adminClient = createAdminClient();
+
+    const { error } = await adminClient
+      .from("churches")
+      .update({
+        is_premium: isPremium,
+      })
+      .eq("id", churchId);
+
+    if (error) throw new Error(error.message);
+
+    revalidatePath("/super-admin");
+    return { success: true };
+  } catch (error: unknown) {
+    const err = error as Error;
+    return { error: err.message || "Failed to update church premium status." };
+  }
+}
+
