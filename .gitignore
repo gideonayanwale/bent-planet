@@ -23,5 +23,8 @@ certbot/
 .idea
 *.swp
 *.swo
+plan.md
+tsc-errors.txt
+tsc-results.txt
 
 node_modules

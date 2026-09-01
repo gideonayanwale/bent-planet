@@ -20,8 +20,8 @@ const nextConfig = {
 
 // Sentry configuration options
 const sentryWebpackPluginOptions = {
-  org: process.env.SENTRY_ORG || "bent-planet",
-  project: process.env.SENTRY_PROJECT || "bent-planet-saas",
+  org: process.env.SENTRY_ORG || "gideon-inioluwa-ayanwale",
+  project: process.env.SENTRY_PROJECT || "bent-planet",
   silent: !process.env.CI,
   widenClientFileUpload: true,
   hideSourceMaps: true,
