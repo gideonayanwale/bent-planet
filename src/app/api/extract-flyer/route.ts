@@ -50,180 +50,269 @@ Rules:
 2. Ensure dates use valid YYYY-MM-DD format if identifiable.
 3. Return ONLY the JSON object.`;
 
-    let extractedData: Record<string, any> | null = null;
-    let providerUsed = "";
+    interface ExtractionResult {
+      name?: string;
+      eventType?: string;
+      theme?: string;
+      speaker?: string;
+      hostName?: string;
+      date?: string;
+      endDate?: string;
+      startTime?: string;
+      caption?: string;
+      whatsappContactNumber?: string;
+      freeResourceName?: string;
+    }
 
-    // 1. Delegate across OpenRouter collaborative vision models
+    interface ModelExtraction {
+      modelName: string;
+      data: ExtractionResult;
+    }
+
+    const candidateExtractions: ModelExtraction[] = [];
+
+    // Helper to safely parse JSON from model output
+    const extractJSON = (content: string): ExtractionResult | null => {
+      try {
+        let cleanText = content.trim();
+        if (cleanText.startsWith("```")) {
+          cleanText = cleanText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
+        }
+        const firstBrace = cleanText.indexOf("{");
+        const lastBrace = cleanText.lastIndexOf("}");
+        if (firstBrace !== -1 && lastBrace !== -1) {
+          cleanText = cleanText.substring(firstBrace, lastBrace + 1);
+        }
+        const parsed = JSON.parse(cleanText);
+        if (parsed && typeof parsed === "object") {
+          return parsed as ExtractionResult;
+        }
+        return null;
+      } catch {
+        return null;
+      }
+    };
+
+    // Build array of concurrent collaborative model promises
+    const visionTasks: Promise<void>[] = [];
+
+    // 1. OpenRouter Vision Models (Run top 3 available vision models concurrently)
     if (openrouterKey) {
-      const openrouterVisionModels = [
+      const topOpenRouterModels = [
         "google/gemini-2.0-flash-exp:free",
-        "meta-llama/llama-3.2-11b-vision-instruct:free",
         "qwen/qwen-2.5-vl-72b-instruct:free",
+        "meta-llama/llama-3.2-11b-vision-instruct:free",
         "google/gemini-flash-1.5",
         "openai/gpt-4o-mini",
-        "openrouter/auto",
       ];
 
-      for (const model of openrouterVisionModels) {
-        try {
-          console.log(`[Flyer Vision Engine] Delegating to OpenRouter model: ${model}...`);
-          const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${openrouterKey}`,
-              "Content-Type": "application/json",
-              "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com",
-              "X-Title": "Bent Planet Church Platform",
-            },
-            body: JSON.stringify({
-              model,
-              messages: [
-                {
-                  role: "user",
-                  content: [
-                    { type: "text", text: prompt },
+      for (const model of topOpenRouterModels) {
+        visionTasks.push(
+          (async () => {
+            try {
+              const res = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+                method: "POST",
+                headers: {
+                  Authorization: `Bearer ${openrouterKey}`,
+                  "Content-Type": "application/json",
+                  "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com",
+                  "X-Title": "Bent Planet Church Platform",
+                },
+                body: JSON.stringify({
+                  model,
+                  messages: [
                     {
-                      type: "image_url",
-                      image_url: { url: imageBase64 },
+                      role: "user",
+                      content: [
+                        { type: "text", text: prompt },
+                        { type: "image_url", image_url: { url: imageBase64 } },
+                      ],
                     },
                   ],
-                },
-              ],
-            }),
-          });
+                }),
+              });
 
-          if (!res.ok) {
-            const errText = await res.text();
-            console.warn(`[Flyer Vision Engine] OpenRouter ${model} error (${res.status}):`, errText);
-            continue;
-          }
-
-          const data = await res.json();
-          const content = data?.choices?.[0]?.message?.content;
-          if (!content) continue;
-
-          let cleanText = content.trim();
-          if (cleanText.startsWith("```")) {
-            cleanText = cleanText.replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/i, "");
-          }
-          const firstBrace = cleanText.indexOf("{");
-          const lastBrace = cleanText.lastIndexOf("}");
-          if (firstBrace !== -1 && lastBrace !== -1) {
-            cleanText = cleanText.substring(firstBrace, lastBrace + 1);
-          }
-
-          const parsed = JSON.parse(cleanText);
-          if (parsed && typeof parsed === "object" && (parsed.name || parsed.speaker || parsed.theme)) {
-            extractedData = parsed;
-            providerUsed = `OpenRouter (${model})`;
-            break;
-          }
-        } catch (modelErr) {
-          console.warn(`[Flyer Vision Engine] OpenRouter ${model} failed:`, modelErr);
-        }
-      }
-    }
-
-    // 2. Fallback to Google Gemini Vision API if needed
-    if (!extractedData && geminiKey) {
-      try {
-        console.log("[Flyer Vision Engine] Delegating to Google Gemini 1.5 Flash Vision...");
-        const base64Data = imageBase64.includes("base64,") ? imageBase64.split("base64,")[1] : imageBase64;
-        const mimeType = imageBase64.startsWith("data:") ? imageBase64.split(";")[0].replace("data:", "") : "image/jpeg";
-
-        const res = await fetch(
-          `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
-          {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              contents: [
-                {
-                  parts: [
-                    { text: prompt + "\nStrictly valid JSON only." },
-                    {
-                      inlineData: {
-                        mimeType,
-                        data: base64Data,
-                      },
-                    },
-                  ],
-                },
-              ],
-              generationConfig: { responseMimeType: "application/json" },
-            }),
-          }
+              if (res.ok) {
+                const data = await res.json();
+                const content = data?.choices?.[0]?.message?.content;
+                if (content) {
+                  const parsed = extractJSON(content);
+                  if (parsed && (parsed.name || parsed.speaker || parsed.theme || parsed.date)) {
+                    candidateExtractions.push({ modelName: `OpenRouter (${model})`, data: parsed });
+                  }
+                }
+              }
+            } catch (e) {
+              console.warn(`[Collaborative Vision Engine] ${model} task failed:`, e);
+            }
+          })()
         );
-
-        if (res.ok) {
-          const gData = await res.json();
-          const text = gData?.candidates?.[0]?.content?.parts?.[0]?.text;
-          if (text) {
-            const parsed = JSON.parse(text);
-            if (parsed && typeof parsed === "object") {
-              extractedData = parsed;
-              providerUsed = "Google Gemini Vision (1.5 Flash)";
-            }
-          }
-        }
-      } catch (geminiErr) {
-        console.warn("[Flyer Vision Engine] Direct Gemini Vision fallback failed:", geminiErr);
       }
     }
 
-    // 3. Fallback to OpenAI Vision (gpt-4o-mini / gpt-4o) if needed
-    if (!extractedData && openaiKey) {
-      try {
-        console.log("[Flyer Vision Engine] Delegating to OpenAI Vision (gpt-4o-mini)...");
-        const res = await fetch("https://api.openai.com/v1/chat/completions", {
-          method: "POST",
-          headers: {
-            Authorization: `Bearer ${openaiKey}`,
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            model: "gpt-4o-mini",
-            messages: [
+    // 2. Direct Google Gemini Vision
+    if (geminiKey) {
+      visionTasks.push(
+        (async () => {
+          try {
+            const base64Data = imageBase64.includes("base64,") ? imageBase64.split("base64,")[1] : imageBase64;
+            const mimeType = imageBase64.startsWith("data:") ? imageBase64.split(";")[0].replace("data:", "") : "image/jpeg";
+
+            const res = await fetch(
+              `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiKey}`,
               {
-                role: "user",
-                content: [
-                  { type: "text", text: prompt },
-                  { type: "image_url", image_url: { url: imageBase64 } },
-                ],
-              },
-            ],
-            response_format: { type: "json_object" },
-          }),
-        });
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  contents: [
+                    {
+                      parts: [
+                        { text: prompt + "\nStrictly valid JSON only." },
+                        { inlineData: { mimeType, data: base64Data } },
+                      ],
+                    },
+                  ],
+                  generationConfig: { responseMimeType: "application/json" },
+                }),
+              }
+            );
 
-        if (res.ok) {
-          const oData = await res.json();
-          const content = oData?.choices?.[0]?.message?.content;
-          if (content) {
-            const parsed = JSON.parse(content);
-            if (parsed && typeof parsed === "object") {
-              extractedData = parsed;
-              providerUsed = "OpenAI Vision (gpt-4o-mini)";
+            if (res.ok) {
+              const gData = await res.json();
+              const text = gData?.candidates?.[0]?.content?.parts?.[0]?.text;
+              if (text) {
+                const parsed = extractJSON(text);
+                if (parsed && (parsed.name || parsed.speaker || parsed.theme || parsed.date)) {
+                  candidateExtractions.push({ modelName: "Google Gemini 1.5 Flash Vision", data: parsed });
+                }
+              }
             }
+          } catch (e) {
+            console.warn("[Collaborative Vision Engine] Direct Gemini vision task failed:", e);
           }
-        }
-      } catch (openaiErr) {
-        console.warn("[Flyer Vision Engine] Direct OpenAI Vision fallback failed:", openaiErr);
-      }
+        })()
+      );
     }
 
-    if (!extractedData) {
-      throw new Error("Unable to extract event details. Please verify your image and try again.");
+    // 3. Direct OpenAI Vision
+    if (openaiKey) {
+      visionTasks.push(
+        (async () => {
+          try {
+            const res = await fetch("https://api.openai.com/v1/chat/completions", {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${openaiKey}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                model: "gpt-4o-mini",
+                messages: [
+                  {
+                    role: "user",
+                    content: [
+                      { type: "text", text: prompt },
+                      { type: "image_url", image_url: { url: imageBase64 } },
+                    ],
+                  },
+                ],
+                response_format: { type: "json_object" },
+              }),
+            });
+
+            if (res.ok) {
+              const oData = await res.json();
+              const content = oData?.choices?.[0]?.message?.content;
+              if (content) {
+                const parsed = extractJSON(content);
+                if (parsed && (parsed.name || parsed.speaker || parsed.theme || parsed.date)) {
+                  candidateExtractions.push({ modelName: "OpenAI GPT-4o-mini Vision", data: parsed });
+                }
+              }
+            }
+          } catch (e) {
+            console.warn("[Collaborative Vision Engine] Direct OpenAI vision task failed:", e);
+          }
+        })()
+      );
+    }
+
+    // Wait for all collaborative models with a timeout promise
+    await Promise.allSettled(visionTasks);
+
+    if (candidateExtractions.length === 0) {
+      throw new Error("Unable to extract event details. None of the collaborative vision models returned valid data.");
+    }
+
+    // Collaborative Consensus & Merge Algorithm:
+    // Synthesizes the highest-confidence values across all responding models
+    const mergedData: ExtractionResult = {};
+    const participatingModels = candidateExtractions.map((c) => c.modelName);
+
+    const keys: (keyof ExtractionResult)[] = [
+      "name",
+      "eventType",
+      "theme",
+      "speaker",
+      "hostName",
+      "date",
+      "endDate",
+      "startTime",
+      "caption",
+      "whatsappContactNumber",
+      "freeResourceName",
+    ];
+
+    for (const key of keys) {
+      const values = candidateExtractions
+        .map((c) => c.data[key])
+        .filter((v): v is string => typeof v === "string" && v.trim().length > 0 && v.trim() !== "TBA");
+
+      if (values.length === 0) {
+        mergedData[key] = "";
+        continue;
+      }
+
+      // Count occurrences of each value
+      const frequencyMap = new Map<string, number>();
+      for (const val of values) {
+        frequencyMap.set(val, (frequencyMap.get(val) || 0) + 1);
+      }
+
+      // Find value with highest agreement / completeness
+      let bestVal = values[0];
+      let maxCount = 0;
+
+      frequencyMap.forEach((count, val) => {
+        if (count > maxCount || (count === maxCount && val.length > bestVal.length)) {
+          maxCount = count;
+          bestVal = val;
+        }
+      });
+
+      // Format date validation
+      if (key === "date" || key === "endDate") {
+        const dateMatch = bestVal.match(/\d{4}-\d{2}-\d{2}/);
+        if (dateMatch) {
+          bestVal = dateMatch[0];
+        }
+      }
+
+      mergedData[key] = bestVal;
     }
 
     return NextResponse.json({
       success: true,
-      data: extractedData,
-      providerUsed,
+      data: mergedData,
+      participatingModels,
+      collaborativeModelCount: candidateExtractions.length,
+      providerUsed: `Ensemble of ${candidateExtractions.length} Vision Model(s): ${participatingModels.slice(0, 3).join(", ")}${
+        participatingModels.length > 3 ? ` + ${participatingModels.length - 3} more` : ""
+      }`,
     });
   } catch (error: unknown) {
     const err = error as Error;
-    console.error("Error in flyer extraction API route:", err);
+    console.error("Error in collaborative flyer extraction API route:", err);
     return NextResponse.json(
       { error: err.message || "Failed to extract flyer details" },
       { status: 500 }

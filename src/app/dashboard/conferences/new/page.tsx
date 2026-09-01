@@ -178,7 +178,9 @@ export default function NewConferencePage() {
             if (data.freeResourceName) setFreeResourceName(data.freeResourceName);
           }
           
-          alert("Flyer scanned successfully! Event details have been autofilled.");
+          const modelCount = json.collaborativeModelCount || 1;
+          const provider = json.providerUsed || "Collaborative Vision Engine";
+          alert(`Flyer scanned collaboratively by ${modelCount} vision model(s) (${provider})! Event details have been autofilled.`);
         } catch (err: unknown) {
           const error = err as Error;
           console.error("Flyer extraction failed:", error);
