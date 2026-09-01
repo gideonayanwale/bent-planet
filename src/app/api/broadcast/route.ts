@@ -20,7 +20,19 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "This workspace has been suspended. Please contact operations support." }, { status: 403 });
     }
 
-    const { subject, bodyContent, ctaUrl, ctaText } = await req.json();
+    const {
+      subject,
+      bodyContent,
+      ctaUrl,
+      ctaText,
+      themeStyle,
+      badgeLabel,
+      preheader,
+      scriptureVerse,
+      scriptureReference,
+      secondaryLinkUrl,
+      secondaryLinkText,
+    } = await req.json();
 
     if (!subject || !bodyContent) {
       return NextResponse.json({ error: "Subject and Body content are required." }, { status: 400 });
@@ -77,6 +89,13 @@ export async function POST(req: Request) {
           bodyContent,
           ctaUrl,
           ctaText,
+          themeStyle,
+          badgeLabel,
+          preheader,
+          scriptureVerse,
+          scriptureReference,
+          secondaryLinkUrl,
+          secondaryLinkText,
         });
 
         if (resendId) {

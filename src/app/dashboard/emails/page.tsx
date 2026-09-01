@@ -41,7 +41,7 @@ export default async function EmailsPage() {
   const openRate = emails.length > 0 ? Math.round((totalOpened / emails.length) * 100) : 100;
 
   return (
-    <div className="space-y-8 max-w-6xl mx-auto pb-16">
+    <div className="space-y-8 max-w-7xl mx-auto pb-16">
       <div>
         <h1 className="text-3xl font-bold font-heading text-foreground">Email Center & Communication</h1>
         <p className="text-muted-foreground mt-1 text-sm">Send broadcast announcements to your subscribers and view delivery analytics.</p>

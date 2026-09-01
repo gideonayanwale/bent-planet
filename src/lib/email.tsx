@@ -7,6 +7,7 @@ import { ReminderEmail } from "@/emails/reminder-email";
 import { LiveNowEmail } from "@/emails/live-now-email";
 import { AnnouncementEmail } from "@/emails/announcement-email";
 import { getServerEnv } from "@/lib/env";
+import type { EmailThemeStyle } from "@/lib/email-templates";
 
 type SendChurchInviteEmailInput = {
   adminEmail: string;
@@ -166,6 +167,13 @@ type SendBroadcastEmailInput = {
   bodyContent: string;
   ctaUrl?: string | null;
   ctaText?: string | null;
+  themeStyle?: EmailThemeStyle;
+  badgeLabel?: string | null;
+  preheader?: string | null;
+  scriptureVerse?: string | null;
+  scriptureReference?: string | null;
+  secondaryLinkUrl?: string | null;
+  secondaryLinkText?: string | null;
 };
 
 export async function sendBroadcastEmail(input: SendBroadcastEmailInput) {
@@ -180,6 +188,13 @@ export async function sendBroadcastEmail(input: SendBroadcastEmailInput) {
       bodyContent={input.bodyContent}
       ctaUrl={input.ctaUrl}
       ctaText={input.ctaText}
+      themeStyle={input.themeStyle}
+      badgeLabel={input.badgeLabel}
+      preheader={input.preheader}
+      scriptureVerse={input.scriptureVerse}
+      scriptureReference={input.scriptureReference}
+      secondaryLinkUrl={input.secondaryLinkUrl}
+      secondaryLinkText={input.secondaryLinkText}
     />,
   );
 
