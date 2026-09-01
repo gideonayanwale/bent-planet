@@ -84,6 +84,7 @@ export interface ThemeConfig {
   // Typography
   headingText: string;
   accentColor: string;
+  accentBg: string;
   accentLight: string;
   accentDark: string;
   // Sidebar
@@ -130,6 +131,7 @@ export const THEME_CONFIGS: Record<TemplateId, ThemeConfig> = {
     cardSubtext: "text-slate-600",
     headingText: "text-slate-900",
     accentColor: "text-indigo-600",
+    accentBg: "bg-indigo-600",
     accentLight: "bg-indigo-50",
     accentDark: "bg-indigo-900",
     sidebarBg: "bg-white",
@@ -169,6 +171,7 @@ export const THEME_CONFIGS: Record<TemplateId, ThemeConfig> = {
     cardSubtext: "text-zinc-400",
     headingText: "text-amber-100",
     accentColor: "text-amber-400",
+    accentBg: "bg-amber-500",
     accentLight: "bg-amber-950/50",
     accentDark: "bg-amber-900",
     sidebarBg: "bg-zinc-900",
@@ -208,6 +211,7 @@ export const THEME_CONFIGS: Record<TemplateId, ThemeConfig> = {
     cardSubtext: "text-stone-600",
     headingText: "text-stone-900",
     accentColor: "text-stone-700",
+    accentBg: "bg-stone-700",
     accentLight: "bg-stone-100",
     accentDark: "bg-stone-800",
     sidebarBg: "bg-white",
@@ -247,6 +251,7 @@ export const THEME_CONFIGS: Record<TemplateId, ThemeConfig> = {
     cardSubtext: "text-gray-400",
     headingText: "text-lime-300",
     accentColor: "text-lime-400",
+    accentBg: "bg-lime-500",
     accentLight: "bg-lime-950/50",
     accentDark: "bg-lime-900",
     sidebarBg: "bg-gray-900",

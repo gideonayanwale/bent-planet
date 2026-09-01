@@ -10,6 +10,7 @@ import {
   SlidersIcon,
   Loader2Icon,
   XIcon,
+  SparklesIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";

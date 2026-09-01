@@ -319,7 +319,7 @@ export default async function PublicConferencePage({
                         </div>
                         <div className="h-2.5 w-full bg-slate-200/50 rounded-full overflow-hidden">
                           <div 
-                            className={`h-full ${theme.accentBg} transition-all duration-1000 ease-out`}
+                            className={`h-full ${theme.ctaBg} transition-all duration-1000 ease-out`}
                             style={{ width: `${Math.min(100, Math.max(0, (subscriberCount / (conference.rsvp_limit as number)) * 100))}%` }}
                           />
                         </div>

@@ -3,13 +3,32 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://bentplanet.com"),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com"),
   title: {
-    default: "Bent Planet",
+    default: "Bent Planet — Church & Ministry Conference Growth Platform",
     template: "%s | Bent Planet",
   },
   description:
-    "Invite-only conference growth software for churches, ministries, and Christian online events.",
+    "Invite-only platform for churches and Christian ministries to host interactive conferences, automate livestream broadcasts, engage attendees via WhatsApp, and manage subscribers.",
+  icons: {
+    icon: "/logo-icon.svg",
+    shortcut: "/logo-icon.svg",
+    apple: "/logo-icon.svg",
+  },
+  openGraph: {
+    title: "Bent Planet — Church & Ministry Event Platform",
+    description:
+      "Empowering churches with livestream hubs, WhatsApp community integration, AI copywriting, and conference attendee management.",
+    url: "https://bentplanet.com",
+    siteName: "Bent Planet",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Bent Planet — Church & Ministry Growth Software",
+    description:
+      "Interactive livestream hubs, WhatsApp community growth, and ministry subscriber management for Christian organizations.",
+  },
 };
 
 import { Analytics } from "@vercel/analytics/react";

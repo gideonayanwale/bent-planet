@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     }
 
     // Check hourly rate limit for free tier
-    const isPremium = church.is_premium || false;
+    const isPremium = Boolean((church as any).is_premium);
     const now = Date.now();
     const churchKey = church.id;
 

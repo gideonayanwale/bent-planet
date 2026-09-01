@@ -152,7 +152,7 @@ export function EditConferenceForm({
           if (data) {
             setFormData((prev) => ({
               ...prev,
-              name: data.name || prev.name,
+              title: (data.title as string) || prev.title,
               theme: data.theme || prev.theme,
               speaker: data.speaker || prev.speaker,
               hostName: data.hostName || prev.hostName,

@@ -49,9 +49,9 @@ export async function generateMetadata({
       description,
       type: "profile",
       siteName: "Bent Planet",
-      images: church.cover_url ? [
+      images: church.banner_url ? [
         {
-          url: church.cover_url,
+          url: church.banner_url,
           width: 1200,
           height: 630,
           alt: `${church.name} Cover`,
@@ -69,7 +69,7 @@ export async function generateMetadata({
       card: "summary_large_image",
       title,
       description,
-      images: church.cover_url ? [church.cover_url] : [],
+      images: church.banner_url ? [church.banner_url] : [],
     },
   };
 }

@@ -19,7 +19,9 @@ build-stdout.txt
 certbot/
 
 .vscode
+.snapshots/
 .idea
 *.swp
 *.swo
 
+node_modules

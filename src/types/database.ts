@@ -55,6 +55,7 @@ export interface Database {
           phone_number: string | null;
           church_website_url: string | null;
           onboarding_tour_completed: boolean | null;
+          is_premium: boolean | null;
         };
         Insert: {
           id?: string;
@@ -101,6 +102,7 @@ export interface Database {
           phone_number?: string | null;
           church_website_url?: string | null;
           onboarding_tour_completed?: boolean | null;
+          is_premium?: boolean | null;
         };
         Update: {
           id?: string;
@@ -147,6 +149,7 @@ export interface Database {
           phone_number?: string | null;
           church_website_url?: string | null;
           onboarding_tour_completed?: boolean | null;
+          is_premium?: boolean | null;
         };
         Relationships: [];
       };
