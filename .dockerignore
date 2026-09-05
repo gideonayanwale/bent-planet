@@ -30,6 +30,7 @@ LICENSE
 
 # Logs & artifacts
 *.log
+*.txt
 *.tsbuildinfo
 build-output.txt
 build-stderr.txt
