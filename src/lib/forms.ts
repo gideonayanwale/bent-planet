@@ -17,6 +17,26 @@ export const loginSchema = z.object({
   password: z.string().min(8, "Password must be at least 8 characters."),
 });
 
+export const forgotPasswordSchema = z.object({
+  email: z.string().trim().email("Enter a valid email address."),
+});
+
+export const resetPasswordSchema = z
+  .object({
+    password: z
+      .string()
+      .min(8, "Password must be at least 8 characters.")
+      .refine((val) => /[A-Z]/.test(val), "Must contain at least one uppercase letter.")
+      .refine((val) => /[a-z]/.test(val), "Must contain at least one lowercase letter.")
+      .refine((val) => /[0-9]/.test(val), "Must contain at least one number.")
+      .refine((val) => /[^A-Za-z0-9]/.test(val), "Must contain at least one special character (!@#$%^&*)."),
+    confirmPassword: z.string().min(8, "Confirm your new password."),
+  })
+  .refine((values) => values.password === values.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
+
 export const inviteSchema = z.object({
   churchName: z.string().trim().min(2, "Church name is required.").max(120),
   adminEmail: z.string().trim().email("Enter a valid admin email address."),
@@ -55,6 +75,8 @@ export const onboardingSchema = z
   });
 
 export type LoginInput = z.infer<typeof loginSchema>;
+export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>;
+export type ResetPasswordInput = z.infer<typeof resetPasswordSchema>;
 export type InviteInput = z.infer<typeof inviteSchema>;
 export type OnboardingInput = z.infer<typeof onboardingSchema>;
 

@@ -20,6 +20,8 @@ type LoginPageProps = {
   searchParams?: {
     email?: string;
     onboarding?: string;
+    reset?: string;
+    error?: string;
   };
 };
 
@@ -32,6 +34,9 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
 
   const defaultEmail = typeof searchParams?.email === "string" ? searchParams.email : "";
   const showOnboardingNote = searchParams?.onboarding === "complete";
+  const showResetSuccess = searchParams?.reset === "success";
+  const showErrorExpired = searchParams?.error === "expired";
+  const showErrorInvalid = searchParams?.error === "invalid_token" || searchParams?.error === "session_expired";
 
   return (
     <main className="min-h-screen">
@@ -91,8 +96,23 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 Use the email and password tied to your Bent Planet account.
               </CardDescription>
               {showOnboardingNote ? (
-                <div className="rounded-2xl border border-success/20 bg-success/10 px-4 py-3 text-sm text-emerald-900">
+                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300 font-medium">
                   Onboarding is complete. Sign in with the password you just created.
+                </div>
+              ) : null}
+              {showResetSuccess ? (
+                <div className="rounded-2xl border border-emerald-500/20 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300 font-medium">
+                  ✅ Your password has been successfully reset! Please sign in with your new password.
+                </div>
+              ) : null}
+              {showErrorExpired ? (
+                <div className="rounded-2xl border border-amber-500/20 bg-amber-50 dark:bg-amber-950/30 px-4 py-3 text-sm text-amber-900 dark:text-amber-300 font-medium">
+                  ⏱️ Your password reset link has expired (15-minute limit). Please request a new link below or try signing in.
+                </div>
+              ) : null}
+              {showErrorInvalid ? (
+                <div className="rounded-2xl border border-rose-500/20 bg-rose-50 dark:bg-rose-950/30 px-4 py-3 text-sm text-rose-900 dark:text-rose-300 font-medium">
+                  ⚠️ Your password reset link was invalid or expired. Please request a new password reset link.
                 </div>
               ) : null}
             </CardHeader>

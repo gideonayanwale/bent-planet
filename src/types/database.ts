@@ -623,6 +623,27 @@ export interface Database {
           }
         ];
       };
+      auth_rate_limits: {
+        Row: {
+          id: string;
+          identifier: string;
+          action: string;
+          requested_at: string;
+        };
+        Insert: {
+          id?: string;
+          identifier: string;
+          action: string;
+          requested_at?: string;
+        };
+        Update: {
+          id?: string;
+          identifier?: string;
+          action?: string;
+          requested_at?: string;
+        };
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: Record<string, never>;
