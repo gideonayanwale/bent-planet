@@ -623,6 +623,38 @@ export interface Database {
           }
         ];
       };
+      church_chat_messages: {
+        Row: {
+          id: string;
+          church_id: string;
+          sender_id: string;
+          body: string;
+          created_at: string | null;
+        };
+        Insert: {
+          id?: string;
+          church_id: string;
+          sender_id: string;
+          body: string;
+          created_at?: string | null;
+        };
+        Update: {
+          id?: string;
+          church_id?: string;
+          sender_id?: string;
+          body?: string;
+          created_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "church_chat_messages_church_id_fkey";
+            columns: ["church_id"];
+            isOneToOne: false;
+            referencedRelation: "churches";
+            referencedColumns: ["id"];
+          }
+        ];
+      };
       auth_rate_limits: {
         Row: {
           id: string;

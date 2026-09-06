@@ -39,6 +39,7 @@ export default async function DashboardLayout({
         churchName={church?.name}
         churchLogo={church?.logo_url}
         adminEmail={user.email}
+        churchId={church?.id}
       />
       <main className="container py-8 sm:py-10 px-4 sm:px-8 max-w-7xl mx-auto flex-1">
         {children}

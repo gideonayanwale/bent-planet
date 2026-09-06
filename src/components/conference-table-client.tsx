@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useLiveConferences } from "@/lib/hooks/use-live-conferences";
 import {
   EditIcon,
   Trash2Icon,
@@ -25,16 +26,25 @@ type ConferenceRow = Database["public"]["Tables"]["conferences"]["Row"] & {
 interface ConferenceTableClientProps {
   conferences: ConferenceRow[];
   churchSlug: string;
+  churchId?: string;
 }
 
 export function ConferenceTableClient({
   conferences,
   churchSlug,
+  churchId,
 }: ConferenceTableClientProps) {
   const router = useRouter();
   const [conferenceToDelete, setConferenceToDelete] = useState<ConferenceRow | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+
+  // Auto-refresh conference list when a Realtime change arrives
+  const handleConferenceChange = useCallback(() => {
+    router.refresh();
+  }, [router]);
+
+  useLiveConferences(churchId ?? "", handleConferenceChange);
 
   const handleDelete = async () => {
     if (!conferenceToDelete) return;

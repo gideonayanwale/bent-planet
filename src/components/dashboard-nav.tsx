@@ -26,6 +26,7 @@ interface DashboardNavProps {
   churchName?: string;
   churchLogo?: string | null;
   adminEmail?: string;
+  churchId?: string;
   isSuperAdmin?: boolean;
 }
 
@@ -33,6 +34,7 @@ export function DashboardNav({
   churchName,
   churchLogo,
   adminEmail,
+  churchId,
   isSuperAdmin = false,
 }: DashboardNavProps) {
   const pathname = usePathname();
@@ -99,7 +101,7 @@ export function DashboardNav({
 
         <div className="flex items-center gap-2 sm:gap-3">
           <ThemeToggle />
-          <NotificationBell />
+          <NotificationBell churchId={churchId} />
           
           {!isSuperAdmin && (
             <Button asChild variant="ghost" size="sm" className="hidden sm:inline-flex text-muted-foreground text-xs font-semibold">

@@ -1,9 +1,10 @@
 "use client";
 
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { BellIcon, CheckCheckIcon, LoaderIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { useLiveNotifications } from "@/lib/hooks/use-live-notifications";
 function formatDistanceToNow(date: Date, options?: { addSuffix?: boolean }): string {
   const diffInSeconds = Math.floor((Date.now() - date.getTime()) / 1000);
   if (diffInSeconds < 60) return options?.addSuffix ? "just now" : "less than a minute";
@@ -38,13 +39,45 @@ const TYPE_COLORS: Record<string, string> = {
   system: "bg-gray-100 text-gray-600",
 };
 
-export function NotificationBell() {
+export function NotificationBell({ churchId }: { churchId?: string }) {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [open, setOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
 
   const unreadCount = notifications.filter((n) => !n.read).length;
+
+  // Live Realtime subscription: prepend new notifications as they arrive
+  const handleLiveNotification = useCallback(
+    (record: {
+      id: string;
+      church_id: string | null;
+      type: string;
+      title: string;
+      message: string;
+      action_url: string | null;
+      read: boolean | null;
+      created_at: string | null;
+    }) => {
+      setNotifications((prev) => {
+        // Deduplicate — avoid adding if we already have this ID
+        if (prev.some((n) => n.id === record.id)) return prev;
+        const mapped: Notification = {
+          id: record.id,
+          type: record.type,
+          title: record.title,
+          message: record.message,
+          action_url: record.action_url ?? undefined,
+          read: Boolean(record.read),
+          created_at: record.created_at ?? new Date().toISOString(),
+        };
+        return [mapped, ...prev];
+      });
+    },
+    [],
+  );
+
+  useLiveNotifications(churchId ?? "", handleLiveNotification);
 
   async function fetchNotifications() {
     setLoading(true);

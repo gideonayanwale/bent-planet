@@ -63,6 +63,7 @@ export default async function ConferencesPage() {
           <ConferenceTableClient
             conferences={typedConferences}
             churchSlug={church.slug}
+            churchId={church.id}
           />
         </CardContent>
       </Card>
