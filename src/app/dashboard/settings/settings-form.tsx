@@ -55,7 +55,11 @@ export function SettingsForm({ church }: SettingsFormProps) {
 
     try {
       const formData = new FormData(e.currentTarget);
-      await saveChurchSettings(formData);
+      const res = await saveChurchSettings(formData);
+      if (res?.error) {
+        setFeedback({ type: "error", message: res.error });
+        return;
+      }
       setFeedback({ type: "success", message: "Church profile and branding updated successfully!" });
       router.refresh();
     } catch (err: unknown) {
