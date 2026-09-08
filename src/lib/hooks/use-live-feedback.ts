@@ -6,12 +6,19 @@ import type { Database } from "@/types/database";
 
 type FeedbackRow = Database["public"]["Tables"]["feedback_messages"]["Row"];
 
+type FeedbackBroadcastPayload = {
+  payload?: {
+    record?: FeedbackRow;
+  };
+  record?: FeedbackRow;
+};
+
 /**
- * Subscribe to live feedback message inserts for the authenticated church admin.
+ * Subscribe to live feedback messages for an authenticated church admin.
  *
- * The `feedback_messages` table doesn't have RLS policies that filter by
- * church_id for SELECT (it uses the admin client in the API route), but
- * the postgres_changes filter limits events to the admin's church_id.
+ * Listens on the private channel `church:${churchId}:feedback` for:
+ * 1. Broadcast `INSERT` events (fired by DB triggers)
+ * 2. Postgres Changes `INSERT` events on table `feedback_messages`
  */
 export function useLiveFeedback(
   churchId: string,
@@ -33,7 +40,15 @@ export function useLiveFeedback(
       if (cancelled) return;
 
       channel = supabase
-        .channel(`live:feedback:${churchId}`)
+        .channel(`church:${churchId}:feedback`, {
+          config: { private: true },
+        })
+        .on("broadcast", { event: "INSERT" }, (event: FeedbackBroadcastPayload) => {
+          const record = event?.payload?.record ?? event?.record;
+          if (record) {
+            callbackRef.current(record);
+          }
+        })
         .on(
           "postgres_changes",
           {
@@ -43,7 +58,9 @@ export function useLiveFeedback(
             filter: `church_id=eq.${churchId}`,
           },
           (payload) => {
-            callbackRef.current(payload.new as FeedbackRow);
+            if (payload.new) {
+              callbackRef.current(payload.new as FeedbackRow);
+            }
           },
         )
         .subscribe();

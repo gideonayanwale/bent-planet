@@ -6,17 +6,26 @@ import type { Database } from "@/types/database";
 
 type NotificationRow = Database["public"]["Tables"]["notifications"]["Row"];
 
+type NotificationBroadcastPayload = {
+  payload?: {
+    record?: NotificationRow;
+  };
+  record?: NotificationRow;
+};
+
 /**
- * Subscribe to live notification inserts for the authenticated church admin.
+ * Subscribe to live notifications for an authenticated church admin.
  *
- * RLS on the `notifications` table ensures only rows matching the admin's
- * church_id are delivered to the client via postgres_changes.
+ * Listens on the private channel `church:${churchId}:notifications` for:
+ * 1. Broadcast `INSERT` events (fired by database triggers)
+ * 2. Postgres Changes `INSERT` events (fired by supabase_realtime publication)
+ *
+ * RLS ensures only authorized church admins receive these notifications.
  */
 export function useLiveNotifications(
   churchId: string,
   onNotification: (notification: NotificationRow) => void,
 ) {
-  // Stable ref so we don't re-subscribe when the callback identity changes
   const callbackRef = useRef(onNotification);
   callbackRef.current = onNotification;
 
@@ -33,7 +42,19 @@ export function useLiveNotifications(
       if (cancelled) return;
 
       channel = supabase
-        .channel(`live:notifications:${churchId}`)
+        .channel(`church:${churchId}:notifications`, {
+          config: { private: true },
+        })
+        .on(
+          "broadcast",
+          { event: "INSERT" },
+          (event: NotificationBroadcastPayload) => {
+            const record = event?.payload?.record ?? event?.record;
+            if (record) {
+              callbackRef.current(record);
+            }
+          },
+        )
         .on(
           "postgres_changes",
           {
@@ -43,7 +64,9 @@ export function useLiveNotifications(
             filter: `church_id=eq.${churchId}`,
           },
           (payload) => {
-            callbackRef.current(payload.new as NotificationRow);
+            if (payload.new) {
+              callbackRef.current(payload.new as NotificationRow);
+            }
           },
         )
         .subscribe();

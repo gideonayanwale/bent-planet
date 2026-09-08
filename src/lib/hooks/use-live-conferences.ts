@@ -12,12 +12,22 @@ export type ConferenceChangeEvent = {
   oldRecord?: ConferenceRow;
 };
 
+type ConferenceBroadcastPayload = {
+  payload?: {
+    record?: ConferenceRow;
+    old_record?: ConferenceRow;
+  };
+  record?: ConferenceRow;
+};
+
 /**
- * Subscribe to live conference changes for the authenticated church admin.
+ * Subscribe to live conference updates for the authenticated church admin.
  *
- * RLS on the `conferences` table ensures only rows belonging to the admin's
- * church are delivered. The callback receives the event type and the affected
- * conference record so the consumer can update local state or refetch.
+ * Listens on the private channel `church:${churchId}:conferences` for:
+ * 1. Broadcast `INSERT`, `UPDATE`, `DELETE` events (fired by DB triggers)
+ * 2. Postgres Changes on table `conferences` (fired by supabase_realtime)
+ *
+ * RLS ensures only authorized church admins receive conference updates.
  */
 export function useLiveConferences(
   churchId: string,
@@ -38,8 +48,33 @@ export function useLiveConferences(
       const supabase = await prepareRealtime();
       if (cancelled) return;
 
+      const handleBroadcast = (
+        eventType: "INSERT" | "UPDATE" | "DELETE",
+        event: ConferenceBroadcastPayload,
+      ) => {
+        const record = event?.payload?.record ?? event?.record;
+        if (record) {
+          callbackRef.current({
+            eventType,
+            record,
+            oldRecord: event?.payload?.old_record,
+          });
+        }
+      };
+
       channel = supabase
-        .channel(`live:conferences:${churchId}`)
+        .channel(`church:${churchId}:conferences`, {
+          config: { private: true },
+        })
+        .on("broadcast", { event: "INSERT" }, (event: ConferenceBroadcastPayload) =>
+          handleBroadcast("INSERT", event),
+        )
+        .on("broadcast", { event: "UPDATE" }, (event: ConferenceBroadcastPayload) =>
+          handleBroadcast("UPDATE", event),
+        )
+        .on("broadcast", { event: "DELETE" }, (event: ConferenceBroadcastPayload) =>
+          handleBroadcast("DELETE", event),
+        )
         .on(
           "postgres_changes",
           {
@@ -69,3 +104,6 @@ export function useLiveConferences(
     };
   }, [churchId]);
 }
+
+// Named alias for convenience
+export const useLiveConference = useLiveConferences;

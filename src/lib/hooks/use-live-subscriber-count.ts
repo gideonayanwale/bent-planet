@@ -4,16 +4,23 @@ import { useEffect, useRef, useCallback } from "react";
 import { prepareRealtime } from "@/lib/realtime";
 import { createBrowserSupabaseClient } from "@/lib/supabase/browser";
 
+type SubscriberCountPayload = {
+  payload?: {
+    conference_id?: string;
+    subscriber_count?: number;
+    operation?: "INSERT" | "UPDATE" | "DELETE";
+  };
+  subscriber_count?: number;
+};
+
 /**
- * Subscribe to live subscriber count changes for a specific conference.
+ * Subscribe to live subscriber/RSVP count changes for a conference.
  *
- * When a subscriber is added or removed (INSERT/DELETE on `subscribers`),
- * this hook re-fetches the count from the database. Only the aggregate count
- * is exposed — subscriber names, emails, and phone numbers are never sent
- * over the Realtime channel or exposed to the callback.
+ * Listens on the private channel `conference:${conferenceId}:subscribers` for:
+ * 1. Broadcast `subscriber_count_changed` event sent by DB triggers containing ONLY the count
+ * 2. Postgres Changes on `subscribers` table as fallback to re-fetch exact count
  *
- * RLS on the `subscribers` table ensures only the church admin's data is
- * counted and delivered.
+ * Privacy guarantee: subscriber names, emails, and phone numbers are NEVER broadcast or exposed.
  */
 export function useLiveSubscriberCount(
   conferenceId: string,
@@ -29,7 +36,9 @@ export function useLiveSubscriberCount(
       .select("*", { count: "exact", head: true })
       .eq("conference_id", conferenceId);
 
-    callbackRef.current(count ?? 0);
+    if (typeof count === "number") {
+      callbackRef.current(count);
+    }
   }, [conferenceId]);
 
   useEffect(() => {
@@ -45,7 +54,22 @@ export function useLiveSubscriberCount(
       if (cancelled) return;
 
       channel = supabase
-        .channel(`live:subscribers:${conferenceId}`)
+        .channel(`conference:${conferenceId}:subscribers`, {
+          config: { private: true },
+        })
+        .on(
+          "broadcast",
+          { event: "subscriber_count_changed" },
+          (event: SubscriberCountPayload) => {
+            const count =
+              event?.payload?.subscriber_count ?? event?.subscriber_count;
+            if (typeof count === "number") {
+              callbackRef.current(count);
+            } else {
+              fetchCount();
+            }
+          },
+        )
         .on(
           "postgres_changes",
           {
