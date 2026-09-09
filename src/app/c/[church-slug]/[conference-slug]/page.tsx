@@ -17,6 +17,12 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Metadata } from "next";
+import { ConferenceWireframe } from "@/components/wireframes/conference-wireframe";
+import {
+  WireframePresetId,
+  WIREFRAME_PRESETS,
+  WireframeSlotData,
+} from "@/lib/wireframe-config";
 
 interface AgendaItem {
   time?: string;
@@ -106,6 +112,72 @@ export default async function PublicConferencePage({
   const prefilledWhatsappMsg = encodeURIComponent(
     `Hi ${hostDisplayName}, I want to register for ${conference.title} starting on ${startDateStr}.`
   );
+
+  // Check if conference specifies a wireframe preset (or theme corresponding to a preset)
+  const potentialPresetId = (conference.flyer_layout || conference.template_id) as WireframePresetId;
+  const isWireframePreset = Boolean(potentialPresetId && potentialPresetId in WIREFRAME_PRESETS);
+
+  if (isWireframePreset) {
+    const slotData: WireframeSlotData = {
+      conferenceTitle: conference.title,
+      eventTypeBadge: conference.event_type || "CONFERENCE",
+      themeTagline: conference.theme || "Faith Gathering",
+      churchName: church?.name || "Our Church",
+      hostName: hostDisplayName,
+      heroContextHeadline: conference.caption || `Join ${church?.name || "our church"} for ${conference.title}.`,
+      scriptureAnchor: conference.theme
+        ? `“Gather my saints together unto me; those that have made a covenant with me by sacrifice.”`
+        : `“The Lord will do great things for us, whereof we are glad.” — Psalm 126:3`,
+      fullDescription: conference.full_description || conference.caption || "Join us online for this extraordinary time in God's presence.",
+      streamUrl: conference.stream_url || undefined,
+      conferenceDate: startDateStr,
+      conferenceTime: conference.conference_time || "TBA",
+      timezone: conference.timezone || "",
+      rsvpLimit: conference.rsvp_limit || undefined,
+      confirmedRsvps: subscriberCount,
+      speaker: {
+        name: conference.speaker_name || hostDisplayName,
+        title: conference.speaker_role || "Featured Minister",
+        bio: conference.speaker_bio || `Ministering the Word of God with revelation and divine power at ${conference.title}.`,
+        callingBadges: [conference.theme || "Ministry", conference.event_type || "Keynote"],
+      },
+      agenda: agenda.map((item) => ({
+        time: item.time || "TBA",
+        title: item.title || "Session",
+        trackCategory: (item.title?.toLowerCase().includes("worship")
+          ? "Worship"
+          : item.title?.toLowerCase().includes("altar")
+          ? "Altar Call"
+          : item.title?.toLowerCase().includes("workshop")
+          ? "Workshop"
+          : "Keynote") as any,
+        description: item.description || "",
+      })),
+      freeResource: conference.free_resource_name
+        ? {
+            title: conference.free_resource_name,
+            subtitle: "Download companion study material and notes for attendees",
+            format: "PDF Booklet",
+            downloadUrl: conference.free_resource_url || "#",
+          }
+        : undefined,
+      whatsapp: {
+        groupUrl: conference.whatsapp_group_url || church?.whatsapp_group_url || undefined,
+        coordinatorPhone: coordinatorCleanNumber || undefined,
+        prefilledMessage: `Hi ${hostDisplayName}, I want to register for ${conference.title} starting on ${startDateStr}.`,
+      },
+    };
+
+    return (
+      <ConferenceWireframe
+        presetId={potentialPresetId}
+        templateId={conference.template_id as any}
+        slotData={slotData}
+        churchId={church?.id}
+        conferenceId={conference.id}
+      />
+    );
+  }
 
   return (
     <div className={`min-h-screen ${theme.pageBg} ${theme.pageText} selection:bg-indigo-500 selection:text-white flex flex-col justify-between`}>

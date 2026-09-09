@@ -98,6 +98,10 @@ export default function HomePage() {
             <a href="#how-it-works" className="hover:text-foreground transition-colors">
               How It Works
             </a>
+            <Link href="/templates" className="hover:text-foreground transition-colors flex items-center gap-1 font-semibold text-indigo-500 dark:text-indigo-400">
+              <SparklesIcon className="h-3.5 w-3.5" />
+              Templates & Wireframes
+            </Link>
             <Link href="/docs" className="hover:text-foreground transition-colors flex items-center gap-1">
               <BookOpenIcon className="h-3.5 w-3.5" />
               Docs
@@ -138,10 +142,16 @@ export default function HomePage() {
           <Button asChild size="lg" className="w-full sm:w-auto btn-gradient text-white font-bold text-sm px-8 h-12 rounded-2xl shadow-xl hover:opacity-90 transition">
             <Link href="/request-access">Request Church Workspace</Link>
           </Button>
+          <Button asChild variant="outline" size="lg" className="w-full sm:w-auto glass-pill text-foreground hover:bg-accent/20 font-semibold text-sm px-8 h-12 rounded-2xl border-indigo-500/30 shadow-xs">
+            <Link href="/templates">
+              <SparklesIcon className="mr-2 h-4 w-4 text-indigo-500" />
+              Templates & Wireframes
+            </Link>
+          </Button>
           <Button asChild variant="outline" size="lg" className="w-full sm:w-auto glass-pill text-foreground hover:bg-accent/20 font-semibold text-sm px-8 h-12 rounded-2xl">
             <Link href="/docs">
               <BookOpenIcon className="mr-2 h-4 w-4 text-indigo-500" />
-              Explore Documentation
+              Docs
             </Link>
           </Button>
         </div>
@@ -277,6 +287,9 @@ export default function HomePage() {
           </div>
 
           <div className="flex flex-wrap items-center gap-6 text-muted-foreground">
+            <Link href="/templates" className="hover:text-foreground transition font-medium text-indigo-500 dark:text-indigo-400">
+              Templates & Wireframes
+            </Link>
             <Link href="/docs" className="hover:text-foreground transition">
               Documentation
             </Link>

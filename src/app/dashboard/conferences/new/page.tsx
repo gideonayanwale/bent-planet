@@ -1,11 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import {
   SparklesIcon,
   CheckCircle2Icon,
   Loader2Icon,
+  LayersIcon,
+  ArrowRightIcon,
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
@@ -14,6 +17,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { TemplatePicker } from "@/components/template-picker";
+import { ALL_WIREFRAME_PRESETS, getWireframePreset } from "@/lib/wireframe-config";
 import { saveConferenceAction } from "./actions";
 
 const EVENT_TYPES = [
@@ -46,6 +50,10 @@ const TEMPLATE_OPTIONS = [
   { id: "dark_revival", name: "Dark Atmosphere & Fire", desc: "Cinematic deep amber & gold" },
   { id: "cathedral_minimal", name: "Minimalist Cathedral", desc: "Clean white & slate elegance" },
   { id: "youth_energy", name: "High Energy Youth", desc: "Vibrant neon & bold typography" },
+  { id: "executive_summit", name: "Executive Kingdom Summit", desc: "Distinguished royal navy & champagne gold" },
+  { id: "grace_sage", name: "Grace & Fellowship", desc: "Warm ivory & organic sage emerald" },
+  { id: "bento_apex", name: "Bento Apex (Modern Tech)", desc: "Asymmetrical modular bento layout" },
+  { id: "midnight_sapphire", name: "Midnight Sapphire", desc: "Deep oceanic blue with cyan brilliance" },
 ];
 
 export default function NewConferencePage() {
@@ -64,6 +72,25 @@ export default function NewConferencePage() {
   const [whatsappGroupUrl, setWhatsappGroupUrl] = useState("");
   const [whatsappContactNumber, setWhatsappContactNumber] = useState("");
   const [templateId, setTemplateId] = useState("modern_gradient");
+  const [presetId, setPresetId] = useState("bento_apex");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+      const urlTemplate = params.get("template");
+      const urlPreset = params.get("preset");
+      if (urlTemplate) {
+        setTemplateId(urlTemplate);
+      }
+      if (urlPreset) {
+        setPresetId(urlPreset);
+        const p = getWireframePreset(urlPreset);
+        if (p && !urlTemplate) {
+          setTemplateId(p.recommendedTheme);
+        }
+      }
+    }
+  }, []);
   const [enableReplay, setEnableReplay] = useState(true);
   const [freeResourceName, setFreeResourceName] = useState("");
   const [freeResourceUrl, setFreeResourceUrl] = useState("");
@@ -219,6 +246,8 @@ export default function NewConferencePage() {
       formData.append("whatsappGroupUrl", whatsappGroupUrl);
       formData.append("whatsappContactNumber", whatsappContactNumber);
       formData.append("templateId", templateId);
+      formData.append("flyerLayout", presetId);
+      formData.append("presetId", presetId);
       formData.append("enableReplay", String(enableReplay));
       formData.append("freeResourceName", freeResourceName);
       formData.append("freeResourceUrl", freeResourceUrl);
@@ -422,7 +451,71 @@ export default function NewConferencePage() {
                   </div>
                 </div>
 
-                <div className="space-y-1.5 md:col-span-2">
+                {/* Wireframe Preset Architecture Selector */}
+                <div className="space-y-3 md:col-span-2 pt-2 border-t border-slate-100">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                    <div>
+                      <Label className="text-xs font-bold text-slate-900 flex items-center gap-1.5">
+                        <LayersIcon className="w-3.5 h-3.5 text-indigo-600" />
+                        Fixed-but-Flexible Wireframe Architecture
+                      </Label>
+                      <p className="text-[11px] text-slate-500 mt-0.5">
+                        Select an invariant faith conversion topology for your conference landing and live stream portal.
+                      </p>
+                    </div>
+                    <Link
+                      href="/templates"
+                      target="_blank"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:underline"
+                    >
+                      <SparklesIcon className="w-3.5 h-3.5" />
+                      <span>Device Simulator & Templates Showroom</span>
+                      <ArrowRightIcon className="w-3.5 h-3.5" />
+                    </Link>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+                    {ALL_WIREFRAME_PRESETS.map((p) => {
+                      const isSelected = presetId === p.id;
+                      return (
+                        <button
+                          key={p.id}
+                          type="button"
+                          onClick={() => {
+                            setPresetId(p.id);
+                            setTemplateId(p.recommendedTheme);
+                          }}
+                          className={`text-left p-3.5 rounded-2xl border transition-all relative ${
+                            isSelected
+                              ? "border-indigo-600 bg-indigo-50/70 shadow-sm ring-2 ring-indigo-500/20"
+                              : "border-slate-200 bg-white hover:border-slate-300 shadow-xs"
+                          }`}
+                        >
+                          {isSelected && (
+                            <div className="absolute top-3 right-3 flex items-center justify-center h-4 w-4 rounded-full bg-indigo-600 text-white">
+                              <CheckCircle2Icon className="h-3 w-3" />
+                            </div>
+                          )}
+                          <div className="flex items-center gap-2 mb-1.5">
+                            <span
+                              className="w-2.5 h-2.5 rounded-full"
+                              style={{ backgroundColor: p.accentColorHex }}
+                            />
+                            <h4 className="text-xs font-bold text-slate-900 truncate pr-4">{p.name}</h4>
+                          </div>
+                          <span className="text-[10px] font-mono text-indigo-600 uppercase tracking-wider block mb-1 font-semibold">
+                            {p.vibe}
+                          </span>
+                          <p className="text-[11px] text-slate-500 line-clamp-2 leading-tight">
+                            {p.tagline}
+                          </p>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                <div className="space-y-1.5 md:col-span-2 pt-2 border-t border-slate-100">
                   <TemplatePicker
                     value={templateId}
                     onChange={setTemplateId}

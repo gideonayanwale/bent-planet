@@ -18,11 +18,22 @@ export function TemplatePicker({
 }: TemplatePickerProps) {
   return (
     <div className="space-y-3">
-      <div>
-        <label className="text-xs font-bold text-slate-800 dark:text-slate-200">{label}</label>
-        {description && (
-          <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>
-        )}
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+        <div>
+          <label className="text-xs font-bold text-slate-800 dark:text-slate-200">{label}</label>
+          {description && (
+            <p className="text-[11px] text-slate-500 dark:text-slate-400 mt-0.5">{description}</p>
+          )}
+        </div>
+        <a
+          href="/templates"
+          target="_blank"
+          rel="noreferrer"
+          className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-600 dark:text-indigo-400 hover:underline shrink-0"
+        >
+          <span>Browse Wireframes & Design Library</span>
+          <span aria-hidden="true">&rarr;</span>
+        </a>
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">

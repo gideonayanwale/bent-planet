@@ -43,6 +43,7 @@ export function DashboardNav({
   const churchNavItems = [
     { label: "Dashboard", href: "/dashboard", icon: HomeIcon },
     { label: "Conferences", href: "/dashboard/conferences", icon: CalendarIcon },
+    { label: "Templates", href: "/templates", icon: SparklesIcon },
     { label: "Subscribers", href: "/dashboard/subscribers", icon: UsersIcon },
     { label: "Email Center", href: "/dashboard/emails", icon: MailIcon },
     { label: "Settings", href: "/dashboard/settings", icon: SettingsIcon },

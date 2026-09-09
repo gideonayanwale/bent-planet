@@ -22,6 +22,9 @@ export function PublicFooter() {
         </div>
 
         <div className="flex flex-wrap items-center justify-center gap-6 text-xs font-semibold text-slate-500">
+          <Link href="/templates" className="hover:text-indigo-600 transition-colors flex items-center gap-1">
+            <SparklesIcon className="h-3.5 w-3.5" /> Templates & Wireframes
+          </Link>
           <Link href="/docs" className="hover:text-indigo-600 transition-colors flex items-center gap-1">
             <BookOpenIcon className="h-3.5 w-3.5" /> Docs
           </Link>

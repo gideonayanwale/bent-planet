@@ -46,6 +46,7 @@ export async function saveConferenceAction(formData: FormData) {
     const whatsappGroupUrl = (formData.get("whatsappGroupUrl") as string) || church.whatsapp_group_url || null;
     const whatsappContactNumber = (formData.get("whatsappContactNumber") as string) || church.whatsapp_number || null;
     const templateId = (formData.get("templateId") as string) || church.theme_preference || "modern_gradient";
+    const flyerLayout = (formData.get("flyerLayout") as string) || (formData.get("presetId") as string) || null;
     const freeResourceName = (formData.get("freeResourceName") as string) || null;
     const freeResourceUrl = (formData.get("freeResourceUrl") as string) || null;
     const enableReplay = formData.get("enableReplay") === "true";
@@ -87,6 +88,7 @@ export async function saveConferenceAction(formData: FormData) {
       whatsapp_group_url: whatsappGroupUrl,
       whatsapp_contact_number: whatsappContactNumber,
       template_id: templateId,
+      flyer_layout: flyerLayout,
       free_resource_name: freeResourceName,
       free_resource_url: freeResourceUrl,
       enable_replay: enableReplay,
