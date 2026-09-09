@@ -10,7 +10,7 @@ import { getCurrentUser } from "@/lib/current-user";
 import { getAppRouteForEmail } from "@/lib/auth";
 
 export const metadata = {
-  title: "Forgot Password | Bent Planet",
+  title: "Forgot Password",
   description: "Request a secure 15-minute magic link to reset your Bent Planet workspace password.",
 };
 

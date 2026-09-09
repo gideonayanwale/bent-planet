@@ -4,3 +4,4 @@ export * from "./use-live-subscriber-count";
 export * from "./use-live-feedback";
 export * from "./use-live-chat";
 export * from "./use-live-presence";
+export * from "./use-dynamic-title";

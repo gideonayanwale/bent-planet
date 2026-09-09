@@ -31,6 +31,7 @@ import {
   type EmailThemeStyle,
   type EmailTemplateDefinition,
 } from "@/lib/email-templates";
+import { useDynamicTitle } from "@/lib/hooks";
 
 interface BroadcastEmailComposerProps {
   churchName: string;
@@ -78,6 +79,11 @@ export function BroadcastEmailComposer({
 
   // Preview Mode: 'desktop' | 'mobile'
   const [previewViewport, setPreviewViewport] = useState<"desktop" | "mobile">("desktop");
+
+  useDynamicTitle(
+    previewViewport === "mobile" ? "Email Preview (Mobile)" : "Email Studio & Broadcasts",
+    "Email Center"
+  );
 
   // Processing States
   const [isDrafting, setIsDrafting] = useState(false);

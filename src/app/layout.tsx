@@ -5,8 +5,8 @@ import "@/app/globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com"),
   title: {
-    default: "Bent Planet — Church & Ministry Conference Growth Platform",
-    template: "%s | Bent Planet",
+    default: "Bent Planet • High-Conversion Conference Platform for Churches",
+    template: "%s • Bent Planet | Church Conference & Growth Platform",
   },
   description:
     "Invite-only platform for churches and Christian ministries to host interactive conferences, automate livestream broadcasts, engage attendees via WhatsApp, and manage subscribers.",

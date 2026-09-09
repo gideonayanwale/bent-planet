@@ -20,6 +20,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import type { Database } from "@/types/database";
 import { saveChurchSettings } from "./actions";
+import { useDynamicTitle } from "@/lib/hooks";
 
 type ChurchRow = Database["public"]["Tables"]["churches"]["Row"];
 
@@ -33,6 +34,16 @@ export function SettingsForm({ church }: SettingsFormProps) {
   const [bannerPreview, setBannerPreview] = useState<string | null>(church.banner_url || null);
   const [isSaving, setIsSaving] = useState(false);
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; message: string } | null>(null);
+  const [activeSettingsTab, setActiveSettingsTab] = useState<"all" | "branding" | "profile" | "social">("all");
+
+  const settingsTabTitles: Record<"all" | "branding" | "profile" | "social", string> = {
+    all: "Workspace Settings",
+    branding: "Branding & Visual Assets",
+    profile: "Church Profile & Mission",
+    social: "Social Channels & WhatsApp",
+  };
+
+  useDynamicTitle(settingsTabTitles[activeSettingsTab], "Workspace Settings");
 
   const handleLogoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -89,8 +100,32 @@ export function SettingsForm({ church }: SettingsFormProps) {
         </div>
       )}
 
+      {/* Settings Section Tabs */}
+      <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-secondary/60 border border-border w-fit">
+        {[
+          { id: "all", label: "All Settings" },
+          { id: "branding", label: "Branding & Assets" },
+          { id: "profile", label: "Ministry Profile" },
+          { id: "social", label: "Social & WhatsApp" },
+        ].map((tab) => (
+          <button
+            key={tab.id}
+            type="button"
+            onClick={() => setActiveSettingsTab(tab.id as "all" | "branding" | "profile" | "social")}
+            className={`px-3.5 py-1.5 rounded-lg text-xs font-semibold transition ${
+              activeSettingsTab === tab.id
+                ? "bg-primary text-primary-foreground shadow-xs"
+                : "text-muted-foreground hover:text-foreground"
+            }`}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
       {/* Visual Branding: Logo & Banner */}
-      <Card className="border-border shadow-xs bg-card">
+      {(activeSettingsTab === "all" || activeSettingsTab === "branding") && (
+        <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
             <div className="p-2 rounded-lg bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80 dark:text-indigo-400">
@@ -163,8 +198,10 @@ export function SettingsForm({ church }: SettingsFormProps) {
           </div>
         </CardContent>
       </Card>
+      )}
 
       {/* Church Profile */}
+      {(activeSettingsTab === "all" || activeSettingsTab === "profile") && (
       <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
@@ -260,8 +297,10 @@ export function SettingsForm({ church }: SettingsFormProps) {
           </div>
         </CardContent>
       </Card>
+      )}
 
       {/* Social Links */}
+      {(activeSettingsTab === "all" || activeSettingsTab === "social") && (
       <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
@@ -340,8 +379,10 @@ export function SettingsForm({ church }: SettingsFormProps) {
           </div>
         </CardContent>
       </Card>
+      )}
 
       {/* Admin Details */}
+      {(activeSettingsTab === "all" || activeSettingsTab === "profile") && (
       <Card className="border-border shadow-xs bg-card">
         <CardHeader>
           <div className="flex items-center gap-2">
@@ -367,6 +408,7 @@ export function SettingsForm({ church }: SettingsFormProps) {
           </div>
         </CardContent>
       </Card>
+      )}
 
       <div className="flex justify-end gap-3 pt-2">
         <Button

@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Invite Church Workspace",
+  description:
+    "Issue secure onboarding tokens and workspace invitation links to church administrators.",
+};
 
 import { InviteChurchForm } from "@/components/forms/invite-church-form";
 import { Badge } from "@/components/ui/badge";

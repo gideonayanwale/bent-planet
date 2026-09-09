@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { requireChurchUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+export const metadata: Metadata = {
+  title: "Ministry Workspace",
+  description:
+    "Church management dashboard for conferences, livestreams, subscribers, and communications.",
+};
 import { DashboardNav } from "@/components/dashboard-nav";
 import { OnboardingTourModal } from "@/components/onboarding-tour-modal";
 import { stopImpersonatingAction } from "@/app/super-admin/actions";

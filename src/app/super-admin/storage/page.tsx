@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import { requireSuperAdminUser } from "@/lib/current-user";
+
+export const metadata: Metadata = {
+  title: "Cloud Storage CDN",
+  description:
+    "Configure external cloud storage providers, manage media assets, and monitor CDN quotas.",
+};
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { HardDriveIcon, ShieldCheckIcon, ServerIcon, CloudIcon, LockIcon, CheckCircle2Icon } from "lucide-react";

@@ -34,6 +34,9 @@ export function PublicFooter() {
           <Link href="/terms" className="hover:text-indigo-600 transition-colors">
             Terms of Service
           </Link>
+          <Link href="/contact" className="hover:text-indigo-600 transition-colors">
+            Contact Us
+          </Link>
           <Link
             href="/request-access"
             className="text-indigo-600 font-bold hover:underline flex items-center gap-1"

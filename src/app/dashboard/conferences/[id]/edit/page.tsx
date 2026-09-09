@@ -1,9 +1,25 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requireChurchUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
 import { getConferenceById } from "@/lib/conferences";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { EditConferenceForm } from "./edit-form";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const adminClient = createAdminClient();
+  const conference = await getConferenceById(adminClient, params.id);
+  const title = conference?.title ? `Edit ${conference.title}` : "Edit Conference";
+  return {
+    title,
+    description:
+      "Update conference schedule, ministers roster, live stream URL, and promotional captions.",
+  };
+}
 
 export default async function EditConferencePage({
   params,

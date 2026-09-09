@@ -1,7 +1,14 @@
+import type { Metadata } from "next";
 import { requireChurchUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { SettingsForm } from "./settings-form";
+
+export const metadata: Metadata = {
+  title: "Workspace Settings",
+  description:
+    "Customize your church branding, logo, cover banner, mission bio, and social channels.",
+};
 
 export default async function ChurchSettingsPage() {
   const user = await requireChurchUser();

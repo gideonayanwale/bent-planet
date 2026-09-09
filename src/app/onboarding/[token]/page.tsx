@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { CheckCircle2 } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Church Onboarding & Setup",
+  description:
+    "Complete your church ministry setup, upload branding assets, and configure conference preferences.",
+};
 
 import { OnboardingForm } from "@/components/forms/onboarding-form";
 import { Badge } from "@/components/ui/badge";

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
+import { useDynamicTitle } from "@/lib/hooks";
 import {
   SparklesIcon,
   LayersIcon,
@@ -243,7 +244,19 @@ const FAITH_COLOR_PALETTES = [
   },
 ];
 
+export type ShowcaseTab =
+  | "all"
+  | "presets"
+  | "canvas"
+  | "ai-studio"
+  | "library"
+  | "typography"
+  | "palettes";
+
 export default function TemplatesShowcasePage() {
+  // Active showcase tab & dynamic title
+  const [activeShowcaseTab, setActiveShowcaseTab] = useState<ShowcaseTab>("presets");
+
   // Active state
   const [selectedPresetId, setSelectedPresetId] = useState<WireframePresetId>("bento_apex");
   const [selectedThemeId, setSelectedThemeId] = useState<TemplateId>("bento_apex");
@@ -251,6 +264,24 @@ export default function TemplatesShowcasePage() {
   const [activePresetCategory, setActivePresetCategory] = useState<string>("all");
   const [activeResourceCategory, setActiveResourceCategory] = useState<string>("all");
   const [copiedHex, setCopiedHex] = useState<string | null>(null);
+
+  const showcaseTabTitles: Record<ShowcaseTab, string> = {
+    all: "Full Showroom & Wireframe Studio",
+    presets: "Wireframe Presets Catalog",
+    canvas: "Live Wireframe Canvas Simulator",
+    "ai-studio": "AI Fine-Tuner Studio",
+    library: "Production UI Component Specs",
+    typography: "Faith Typography System",
+    palettes: "Curated Spiritual Color Palettes",
+  };
+
+  const currentPreset = getWireframePreset(selectedPresetId);
+  const currentTitle =
+    activeShowcaseTab === "presets" && currentPreset
+      ? `${currentPreset.name} Preset`
+      : showcaseTabTitles[activeShowcaseTab] || "Conference Design Showroom";
+
+  useDynamicTitle(currentTitle, "Conference Design Showroom");
 
   // AI Fine-Tuner Playground State
   const [fineTunerSample, setFineTunerSample] = useState<"revival" | "youth" | "leadership" | "cathedral" | "grace">("revival");
@@ -433,9 +464,55 @@ export default function TemplatesShowcasePage() {
         </section>
 
         {/* =========================================================
+            STICKY SHOWROOM TAB NAVIGATION BAR
+           ========================================================= */}
+        <nav className="sticky top-16 z-40 w-full border-y border-slate-800 bg-slate-950/95 backdrop-blur-xl py-3 px-4 sm:px-6 shadow-xl">
+          <div className="max-w-7xl mx-auto flex items-center justify-between gap-4 overflow-x-auto no-scrollbar">
+            <div className="flex items-center gap-1.5 shrink-0">
+              {[
+                { id: "presets", label: "Wireframe Presets", icon: LayoutGridIcon },
+                { id: "canvas", label: "Canvas Simulator", icon: LayersIcon },
+                { id: "ai-studio", label: "AI Fine-Tuner", icon: Wand2Icon },
+                { id: "library", label: "Component Specs", icon: CompassIcon },
+                { id: "typography", label: "Typography", icon: TypeIcon },
+                { id: "palettes", label: "Color Palettes", icon: PaletteIcon },
+                { id: "all", label: "View All", icon: EyeIcon },
+              ].map((tab) => {
+                const Icon = tab.icon;
+                const isActive = activeShowcaseTab === tab.id;
+                return (
+                  <button
+                    key={tab.id}
+                    onClick={() => {
+                      setActiveShowcaseTab(tab.id as ShowcaseTab);
+                      if (tab.id !== "all") {
+                        const el = document.getElementById(`section-${tab.id}`);
+                        if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+                      }
+                    }}
+                    className={`flex items-center gap-2 px-3.5 py-2 rounded-xl text-xs font-semibold transition-all ${
+                      isActive
+                        ? "bg-indigo-600 text-white shadow-md shadow-indigo-600/30 ring-1 ring-indigo-400"
+                        : "text-slate-400 hover:text-white hover:bg-slate-900"
+                    }`}
+                  >
+                    <Icon className="w-3.5 h-3.5" />
+                    <span>{tab.label}</span>
+                  </button>
+                );
+              })}
+            </div>
+            <div className="hidden sm:flex items-center gap-2 text-[11px] text-slate-400 font-mono">
+              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+              Tab: <span className="text-indigo-300 font-bold">{showcaseTabTitles[activeShowcaseTab]}</span>
+            </div>
+          </div>
+        </nav>
+
+        {/* =========================================================
             INTERACTIVE DEVICE CANVAS & WIREFRAME SIMULATOR
            ========================================================= */}
-        <section className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
+        <section id="section-canvas" className="py-12 px-4 sm:px-6 max-w-7xl mx-auto">
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mb-6">
             <div>
               <h2 className="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
@@ -554,7 +631,7 @@ export default function TemplatesShowcasePage() {
         {/* =========================================================
             AI WIREFRAME FINE-TUNER STUDIO (PLAYGROUND)
            ========================================================= */}
-        <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+        <section id="section-ai-studio" className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/30 text-xs font-semibold mb-3">
               <Wand2Icon className="w-3.5 h-3.5 text-indigo-400 animate-spin" />
@@ -814,7 +891,7 @@ export default function TemplatesShowcasePage() {
         {/* =========================================================
             TEMPLATES & WIREFRAME PRESET GALLERY
            ========================================================= */}
-        <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+        <section id="section-presets" className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white flex items-center gap-2">
@@ -929,7 +1006,7 @@ export default function TemplatesShowcasePage() {
         {/* =========================================================
             DESIGN LIBRARIES: CURATED UI COMPONENTS SPEC
            ========================================================= */}
-        <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+        <section id="section-library" className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/30 text-xs font-semibold mb-2">
@@ -1019,7 +1096,7 @@ export default function TemplatesShowcasePage() {
         {/* =========================================================
             FAITH & MINISTRY TYPOGRAPHY SPECIFICATIONS
            ========================================================= */}
-        <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+        <section id="section-typography" className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-purple-950/80 text-purple-300 border border-purple-500/30 text-xs font-semibold mb-3">
               <TypeIcon className="w-3.5 h-3.5 text-purple-400" />
@@ -1070,7 +1147,7 @@ export default function TemplatesShowcasePage() {
         {/* =========================================================
             FAITH & MINISTRY COLOR PALETTES
            ========================================================= */}
-        <section className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
+        <section id="section-palettes" className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-950/80 text-amber-300 border border-amber-500/30 text-xs font-semibold mb-3">
               <PaletteIcon className="w-3.5 h-3.5 text-amber-400" />

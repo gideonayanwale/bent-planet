@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Dashboard Overview",
+  description:
+    "Monitor conference performance, live broadcasts, attendee growth, and communications.",
+};
 import {
   CalendarIcon,
   UsersIcon,

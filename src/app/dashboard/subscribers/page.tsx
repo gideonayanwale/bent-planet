@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import { requireChurchUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+export const metadata: Metadata = {
+  title: "Subscribers & Leads CRM",
+  description:
+    "Manage church attendee registrations, audience growth, CSV bulk imports, and data exports.",
+};
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { SubscriberTableClient } from "@/components/subscriber-table-client";

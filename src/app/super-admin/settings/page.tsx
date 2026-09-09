@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import { requireSuperAdminUser } from "@/lib/current-user";
 import { getServerEnv } from "@/lib/env";
+
+export const metadata: Metadata = {
+  title: "Platform Settings",
+  description:
+    "Global system configuration, environment variables, and authorized super administrators.",
+};
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 

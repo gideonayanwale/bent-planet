@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { ArrowRight, ShieldCheck } from "lucide-react";
+
+export const metadata: Metadata = {
+  title: "Church Login",
+  description:
+    "Sign in to your Bent Planet church workspace to manage conferences, live broadcasts, and subscriber audiences.",
+};
 
 import { LoginForm } from "@/components/forms/login-form";
 import { Badge } from "@/components/ui/badge";

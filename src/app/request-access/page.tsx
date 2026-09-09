@@ -7,10 +7,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { PublicFooter } from "@/components/public-footer";
+import { useDynamicTitle } from "@/lib/hooks";
 
 export default function RequestAccessPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+
+  useDynamicTitle(
+    submitted ? "Application Submitted" : "Request Church Workspace Access",
+    "Church Onboarding & Partnerships"
+  );
   const [formData, setFormData] = useState({
     churchName: "",
     adminName: "",

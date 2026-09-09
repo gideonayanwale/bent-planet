@@ -1,6 +1,13 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import { PublicFooter } from "@/components/public-footer";
+
+export const metadata: Metadata = {
+  title: "Privacy Policy",
+  description:
+    "Learn how Bent Planet safeguards church and attendee information with dedicated data sovereignty.",
+};
 
 export default function PrivacyPolicyPage() {
   return (

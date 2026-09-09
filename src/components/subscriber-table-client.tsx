@@ -2,6 +2,7 @@
 
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
+import { useDynamicTitle } from "@/lib/hooks";
 import {
   Table,
   TableBody,
@@ -57,18 +58,32 @@ export function SubscriberTableClient({
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [addForm, setAddForm] = useState({ fullName: "", email: "", phone: "" });
   const [feedback, setFeedback] = useState<{ type: "success" | "error"; text: string } | null>(null);
+  const [audienceFilter, setAudienceFilter] = useState<"all" | "has_phone" | "direct">("all");
+
+  const filterTitles: Record<"all" | "has_phone" | "direct", string> = {
+    all: "Subscribers & Leads CRM",
+    has_phone: "WhatsApp & Phone Leads",
+    direct: "Direct Signups",
+  };
+
+  useDynamicTitle(filterTitles[audienceFilter], "Audience CRM");
 
   // CSV Import State
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [parsedCsvItems, setParsedCsvItems] = useState<BulkImportItem[]>([]);
   const [importing, setImporting] = useState(false);
 
-  const filtered = subscribers.filter(
-    (s) =>
+  const filtered = subscribers.filter((s) => {
+    const matchesSearch =
       s.full_name.toLowerCase().includes(search.toLowerCase()) ||
       s.email.toLowerCase().includes(search.toLowerCase()) ||
-      (s.phone && s.phone.includes(search))
-  );
+      (s.phone && s.phone.includes(search));
+
+    if (!matchesSearch) return false;
+    if (audienceFilter === "has_phone") return Boolean(s.phone && s.phone.trim().length > 0);
+    if (audienceFilter === "direct") return !s.conferences?.title || s.conferences?.title === "Direct Registration";
+    return true;
+  });
 
   const handleExportCSV = () => {
     if (subscribers.length === 0) return;
@@ -234,16 +249,54 @@ export function SubscriberTableClient({
         </div>
       )}
 
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        {/* Search Bar */}
-        <div className="relative flex-1 max-w-sm">
-          <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
-          <Input
-            placeholder="Search by name, email, or phone..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 text-xs bg-white"
-          />
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        {/* Search Bar & Filter Tabs */}
+        <div className="flex flex-col sm:flex-row sm:items-center gap-3 flex-1">
+          <div className="relative flex-1 max-w-sm">
+            <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400" />
+            <Input
+              placeholder="Search by name, email, or phone..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              className="pl-9 text-xs bg-white"
+            />
+          </div>
+
+          <div className="flex items-center gap-1 p-1 rounded-xl bg-secondary/50 border border-border w-fit">
+            <button
+              type="button"
+              onClick={() => setAudienceFilter("all")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                audienceFilter === "all"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              All ({subscribers.length})
+            </button>
+            <button
+              type="button"
+              onClick={() => setAudienceFilter("has_phone")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                audienceFilter === "has_phone"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              WhatsApp / Phone
+            </button>
+            <button
+              type="button"
+              onClick={() => setAudienceFilter("direct")}
+              className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+                audienceFilter === "direct"
+                  ? "bg-primary text-primary-foreground shadow-xs"
+                  : "text-muted-foreground hover:text-foreground"
+              }`}
+            >
+              Direct
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">

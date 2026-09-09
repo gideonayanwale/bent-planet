@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { FeedbackForm } from "@/components/feedback-form";
 
 export const metadata = {
-  title: "Feedback & Support | Bent Planet",
+  title: "Feedback & Product Support",
   description: "Send inquiries, feature requests, or technical support messages to the Bent Planet team.",
 };
 

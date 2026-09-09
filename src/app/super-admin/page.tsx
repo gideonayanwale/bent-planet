@@ -1,4 +1,11 @@
+import type { Metadata } from "next";
 import Link from "next/link";
+
+export const metadata: Metadata = {
+  title: "Super Admin Platform Overview",
+  description:
+    "Global governance portal for church approvals, tenant management, and platform analytics.",
+};
 import {
   Building2Icon,
   UsersIcon,

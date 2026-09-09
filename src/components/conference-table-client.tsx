@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useLiveConferences } from "@/lib/hooks/use-live-conferences";
+import { useDynamicTitle } from "@/lib/hooks";
 import {
   EditIcon,
   Trash2Icon,
@@ -38,6 +39,15 @@ export function ConferenceTableClient({
   const [conferenceToDelete, setConferenceToDelete] = useState<ConferenceRow | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [updatingId, setUpdatingId] = useState<string | null>(null);
+  const [statusFilter, setStatusFilter] = useState<"all" | "published" | "draft">("all");
+
+  const filterTabTitles: Record<"all" | "published" | "draft", string> = {
+    all: "All Conferences",
+    published: "Published Conferences",
+    draft: "Draft Conferences",
+  };
+
+  useDynamicTitle(filterTabTitles[statusFilter], "Conferences Manager");
 
   // Auto-refresh conference list when a Realtime change arrives
   const handleConferenceChange = useCallback(() => {
@@ -45,6 +55,15 @@ export function ConferenceTableClient({
   }, [router]);
 
   useLiveConferences(churchId ?? "", handleConferenceChange);
+
+  const publishedCount = conferences.filter((c) => c.status === "published").length;
+  const draftCount = conferences.filter((c) => c.status === "draft").length;
+
+  const displayedConferences = conferences.filter((c) => {
+    if (statusFilter === "published") return c.status === "published";
+    if (statusFilter === "draft") return c.status === "draft";
+    return true;
+  });
 
   const handleDelete = async () => {
     if (!conferenceToDelete) return;
@@ -96,6 +115,43 @@ export function ConferenceTableClient({
 
   return (
     <>
+      {/* Interactive Status Filter Tabs */}
+      <div className="flex items-center gap-2 mb-4 p-1 rounded-xl bg-secondary/50 border border-border w-fit">
+        <button
+          type="button"
+          onClick={() => setStatusFilter("all")}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+            statusFilter === "all"
+              ? "bg-primary text-primary-foreground shadow-xs"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          All Conferences ({conferences.length})
+        </button>
+        <button
+          type="button"
+          onClick={() => setStatusFilter("published")}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+            statusFilter === "published"
+              ? "bg-primary text-primary-foreground shadow-xs"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Published ({publishedCount})
+        </button>
+        <button
+          type="button"
+          onClick={() => setStatusFilter("draft")}
+          className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition ${
+            statusFilter === "draft"
+              ? "bg-primary text-primary-foreground shadow-xs"
+              : "text-muted-foreground hover:text-foreground"
+          }`}
+        >
+          Drafts ({draftCount})
+        </button>
+      </div>
+
       <div className="rounded-md border border-slate-200 overflow-hidden">
         <Table>
           <TableHeader>
@@ -107,7 +163,7 @@ export function ConferenceTableClient({
             </TableRow>
           </TableHeader>
           <TableBody>
-            {conferences.map((conf) => {
+            {displayedConferences.map((conf) => {
               const isPublished = conf.status === "published";
               const isDraft = conf.status === "draft";
               const isUpdatingThis = updatingId === conf.id;

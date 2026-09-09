@@ -9,7 +9,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { getCurrentUser } from "@/lib/current-user";
 
 export const metadata = {
-  title: "Set New Password | Bent Planet",
+  title: "Set New Password",
   description: "Set a new secure password for your Bent Planet account.",
 };
 

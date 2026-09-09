@@ -38,8 +38,10 @@ export async function generateMetadata({
     return { title: "Church Not Found" };
   }
 
-  const title = `${church.name} | Bent Planet`;
-  const description = church.bio || `Welcome to ${church.name}'s digital ministry hub on Bent Planet. Join our upcoming conferences and live streams.`;
+  const title = `${church.name} — Ministry Hub`;
+  const description =
+    church.bio ||
+    `Welcome to ${church.name}'s digital ministry hub on Bent Planet. Join our upcoming conferences and live streams.`;
   
   return {
     title,

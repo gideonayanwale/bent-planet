@@ -1,8 +1,24 @@
+import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { requireChurchUser } from "@/lib/current-user";
 import { getChurchByAdminEmail } from "@/lib/churches";
 import { getConferenceById } from "@/lib/conferences";
 import { createAdminClient } from "@/lib/supabase/admin";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const adminClient = createAdminClient();
+  const conference = await getConferenceById(adminClient, params.id);
+  const title = conference?.title ? `Promote ${conference.title}` : "Promote Conference";
+  return {
+    title,
+    description:
+      "Generate promotional flyers, UTM tracking links, and AI social media captions.",
+  };
+}
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { CopyButton } from "@/components/copy-button";
 import { Input } from "@/components/ui/input";

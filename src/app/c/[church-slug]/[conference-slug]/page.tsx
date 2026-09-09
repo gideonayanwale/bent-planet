@@ -47,8 +47,9 @@ export async function generateMetadata({
   }
 
   const church = conference.churches;
-  const title = `${conference.title} | ${church?.name}`;
-  const description = conference.caption || conference.full_description || `Join ${church?.name} for ${conference.title}.`;
+  const title = `${conference.title} — ${church?.name || "Live Event"}`;
+  const description =
+    conference.caption || conference.full_description || `Join ${church?.name} for ${conference.title}.`;
   
   return {
     title,

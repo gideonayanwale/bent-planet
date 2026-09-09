@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import {
   SparklesIcon,
@@ -12,6 +13,12 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandLogo } from "@/components/brand-logo";
+
+export const metadata: Metadata = {
+  title: "High-Conversion Conference Platform for Churches",
+  description:
+    "Create high-converting conference landing pages in 60 seconds with AI, broadcast live streams seamlessly, and automatically nurture registered attendees into lifetime disciples.",
+};
 
 export default function HomePage() {
   const features = [
@@ -105,6 +112,9 @@ export default function HomePage() {
             <Link href="/docs" className="hover:text-foreground transition-colors flex items-center gap-1">
               <BookOpenIcon className="h-3.5 w-3.5" />
               Docs
+            </Link>
+            <Link href="/contact" className="hover:text-foreground transition-colors">
+              Contact
             </Link>
           </nav>
 

@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { BrandLogo } from "@/components/brand-logo";
 import {
@@ -9,6 +10,12 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PublicFooter } from "@/components/public-footer";
+
+export const metadata: Metadata = {
+  title: "Documentation & Knowledge Base",
+  description:
+    "Comprehensive guides on church setup, AI conference creation, live stream integration, and WhatsApp automations.",
+};
 
 export default function DocsPage() {
   return (

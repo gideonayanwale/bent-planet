@@ -19,6 +19,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/com
 import { TemplatePicker } from "@/components/template-picker";
 import { ALL_WIREFRAME_PRESETS, getWireframePreset } from "@/lib/wireframe-config";
 import { saveConferenceAction } from "./actions";
+import { useDynamicTitle } from "@/lib/hooks";
 
 const EVENT_TYPES = [
   "Conference",
@@ -102,6 +103,11 @@ export default function NewConferencePage() {
   const [isGenerating, setIsGenerating] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
   const [step, setStep] = useState<"input" | "review">("input");
+
+  useDynamicTitle(
+    step === "review" ? "Review AI Generated Agenda" : "Create Conference (Details)",
+    "Conference Builder"
+  );
 
   interface GeneratedContent {
     fullDescription: string;
