@@ -154,37 +154,37 @@ export function StreamPlayer({
           )
         ) : (
           /* Countdown Viewport */
-          <div className="flex flex-col items-center justify-center text-white p-6 text-center">
-            <span className="px-3 py-1 mb-4 text-xs font-semibold tracking-wider text-indigo-300 uppercase bg-indigo-950/80 rounded-full border border-indigo-800">
+          <div className="flex flex-col items-center justify-center text-white p-4 sm:p-6 text-center w-full">
+            <span className="px-3 py-1 mb-3 text-[11px] sm:text-xs font-semibold tracking-wider text-indigo-300 uppercase bg-indigo-950/80 rounded-full border border-indigo-800">
               COUNTDOWN TO LIVESTREAM
             </span>
-            <div className="grid grid-cols-4 gap-3 sm:gap-6 my-4">
-              <div className="flex flex-col items-center bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 min-w-[70px] sm:min-w-[90px]">
-                <span className="text-3xl sm:text-5xl font-bold font-mono text-white">
+            <div className="grid grid-cols-4 gap-1.5 sm:gap-4 my-3 w-full max-w-sm mx-auto">
+              <div className="flex flex-col items-center justify-center bg-slate-900/90 border border-slate-800 rounded-xl px-1.5 sm:px-4 py-2 sm:py-3 min-w-0">
+                <span className="text-2xl sm:text-4xl lg:text-5xl font-bold font-mono text-white">
                   {String(timeLeft.days).padStart(2, "0")}
                 </span>
-                <span className="text-[10px] sm:text-xs text-slate-400 mt-1 uppercase tracking-widest">Days</span>
+                <span className="text-[9px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 uppercase tracking-wider">Days</span>
               </div>
-              <div className="flex flex-col items-center bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 min-w-[70px] sm:min-w-[90px]">
-                <span className="text-3xl sm:text-5xl font-bold font-mono text-white">
+              <div className="flex flex-col items-center justify-center bg-slate-900/90 border border-slate-800 rounded-xl px-1.5 sm:px-4 py-2 sm:py-3 min-w-0">
+                <span className="text-2xl sm:text-4xl lg:text-5xl font-bold font-mono text-white">
                   {String(timeLeft.hours).padStart(2, "0")}
                 </span>
-                <span className="text-[10px] sm:text-xs text-slate-400 mt-1 uppercase tracking-widest">Hours</span>
+                <span className="text-[9px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 uppercase tracking-wider">Hours</span>
               </div>
-              <div className="flex flex-col items-center bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 min-w-[70px] sm:min-w-[90px]">
-                <span className="text-3xl sm:text-5xl font-bold font-mono text-white">
+              <div className="flex flex-col items-center justify-center bg-slate-900/90 border border-slate-800 rounded-xl px-1.5 sm:px-4 py-2 sm:py-3 min-w-0">
+                <span className="text-2xl sm:text-4xl lg:text-5xl font-bold font-mono text-white">
                   {String(timeLeft.minutes).padStart(2, "0")}
                 </span>
-                <span className="text-[10px] sm:text-xs text-slate-400 mt-1 uppercase tracking-widest">Mins</span>
+                <span className="text-[9px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 uppercase tracking-wider">Mins</span>
               </div>
-              <div className="flex flex-col items-center bg-slate-900/90 border border-slate-800 rounded-xl px-4 py-3 min-w-[70px] sm:min-w-[90px]">
-                <span className="text-3xl sm:text-5xl font-bold font-mono text-indigo-400">
+              <div className="flex flex-col items-center justify-center bg-slate-900/90 border border-slate-800 rounded-xl px-1.5 sm:px-4 py-2 sm:py-3 min-w-0">
+                <span className="text-2xl sm:text-4xl lg:text-5xl font-bold font-mono text-indigo-400">
                   {String(timeLeft.seconds).padStart(2, "0")}
                 </span>
-                <span className="text-[10px] sm:text-xs text-slate-400 mt-1 uppercase tracking-widest">Secs</span>
+                <span className="text-[9px] sm:text-xs text-slate-400 mt-0.5 sm:mt-1 uppercase tracking-wider">Secs</span>
               </div>
             </div>
-            <p className="text-sm text-slate-400 mt-2">
+            <p className="text-xs sm:text-sm text-slate-400 mt-1 max-w-sm px-2">
               Subscribe below to get direct stream links sent to your inbox.
             </p>
           </div>

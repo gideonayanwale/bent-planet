@@ -8,11 +8,12 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
 interface FeedbackFormProps {
+  churchId?: string | null;
   onSuccess?: () => void;
   className?: string;
 }
 
-export function FeedbackForm({ onSuccess, className = "" }: FeedbackFormProps) {
+export function FeedbackForm({ churchId, onSuccess, className = "" }: FeedbackFormProps) {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -33,7 +34,10 @@ export function FeedbackForm({ onSuccess, className = "" }: FeedbackFormProps) {
       const res = await fetch("/api/feedback", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(form),
+        body: JSON.stringify({
+          ...form,
+          churchId: churchId || null,
+        }),
       });
 
       const data = await res.json();

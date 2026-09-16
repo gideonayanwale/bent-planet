@@ -6,10 +6,12 @@ import { Button } from "@/components/ui/button";
 import { FeedbackForm } from "@/components/feedback-form";
 
 export function FeedbackModal({
+  churchId,
   triggerText = "Feedback & Support",
   variant = "ghost",
   className = "",
 }: {
+  churchId?: string | null;
   triggerText?: string;
   variant?: "default" | "outline" | "ghost" | "link";
   className?: string;
@@ -77,7 +79,7 @@ export function FeedbackModal({
                 </p>
               </div>
 
-              <FeedbackForm onSuccess={() => {}} />
+              <FeedbackForm churchId={churchId} onSuccess={() => {}} />
             </div>
           </div>
         </div>

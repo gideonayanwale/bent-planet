@@ -477,7 +477,7 @@ export function ConferenceWireframe({
                           Conference Schedule & Tracks
                         </h3>
                       </div>
-                      <div className="flex gap-1">
+                      <div className="flex flex-wrap gap-1">
                         {["all", "Worship", "Keynote", "Altar Call"].map((cat) => (
                           <button
                             key={cat}
@@ -782,13 +782,13 @@ export function ConferenceWireframe({
                     <h3 className="text-xl font-bold text-amber-200">Revival Consecration Agenda</h3>
                     <div className="space-y-3">
                       {slotData.agenda.map((it, idx) => (
-                        <div key={idx} className="p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800 flex items-center justify-between">
-                          <div>
+                        <div key={idx} className="p-3.5 sm:p-4 rounded-2xl bg-zinc-950/60 border border-zinc-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2.5">
+                          <div className="min-w-0">
                             <span className="font-mono text-xs text-amber-400 font-bold block">{it.time}</span>
-                            <span className="text-sm font-bold text-white">{it.title}</span>
-                            <p className="text-xs text-zinc-400">{it.description}</p>
+                            <span className="text-sm font-bold text-white break-words">{it.title}</span>
+                            <p className="text-xs text-zinc-400 mt-0.5">{it.description}</p>
                           </div>
-                          <span className="text-[10px] uppercase font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20">
+                          <span className="text-[10px] uppercase font-bold text-amber-400 bg-amber-400/10 px-2.5 py-1 rounded-full border border-amber-400/20 shrink-0">
                             {it.trackCategory}
                           </span>
                         </div>
@@ -824,7 +824,7 @@ export function ConferenceWireframe({
               {/* Liturgical Timeline with Vertical Markers */}
               {isBlockActive("track_agenda") && (
                 <div onClick={() => onBlockSelect?.("track_agenda")} className={getBlockClasses("track_agenda")}>
-                  <div className="p-8 rounded-3xl bg-stone-100/70 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 space-y-6">
+                  <div className="p-5 sm:p-8 rounded-3xl bg-stone-100/70 dark:bg-stone-900/60 border border-stone-200 dark:border-stone-800 space-y-6">
                     <h3 className="text-2xl font-serif font-bold text-stone-900 dark:text-stone-100 text-center">
                       Order of Convocation
                     </h3>
@@ -845,7 +845,7 @@ export function ConferenceWireframe({
               {/* Scholar / Minister Profile */}
               {isBlockActive("ministers_roster") && (
                 <div onClick={() => onBlockSelect?.("ministers_roster")} className={getBlockClasses("ministers_roster")}>
-                  <div className="border border-stone-200 dark:border-stone-800 rounded-3xl p-8 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+                  <div className="border border-stone-200 dark:border-stone-800 rounded-3xl p-5 sm:p-8 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
                     <div className="w-20 h-20 rounded-full bg-stone-200 dark:bg-stone-800 flex items-center justify-center font-serif text-2xl font-bold text-stone-700 dark:text-stone-200 shrink-0">
                       {slotData.speaker.name.charAt(0)}
                     </div>
@@ -862,7 +862,7 @@ export function ConferenceWireframe({
               {/* Study Booklet Lead Magnet */}
               {isBlockActive("study_resource") && slotData.freeResource && (
                 <div onClick={() => onBlockSelect?.("study_resource")} className={getBlockClasses("study_resource")}>
-                  <div className="p-8 rounded-3xl bg-stone-900 text-stone-100 border border-stone-700 flex flex-col sm:flex-row items-center justify-between gap-6">
+                  <div className="p-5 sm:p-8 rounded-3xl bg-stone-900 text-stone-100 border border-stone-700 flex flex-col sm:flex-row items-center justify-between gap-6">
                     <div>
                       <span className="text-[10px] font-mono uppercase tracking-widest text-stone-400 block mb-1">Liturgical Companion</span>
                       <h4 className="text-lg font-serif font-bold">{slotData.freeResource.title}</h4>
@@ -998,23 +998,23 @@ export function ConferenceWireframe({
 
           {/* 5. EXECUTIVE SUMMIT LAYOUT (KINGDOM GOVERNANCE & DOSSIER) */}
           {preset.layoutStyle === "executive" && (
-            <div className="space-y-12 max-w-6xl mx-auto">
-              <div className="grid md:grid-cols-12 gap-8 items-start">
+            <div className="space-y-8 sm:space-y-12 max-w-6xl mx-auto">
+              <div className="grid md:grid-cols-12 gap-6 sm:gap-8 items-start">
                 {/* Executive Dossier (Col 1-7) */}
                 {isBlockActive("ministers_roster") && (
                   <div onClick={() => onBlockSelect?.("ministers_roster")} className={`md:col-span-7 ${getBlockClasses("ministers_roster")}`}>
-                    <div className="rounded-3xl bg-slate-900 border border-slate-800 p-8 shadow-2xl space-y-6">
+                    <div className="rounded-3xl bg-slate-900 border border-slate-800 p-5 sm:p-8 shadow-2xl space-y-6">
                       <div className="flex items-center gap-2 text-amber-400 text-xs font-mono font-bold uppercase tracking-wider">
                         <AwardIcon className="w-4 h-4" /> Ministerial Dossier
                       </div>
-                      <div className="flex items-center gap-5">
-                        <div className="w-20 h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-serif text-2xl font-bold text-amber-300">
+                      <div className="flex flex-col sm:flex-row items-center sm:items-start text-center sm:text-left gap-4 sm:gap-5">
+                        <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-2xl bg-amber-500/10 border border-amber-500/30 flex items-center justify-center font-serif text-xl sm:text-2xl font-bold text-amber-300 shrink-0">
                           {slotData.speaker.name.charAt(0)}
                         </div>
                         <div>
-                          <h3 className="text-2xl font-bold text-white font-heading">{slotData.speaker.name}</h3>
+                          <h3 className="text-xl sm:text-2xl font-bold text-white font-heading">{slotData.speaker.name}</h3>
                           <p className="text-xs text-amber-300 font-semibold">{slotData.speaker.title}</p>
-                          <div className="flex flex-wrap gap-2 mt-2">
+                          <div className="flex flex-wrap justify-center sm:justify-start gap-1.5 sm:gap-2 mt-2">
                             {slotData.speaker.callingBadges.map((badge, idx) => (
                               <span key={idx} className="px-2.5 py-0.5 rounded-md bg-slate-800 text-[10px] font-mono text-slate-300 border border-slate-700">
                                 {badge}
@@ -1031,7 +1031,7 @@ export function ConferenceWireframe({
                 {/* Executive RSVP & VIP WhatsApp (Col 8-12) */}
                 {isBlockActive("rsvp_sticky") && (
                   <div onClick={() => onBlockSelect?.("rsvp_sticky")} className={`md:col-span-5 ${getBlockClasses("rsvp_sticky")}`}>
-                    <div className="rounded-3xl bg-slate-900 border border-amber-500/30 p-8 shadow-2xl space-y-5">
+                    <div className="rounded-3xl bg-slate-900 border border-amber-500/30 p-5 sm:p-8 shadow-2xl space-y-5">
                       <span className="text-[10px] font-mono uppercase tracking-widest text-amber-400 font-bold block">
                         Executive Delegate Pass
                       </span>
@@ -1098,7 +1098,7 @@ export function ConferenceWireframe({
               {/* Multi-Track Governance Agenda */}
               {isBlockActive("track_agenda") && (
                 <div onClick={() => onBlockSelect?.("track_agenda")} className={getBlockClasses("track_agenda")}>
-                  <div className="rounded-3xl bg-slate-900 border border-slate-800 p-8 space-y-4">
+                  <div className="rounded-3xl bg-slate-900 border border-slate-800 p-5 sm:p-8 space-y-4">
                     <h4 className="text-xl font-bold text-white font-heading">Summit Plenary & Breakout Schedule</h4>
                     <div className="grid sm:grid-cols-3 gap-4">
                       {slotData.agenda.map((it, idx) => (
@@ -1120,11 +1120,11 @@ export function ConferenceWireframe({
 
           {/* 6. GRACE & FELLOWSHIP ORGANIC (FAMILY & WELCOMING ROUNDED FLOW) */}
           {preset.layoutStyle === "organic" && (
-            <div className="space-y-10 max-w-5xl mx-auto">
+            <div className="space-y-8 sm:space-y-10 max-w-5xl mx-auto">
               {/* Warm Welcome Scripture Card */}
               {isBlockActive("about_mandate") && (
                 <div onClick={() => onBlockSelect?.("about_mandate")} className={getBlockClasses("about_mandate")}>
-                  <div className="p-8 sm:p-10 rounded-3xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 text-center space-y-4">
+                  <div className="p-6 sm:p-10 rounded-3xl bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800/40 text-center space-y-4">
                     <span className="text-xs font-serif uppercase tracking-widest text-emerald-700 dark:text-emerald-400">
                       Family Covenant Gathering
                     </span>
@@ -1139,10 +1139,10 @@ export function ConferenceWireframe({
               )}
 
               {/* Grid with Study Companion & Family RSVP */}
-              <div className="grid md:grid-cols-2 gap-8 items-start">
+              <div className="grid md:grid-cols-2 gap-6 sm:gap-8 items-start">
                 {isBlockActive("study_resource") && slotData.freeResource && (
                   <div onClick={() => onBlockSelect?.("study_resource")} className={getBlockClasses("study_resource")}>
-                    <div className="p-8 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm space-y-4">
+                    <div className="p-5 sm:p-8 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm space-y-4">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950 px-2.5 py-1 rounded-full">
                         Free Family Guide
                       </span>
@@ -1161,7 +1161,7 @@ export function ConferenceWireframe({
 
                 {isBlockActive("rsvp_sticky") && (
                   <div onClick={() => onBlockSelect?.("rsvp_sticky")} className={getBlockClasses("rsvp_sticky")}>
-                    <div className="p-8 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm space-y-4">
+                    <div className="p-5 sm:p-8 rounded-3xl bg-white dark:bg-stone-900 border border-stone-200 dark:border-stone-800 shadow-sm space-y-4">
                       <span className="text-[10px] font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400">
                         Family Fellowship RSVP
                       </span>

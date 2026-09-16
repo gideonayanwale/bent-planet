@@ -5,7 +5,8 @@ export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
-    const { email, name, category, message } = await req.json();
+    const { email, name, category, message, churchId, church_id } = await req.json();
+    const targetChurchId = churchId || church_id || null;
 
     if (!email || !message) {
       return NextResponse.json(
@@ -16,15 +17,18 @@ export async function POST(req: Request) {
 
     const adminClient = createAdminClient();
 
-    const { error: insertError } = await adminClient
+    const { data: insertedFeedback, error: insertError } = await adminClient
       .from("feedback_messages")
       .insert({
+        church_id: targetChurchId,
         user_email: email,
         user_name: name || null,
         category: category || "feedback",
         message,
         status: "unread",
-      });
+      })
+      .select()
+      .single();
 
     if (insertError) {
       console.error("Feedback insert error:", insertError);
@@ -34,20 +38,20 @@ export async function POST(req: Request) {
       );
     }
 
-    // Trigger super-admin notification
+    // Trigger notification (church-specific or super-admin)
     try {
       await adminClient
         .from("notifications")
         .insert({
-          church_id: null,
+          church_id: targetChurchId,
           type: "feedback",
           title: `New Feedback (${category || "General"})`,
           message: `${name ? `${name} (${email})` : email}: ${message.slice(0, 80)}${message.length > 80 ? "..." : ""}`,
-          action_url: "/super-admin",
+          action_url: targetChurchId ? "/dashboard" : "/super-admin",
           read: false,
         });
     } catch (notifErr) {
-      console.error("Failed to create super-admin feedback notification:", notifErr);
+      console.error("Failed to create feedback notification:", notifErr);
     }
 
     return NextResponse.json({ success: true });

@@ -207,41 +207,41 @@ export default function ContactPage() {
             </p>
 
             {/* Interactive Tab Switcher */}
-            <div className="mt-8 inline-flex p-1.5 rounded-2xl bg-secondary/80 border border-border shadow-inner gap-1">
+            <div className="mt-6 sm:mt-8 inline-flex flex-wrap items-center justify-center p-1 sm:p-1.5 rounded-2xl bg-secondary/80 border border-border shadow-inner gap-1 max-w-full">
               <button
                 type="button"
                 onClick={() => setActiveTab("form")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                   activeTab === "form"
                     ? "bg-primary text-primary-foreground shadow-md"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <MailIcon className="w-4 h-4" />
+                <MailIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>Send Message</span>
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab("whatsapp")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                   activeTab === "whatsapp"
                     ? "bg-primary text-primary-foreground shadow-md"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <MessageCircleIcon className="w-4 h-4 text-emerald-500" />
+                <MessageCircleIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-emerald-500" />
                 <span>WhatsApp & Direct</span>
               </button>
               <button
                 type="button"
                 onClick={() => setActiveTab("faq")}
-                className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
+                className={`flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold transition-all ${
                   activeTab === "faq"
                     ? "bg-primary text-primary-foreground shadow-md"
                     : "text-muted-foreground hover:text-foreground"
                 }`}
               >
-                <HelpCircleIcon className="w-4 h-4" />
+                <HelpCircleIcon className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 <span>Knowledge Base & FAQ</span>
               </button>
             </div>

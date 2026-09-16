@@ -12,7 +12,6 @@ import {
   CalendarIcon,
   SparklesIcon,
   InboxIcon,
-  MessageSquareIcon,
 } from "lucide-react";
 
 import { Badge } from "@/components/ui/badge";
@@ -30,6 +29,7 @@ import { AnalyticsChart } from "@/components/super-admin/analytics-chart";
 import { AccessRequestsTable } from "@/components/super-admin/access-requests-table";
 import { ChurchActionsMenu } from "@/components/super-admin/church-actions-menu";
 import { SuperAdminHeaderActions } from "@/components/super-admin/header-actions";
+import { LiveFeedbackCard } from "@/components/super-admin/live-feedback-card";
 import type { Database } from "@/types/database";
 
 export default async function SuperAdminPage() {
@@ -267,42 +267,8 @@ export default async function SuperAdminPage() {
         </CardContent>
       </Card>
 
-      {/* In-App Feedback Messages */}
-      <Card className="border-border bg-card shadow-sm">
-        <CardHeader>
-          <CardTitle className="text-lg flex items-center gap-2 text-foreground">
-            <MessageSquareIcon className="h-5 w-5 text-indigo-500" />
-            Recent Inquiries & Feedback
-          </CardTitle>
-          <CardDescription className="text-xs text-muted-foreground">
-            Submissions from the public and church user feedback overlay.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          {feedbackMessages.length > 0 ? (
-            <div className="space-y-3">
-              {feedbackMessages.map((fb) => (
-                <div key={fb.id} className="p-4 rounded-2xl border border-border bg-secondary/40 space-y-1.5">
-                  <div className="flex items-center justify-between text-xs">
-                    <div className="flex items-center gap-2">
-                      <span className="font-bold text-foreground">{fb.user_name || fb.user_email}</span>
-                      <Badge variant="outline" className="text-[10px] border-border">
-                        {fb.category}
-                      </Badge>
-                    </div>
-                    <span className="text-[11px] text-muted-foreground">
-                      {fb.created_at ? new Date(fb.created_at).toLocaleDateString() : ""}
-                    </span>
-                  </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{fb.message}</p>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-xs text-muted-foreground text-center py-6">No feedback messages yet.</p>
-          )}
-        </CardContent>
-      </Card>
+      {/* In-App Feedback Messages with Realtime streaming */}
+      <LiveFeedbackCard initialMessages={feedbackMessages} />
     </div>
   );
 }

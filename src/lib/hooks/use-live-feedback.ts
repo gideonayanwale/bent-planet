@@ -14,42 +14,63 @@ type FeedbackBroadcastPayload = {
 };
 
 /**
- * Subscribe to live feedback messages for an authenticated church admin.
+ * Subscribe to live feedback messages.
  *
- * Listens on the private channel `church:${churchId}:feedback` for:
- * 1. Broadcast `INSERT` events (fired by DB triggers)
- * 2. Postgres Changes `INSERT` events on table `feedback_messages`
+ * If `churchId` is provided:
+ * - Listens on `church:${churchId}:feedback`
+ * - Filters postgres_changes on `church_id=eq.${churchId}`
+ *
+ * If `churchId` is null or undefined (super-admin view):
+ * - Listens on `platform:feedback`
+ * - Listens on postgres_changes for all `feedback_messages`
+ *
+ * Automatically deduplicates events if both Broadcast and Postgres Changes trigger.
  */
 export function useLiveFeedback(
-  churchId: string,
-  onFeedback: (feedback: FeedbackRow) => void,
+  churchId?: string | null,
+  onFeedback?: (feedback: FeedbackRow) => void,
 ) {
   const callbackRef = useRef(onFeedback);
   callbackRef.current = onFeedback;
+  const seenIdsRef = useRef<Set<string>>(new Set());
 
   useEffect(() => {
-    if (!churchId) return;
-
     let channel: ReturnType<
       Awaited<ReturnType<typeof prepareRealtime>>["channel"]
     >;
     let cancelled = false;
 
+    const handleRecord = (record?: FeedbackRow) => {
+      if (!record || !record.id) return;
+      if (seenIdsRef.current.has(record.id)) return;
+      seenIdsRef.current.add(record.id);
+
+      // Keep seenIds bounded to prevent memory growth
+      if (seenIdsRef.current.size > 200) {
+        const first = seenIdsRef.current.values().next().value;
+        if (first) seenIdsRef.current.delete(first);
+      }
+
+      callbackRef.current?.(record);
+    };
+
     async function subscribe() {
       const supabase = await prepareRealtime();
       if (cancelled) return;
 
+      const topic = churchId ? `church:${churchId}:feedback` : "platform:feedback";
+
       channel = supabase
-        .channel(`church:${churchId}:feedback`, {
+        .channel(topic, {
           config: { private: true },
         })
         .on("broadcast", { event: "INSERT" }, (event: FeedbackBroadcastPayload) => {
           const record = event?.payload?.record ?? event?.record;
-          if (record) {
-            callbackRef.current(record);
-          }
-        })
-        .on(
+          handleRecord(record);
+        });
+
+      if (churchId) {
+        channel.on(
           "postgres_changes",
           {
             event: "INSERT",
@@ -59,11 +80,27 @@ export function useLiveFeedback(
           },
           (payload) => {
             if (payload.new) {
-              callbackRef.current(payload.new as FeedbackRow);
+              handleRecord(payload.new as FeedbackRow);
             }
           },
-        )
-        .subscribe();
+        );
+      } else {
+        channel.on(
+          "postgres_changes",
+          {
+            event: "INSERT",
+            schema: "public",
+            table: "feedback_messages",
+          },
+          (payload) => {
+            if (payload.new) {
+              handleRecord(payload.new as FeedbackRow);
+            }
+          },
+        );
+      }
+
+      channel.subscribe();
     }
 
     subscribe();
