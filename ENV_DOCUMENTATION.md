@@ -101,3 +101,45 @@ BITLY_ACCESS_TOKEN=""
 NEXT_PUBLIC_SENTRY_DSN=""
 SENTRY_AUTH_TOKEN=""
 ```
+
+---
+
+## 5. Homepage 3D Video Background Generation
+
+The homepage features a network-adaptive 3D animation video background generated using **Gemini Omni 1.1 Flash** (`gemini-omni-1.1-flash`).
+
+### Video Generation Pipeline
+
+| Key | Required | Where to Find |
+|-----|----------|---------------|
+| `GEMINI_API_KEY` | Optional (for video generation only) | [Google AI Studio](https://aistudio.google.com/app/apikey) → Get Gemini API Key |
+
+### How to Generate the Video Asset
+
+```bash
+# Set the API key
+$env:GEMINI_API_KEY="your-gemini-api-key"
+
+# Generate the 3D animation video (default: 720p, 16:9, 8s loop)
+python scripts/generate-bent-planet-video.py
+
+# Higher resolution variant
+python scripts/generate-bent-planet-video.py --resolution 1080p --duration 10
+
+# Extend an existing video (up to 40s total)
+python scripts/generate-bent-planet-video.py --extend public/videos/bent-planet-3d-loop.mp4
+```
+
+### Fallback Behavior (No Video Asset Required)
+
+If `public/videos/bent-planet-3d-loop.mp4` is **not present**, the homepage automatically uses a lightweight **procedural cosmic canvas** (particles, gravitational arcs, nebula hazes) that:
+- Renders instantly with 0ms delay (~25KB total)
+- Runs at 60fps with minimal GPU/CPU usage
+- Requires no API keys or external assets
+
+### Network-Adaptive Streaming
+
+When the video **is present**, the system evaluates client network quality:
+- **Fast network (4G/Wi-Fi)**: Seamlessly crossfades from canvas to HD video
+- **Slow network / Data Saver**: Stays in lightweight Eco Ambient (canvas) mode
+- **`prefers-reduced-motion`**: Pauses all motion, shows static cosmic poster

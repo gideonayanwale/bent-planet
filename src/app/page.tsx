@@ -13,6 +13,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandLogo } from "@/components/brand-logo";
+import { HomepageClient } from "@/components/home/homepage-client";
 
 export const metadata: Metadata = {
   title: "High-Conversion Conference Platform for Churches",
@@ -20,77 +21,71 @@ export const metadata: Metadata = {
     "Create high-converting conference landing pages in 60 seconds with AI, broadcast live streams seamlessly, and automatically nurture registered attendees into lifetime disciples.",
 };
 
+const features = [
+  {
+    icon: CpuIcon,
+    badge: "Multi-Model AI",
+    title: "60-Second AI Event Creator",
+    description:
+      "Input your theme and ministers — our resilient multi-provider AI engine (OpenAI, DeepSeek, Gemini, Claude) instantly generates Spirit-filled descriptions, time-blocked agendas, and social promotional captions.",
+    color: "from-indigo-500/20 to-purple-500/20",
+    borderColor: "border-indigo-500/30",
+  },
+  {
+    icon: UsersIcon,
+    badge: "Audience CRM",
+    title: "Church Subscriber Ownership",
+    description:
+      "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, import from CSV with deduplication, and export your audience anytime with 100% data sovereignty.",
+    color: "from-purple-500/20 to-pink-500/20",
+    borderColor: "border-purple-500/30",
+  },
+  {
+    icon: MailIcon,
+    badge: "Auto Nurture",
+    title: "Automated Email Sequences",
+    description:
+      "Broadcast live stream links, sermon notes, and devotional guides to thousands of subscribers in 1 click using pre-designed ministry email templates and Resend infrastructure.",
+    color: "from-emerald-500/20 to-teal-500/20",
+    borderColor: "border-emerald-500/30",
+  },
+  {
+    icon: HardDriveIcon,
+    badge: "Cloud Storage",
+    title: "Super Admin Cloud CDN",
+    description:
+      "Offloads all high-res logos, conference banners, and devotional PDFs to external cloud storage (Cloudinary, TeraBox Gateway, S3/R2) — protecting app server memory while serving lightning-fast media.",
+    color: "from-blue-500/20 to-cyan-500/20",
+    borderColor: "border-blue-500/30",
+  },
+];
+
+const steps = [
+  {
+    num: "01",
+    title: "Super Admin Invite or Access Request",
+    desc: "Churches receive a secure invitation or submit a verified access request to get their isolated workspace.",
+  },
+  {
+    num: "02",
+    title: "Guided Church Setup",
+    desc: "Complete your ministry profile, upload logo & cover banner, set timezone, and link WhatsApp/social channels.",
+  },
+  {
+    num: "03",
+    title: "AI Conference Launch",
+    desc: "AI auto-generates your full landing page, live stream player, and event QR code for Sunday bulletins.",
+  },
+  {
+    num: "04",
+    title: "Automate & Nurture",
+    desc: "Capture attendee leads automatically and broadcast email updates whenever you go live with something new.",
+  },
+];
+
 export default function HomePage() {
-  const features = [
-    {
-      icon: CpuIcon,
-      badge: "Multi-Model AI",
-      title: "60-Second AI Event Creator",
-      description:
-        "Input your theme and ministers — our resilient multi-provider AI engine (OpenAI, DeepSeek, Gemini, Claude) instantly generates Spirit-filled descriptions, time-blocked agendas, and social promotional captions.",
-      color: "from-indigo-500/20 to-purple-500/20",
-      borderColor: "border-indigo-500/30",
-    },
-    {
-      icon: UsersIcon,
-      badge: "Audience CRM",
-      title: "Church Subscriber Ownership",
-      description:
-        "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, import from CSV with deduplication, and export your audience anytime with 100% data sovereignty.",
-      color: "from-purple-500/20 to-pink-500/20",
-      borderColor: "border-purple-500/30",
-    },
-    {
-      icon: MailIcon,
-      badge: "Auto Nurture",
-      title: "Automated Email Sequences",
-      description:
-        "Broadcast live stream links, sermon notes, and devotional guides to thousands of subscribers in 1 click using pre-designed ministry email templates and Resend infrastructure.",
-      color: "from-emerald-500/20 to-teal-500/20",
-      borderColor: "border-emerald-500/30",
-    },
-    {
-      icon: HardDriveIcon,
-      badge: "Cloud Storage",
-      title: "Super Admin Cloud CDN",
-      description:
-        "Offloads all high-res logos, conference banners, and devotional PDFs to external cloud storage (Cloudinary, TeraBox Gateway, S3/R2) — protecting app server memory while serving lightning-fast media.",
-      color: "from-blue-500/20 to-cyan-500/20",
-      borderColor: "border-blue-500/30",
-    },
-  ];
-
-  const steps = [
-    {
-      num: "01",
-      title: "Super Admin Invite or Access Request",
-      desc: "Churches receive a secure invitation or submit a verified access request to get their isolated workspace.",
-    },
-    {
-      num: "02",
-      title: "Guided Church Setup",
-      desc: "Complete your ministry profile, upload logo & cover banner, set timezone, and link WhatsApp/social channels.",
-    },
-    {
-      num: "03",
-      title: "AI Conference Launch",
-      desc: "AI auto-generates your full landing page, live stream player, and event QR code for Sunday bulletins.",
-    },
-    {
-      num: "04",
-      title: "Automate & Nurture",
-      desc: "Capture attendee leads automatically and broadcast email updates whenever you go live with something new.",
-    },
-  ];
-
   return (
-    <div className="relative min-h-screen bg-background text-foreground overflow-hidden font-sans">
-      {/* Background Ambient Glow Orbs & Grid Pattern */}
-      <div className="absolute inset-0 bg-grid-pattern opacity-40 pointer-events-none" />
-      <div className="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] glow-orb-indigo rounded-full blur-[120px] pointer-events-none" />
-      <div className="absolute top-[20%] right-[-10%] w-[600px] h-[600px] glow-orb-purple rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-[-10%] left-[20%] w-[500px] h-[500px] glow-orb-emerald rounded-full blur-[130px] pointer-events-none" />
-
+    <HomepageClient>
       {/* Glassmorphic Navigation Header */}
       <header className="sticky top-0 z-50 glass-nav">
         <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 sm:px-8">
@@ -321,6 +316,6 @@ export default function HomePage() {
           </div>
         </div>
       </footer>
-    </div>
+    </HomepageClient>
   );
 }

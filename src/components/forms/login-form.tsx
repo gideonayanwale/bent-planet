@@ -100,7 +100,7 @@ export function LoginForm({ defaultEmail }: LoginFormProps) {
             const supabase = createBrowserSupabaseClient();
             await supabase.auth.signInWithOAuth({
               provider: "google",
-              options: { redirectTo: `${window.location.origin}/auth/callback` }
+              options: { redirectTo: `${window.location.origin}/api/auth/callback` }
             });
           }}
         >
@@ -132,7 +132,7 @@ export function LoginForm({ defaultEmail }: LoginFormProps) {
             const supabase = createBrowserSupabaseClient();
             await supabase.auth.signInWithOAuth({
               provider: "facebook",
-              options: { redirectTo: `${window.location.origin}/auth/callback` }
+              options: { redirectTo: `${window.location.origin}/api/auth/callback` }
             });
           }}
         >
