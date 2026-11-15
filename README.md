@@ -2,9 +2,9 @@
 
 **Building the Church. Connecting the People.**
 
-OIKODARA is a connected digital ministry platform for church administration, fellowship, discipleship, events, communication and member engagement. It is developed by Bent Planet.
+OIKODARA is a connected digital ministry platform for church administration, fellowship, discipleship, events, communication and member engagement.
 
-## Phase 1 Status
+## Project Status
 
 This workspace includes:
 
