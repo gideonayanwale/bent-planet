@@ -23,10 +23,10 @@ export const metadata: Metadata = {
 const features = [
   {
     icon: CpuIcon,
-    badge: "Multi-Model AI",
-    title: "60-Second AI Event Creator",
+    badge: "Event Creation",
+    title: "AI-Assisted Event Setup",
     description:
-      "Input your theme and ministers — our resilient multi-provider AI engine (OpenAI, DeepSeek, Gemini, Claude) instantly generates Spirit-filled descriptions, time-blocked agendas, and social promotional captions.",
+      "Start with your event theme and ministry details, then use AI-assisted tools to shape event descriptions, programmes and promotional copy.",
     color: "from-indigo-500/20 to-purple-500/20",
     borderColor: "border-indigo-500/30",
   },
@@ -44,16 +44,16 @@ const features = [
     badge: "Auto Nurture",
     title: "Automated Email Sequences",
     description:
-      "Broadcast live stream links, sermon notes, and devotional guides to thousands of subscribers in 1 click using pre-designed ministry email templates and Resend infrastructure.",
+      "Share event announcements, livestream information and follow-up resources with registered attendees through ministry email workflows.",
     color: "from-emerald-500/20 to-teal-500/20",
     borderColor: "border-emerald-500/30",
   },
   {
     icon: HardDriveIcon,
     badge: "Cloud Storage",
-    title: "Super Admin Cloud CDN",
+    title: "Media & Resources",
     description:
-      "Offloads all high-res logos, conference banners, and devotional PDFs to external cloud storage (Cloudinary, TeraBox Gateway, S3/R2) — protecting app server memory while serving lightning-fast media.",
+      "Keep church identity assets and event resources organised with cloud-backed media storage for dependable delivery.",
     color: "from-blue-500/20 to-cyan-500/20",
     borderColor: "border-blue-500/30",
   },
@@ -62,8 +62,8 @@ const features = [
 const steps = [
   {
     num: "01",
-    title: "Super Admin Invite or Access Request",
-    desc: "Churches receive a secure invitation or submit a verified access request to get their isolated workspace.",
+    title: "Church Workspace Access",
+    desc: "Your church receives an invitation or submits an access request to begin its own workspace.",
   },
   {
     num: "02",
@@ -72,13 +72,13 @@ const steps = [
   },
   {
     num: "03",
-    title: "AI Conference Launch",
-    desc: "AI auto-generates your full landing page, live stream player, and event QR code for Sunday bulletins.",
+    title: "Publish Your Event",
+    desc: "Create an event page, add programme details and share the registration link with your community.",
   },
   {
     num: "04",
-    title: "Automate & Nurture",
-    desc: "Capture attendee leads automatically and broadcast email updates whenever you go live with something new.",
+    title: "Communicate & Follow Up",
+    desc: "Keep attendee details organised and send relevant event updates and follow-up communications.",
   },
 ];
 
