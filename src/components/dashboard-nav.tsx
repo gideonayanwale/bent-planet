@@ -5,7 +5,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { signOutAction } from "@/app/actions";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandIcon } from "@/components/brand-logo";
 import { NotificationBell } from "@/components/notification-bell";
 import {
@@ -60,19 +59,19 @@ export function DashboardNav({
 
   return (
     <header className="sticky top-0 z-40 w-full border-b border-border/80 bg-background/85 backdrop-blur-md transition-colors">
-      <div className="container flex h-16 items-center justify-between px-4 sm:px-8">
-        <div className="flex items-center gap-6">
-          <Link href={isSuperAdmin ? "/super-admin" : "/dashboard"} className="flex items-center gap-3">
+      <div className="container flex min-h-16 items-center justify-between gap-3 px-3 sm:px-6 lg:px-8">
+        <div className="flex min-w-0 items-center gap-3 lg:gap-6">
+          <Link href={isSuperAdmin ? "/super-admin" : "/dashboard"} className="flex min-w-0 items-center gap-2 sm:gap-3">
             {churchLogo ? (
               <img src={churchLogo} alt={churchName} className="h-8 w-8 rounded-lg object-cover border border-border" />
             ) : (
               <BrandIcon size={34} className="shrink-0" />
             )}
             <div className="flex flex-col">
-              <span className="font-heading text-lg font-bold tracking-tight text-foreground leading-none">
-                {isSuperAdmin ? "Bent Planet Admin" : churchName || "Bent Planet"}
+              <span className="max-w-[42vw] truncate font-heading text-sm font-bold tracking-tight text-foreground leading-none sm:max-w-none sm:text-lg">
+                {isSuperAdmin ? "OIKODARA Admin" : churchName || "OIKODARA"}
               </span>
-              <span className="text-[11px] text-muted-foreground font-medium leading-none mt-1">
+              <span className="mt-1 max-w-[42vw] truncate text-[10px] font-medium leading-none text-muted-foreground sm:max-w-none sm:text-[11px]">
                 {isSuperAdmin ? adminEmail || "Super Admin Portal" : "Church Dashboard"}
               </span>
             </div>
@@ -101,7 +100,6 @@ export function DashboardNav({
         </div>
 
         <div className="flex items-center gap-2 sm:gap-3">
-          <ThemeToggle />
           <NotificationBell churchId={churchId} />
           
           {!isSuperAdmin && (
