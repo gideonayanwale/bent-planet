@@ -3,7 +3,6 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com"),
   title: {
     default: "OIKODARA • Digital Ministry Platform",
     template: "%s • OIKODARA | Digital Ministry Platform",
@@ -19,7 +18,6 @@ export const metadata: Metadata = {
     title: "OIKODARA — Building the Church. Connecting the People.",
     description:
       "A connected digital platform for church administration, fellowship, discipleship, events, communication and member engagement.",
-    url: "https://bentplanet.com",
     siteName: "OIKODARA",
     type: "website",
   },
