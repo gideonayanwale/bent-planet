@@ -156,7 +156,7 @@ export default function ContactPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_SUPPORT_NUMBER || "2348152048160";
+  const whatsappNumber = "2348152048160";
   const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
     "Hello OIKODARA team, I am reaching out regarding church workspace setup and conference streaming."
   )}`;
