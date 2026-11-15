@@ -276,7 +276,7 @@ export default function HomePage() {
             Give your ministry a more organised digital home. Request a church workspace to explore OIKODARA.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button asChild size="lg" className="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
+            <Button asChild size="lg" className="w-full sm:w-auto bg-indigo-500 text-white hover:bg-indigo-400 font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
               <Link href="/request-access">Request Church Access</Link>
             </Button>
             <Button asChild size="lg" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
