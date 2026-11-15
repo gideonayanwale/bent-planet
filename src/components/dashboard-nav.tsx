@@ -131,6 +131,11 @@ export function DashboardNav({
         </div>
       </div>
 
+      {/* Always-visible, horizontally scrollable mobile tabs */}
+      <nav aria-label={isSuperAdmin ? "Super admin sections" : "Church workspace sections"} className="flex gap-1 overflow-x-auto border-t border-border/70 px-3 py-2 md:hidden [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+        {items.map((item) => { const Icon = item.icon; const isActive = pathname === item.href || (item.href !== "/dashboard" && item.href !== "/super-admin" && (pathname?.startsWith(item.href) ?? false)); return <Link key={item.href} href={item.href} className={`inline-flex min-h-10 shrink-0 items-center gap-2 rounded-lg px-3 text-xs font-semibold transition-colors ${isActive ? "bg-primary text-primary-foreground" : "text-muted-foreground hover:bg-secondary hover:text-foreground"}`}><Icon className="h-4 w-4" /><span>{item.label}</span></Link>; })}
+      </nav>
+
       {/* Mobile Navigation Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden border-b border-border bg-background/95 backdrop-blur-md px-4 py-4 space-y-2 animate-in slide-in-from-top-2 duration-200">
