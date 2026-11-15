@@ -25,7 +25,6 @@ import {
 } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { AnalyticsChart } from "@/components/super-admin/analytics-chart";
 import { AccessRequestsTable } from "@/components/super-admin/access-requests-table";
 import { ChurchActionsMenu } from "@/components/super-admin/church-actions-menu";
 import { SuperAdminHeaderActions } from "@/components/super-admin/header-actions";
@@ -158,12 +157,6 @@ export default async function SuperAdminPage() {
           <AccessRequestsTable initialRequests={accessRequests} />
         </CardContent>
       </Card>
-
-      {/* Platform Analytics Growth Chart */}
-      <AnalyticsChart
-        initialSubscribers={subscribers.map((s) => ({ subscribed_at: s.subscribed_at }))}
-        initialConferences={conferences.map((c) => ({ created_at: c.created_at }))}
-      />
 
       {/* All Churches CRM Table */}
       <Card className="border-border bg-card shadow-sm">
