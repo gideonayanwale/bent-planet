@@ -214,3 +214,107 @@
 .dark .bg-indigo-50 { background-color: rgba(79, 70, 229, 0.14) !important; }
 .dark .text-indigo-950 { color: #e0e7ff !important; }
 .dark .text-indigo-900 { color: #c7d2fe !important; }
+
+
+/* Responsive foundations shared by every OIKODARA route. */
+html,
+body {
+  width: 100%;
+  min-width: 320px;
+  overflow-x: clip;
+}
+
+body {
+  overflow-wrap: break-word;
+}
+
+img,
+video,
+canvas,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  min-width: 0;
+  max-width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+pre,
+code {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overflow-x-auto,
+[data-radix-scroll-area-viewport] {
+  max-width: 100%;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+[role="dialog"],
+dialog,
+[data-radix-dialog-content] {
+  max-width: min(100vw - 1.5rem, 48rem);
+  max-height: calc(100dvh - 1.5rem);
+  overflow: auto;
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 1rem;
+  }
+
+  main {
+    min-width: 0;
+  }
+
+  section,
+  article,
+  aside,
+  header,
+  footer {
+    min-width: 0;
+  }
+
+  table {
+    font-size: 0.8125rem;
+  }
+
+  button,
+  [role="button"],
+  a.inline-flex {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (max-width: 420px) {
+  [role="dialog"],
+  dialog,
+  [data-radix-dialog-content] {
+    width: calc(100vw - 1rem);
+    max-width: calc(100vw - 1rem);
+    padding-inline: 1rem;
+  }
+
+  .glass-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
