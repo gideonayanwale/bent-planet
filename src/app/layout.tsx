@@ -5,8 +5,8 @@ import "@/app/globals.css";
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com"),
   title: {
-    default: "Bent Planet • High-Conversion Conference Platform for Churches",
-    template: "%s • Bent Planet | Church Conference & Growth Platform",
+    default: "OIKODARA • Digital Ministry Platform",
+    template: "%s • OIKODARA | Digital Ministry Platform",
   },
   description:
     "Invite-only platform for churches and Christian ministries to host interactive conferences, automate livestream broadcasts, engage attendees via WhatsApp, and manage subscribers.",
@@ -16,18 +16,18 @@ export const metadata: Metadata = {
     apple: "/logo-icon.svg",
   },
   openGraph: {
-    title: "Bent Planet — Church & Ministry Event Platform",
+    title: "OIKODARA — Building the Church. Connecting the People.",
     description:
-      "Empowering churches with livestream hubs, WhatsApp community integration, AI copywriting, and conference attendee management.",
+      "A connected digital platform for church administration, fellowship, discipleship, events, communication and member engagement.",
     url: "https://bentplanet.com",
-    siteName: "Bent Planet",
+    siteName: "OIKODARA",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
     title: "Bent Planet — Church & Ministry Growth Software",
     description:
-      "Interactive livestream hubs, WhatsApp community growth, and ministry subscriber management for Christian organizations.",
+      "Building the Church. Connecting the People. A connected digital ministry platform.",
   },
 };
 
