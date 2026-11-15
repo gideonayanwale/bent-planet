@@ -183,6 +183,7 @@ export default async function DashboardPage() {
             <div className="rounded-xl bg-secondary/60 p-4"><p className="text-xs text-muted-foreground">Emails sent</p><p className="mt-1 text-xl font-bold">{totalEmails}</p></div>
           </CardContent>
         </Card>
+        <Card className="border-border bg-card/90 shadow-xs flex flex-col justify-between">
           <CardHeader>
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/80 dark:text-amber-400">
