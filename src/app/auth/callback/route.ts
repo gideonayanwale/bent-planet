@@ -6,7 +6,8 @@ export const dynamic = "force-dynamic";
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
-  const next = requestUrl.searchParams.get("next") || "/dashboard";
+  const requestedNext = requestUrl.searchParams.get("next");
+  const next = requestedNext?.startsWith("/") && !requestedNext.startsWith("//") ? requestedNext : "/dashboard";
   const ts = requestUrl.searchParams.get("ts");
 
   // 1. Hardened 15-Minute Token Expiry Check
