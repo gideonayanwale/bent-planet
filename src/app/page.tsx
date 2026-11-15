@@ -11,14 +11,13 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandLogo } from "@/components/brand-logo";
 import { HomepageClient } from "@/components/home/homepage-client";
 
 export const metadata: Metadata = {
   title: "High-Conversion Conference Platform for Churches",
   description:
-    "Create high-converting conference landing pages in 60 seconds with AI, broadcast live streams seamlessly, and automatically nurture registered attendees into lifetime disciples.",
+    "Bring church administration, fellowship, discipleship, events and communication into one connected workspace. Help your ministry organise its work and keep people meaningfully engaged beyond Sunday.",
 };
 
 const features = [
@@ -114,7 +113,6 @@ export default function HomePage() {
           </nav>
 
           <div className="flex items-center gap-3">
-            <ThemeToggle />
             <Button asChild variant="outline" size="sm" className="text-xs h-9 font-semibold">
               <Link href="/request-access">Request Access</Link>
             </Button>
@@ -129,13 +127,13 @@ export default function HomePage() {
       <section className="relative pt-20 pb-28 px-6 sm:px-8 max-w-7xl mx-auto text-center z-10">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-pill text-xs font-semibold text-primary mb-8 glow-indigo border border-indigo-500/20">
           <SparklesIcon className="w-4 h-4 text-amber-400" />
-          <span>Invite-Only SaaS for Modern Ministries & Online Conferences</span>
+          <span>A connected digital home for growing churches</span>
         </div>
 
         <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-[1.1]">
-          The Intelligent Operating System for{" "}
+          Building stronger church communities through{" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-            Church Conferences
+            Connected Digital Ministry
           </span>
         </h1>
 
@@ -182,6 +180,17 @@ export default function HomePage() {
         </div>
       </section>
 
+      <section className="mx-auto max-w-5xl px-6 py-16 sm:px-8">
+        <div className="rounded-3xl border border-indigo-400/20 bg-gradient-to-br from-indigo-950/60 via-slate-900/80 to-slate-950 p-8 text-center shadow-2xl sm:p-12">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">The meaning behind the name</span>
+          <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-[0.12em] text-white sm:text-4xl">OIKODARA</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+            Inspired by the New Testament word <em>oikodomē</em> — building up, strengthening and edifying the Church. OIKODARA reflects our purpose: to help churches build stronger communities and keep their people connected.
+          </p>
+          <p className="mt-6 text-sm font-semibold tracking-wide text-indigo-200">Building the Church. Connecting the People.</p>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section id="how-it-works" className="py-24 px-6 sm:px-8 max-w-7xl mx-auto border-t border-border/40">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
@@ -189,7 +198,7 @@ export default function HomePage() {
             Simple 4-Step Process
           </span>
           <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-foreground">
-            How Bent Planet Powers Your Ministry
+            How OIKODARA supports your ministry
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground">
             From invitation to live stream and subscriber nurturing — completely hands-free.
@@ -212,13 +221,13 @@ export default function HomePage() {
         <div className="rounded-3xl glass-card p-8 sm:p-12 border border-border/50 bg-gradient-to-br from-indigo-950/40 via-purple-950/20 to-slate-950 grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-              Zero-Fail AI Architecture
+              Designed for connected ministry
             </span>
             <h3 className="font-heading text-3xl sm:text-4xl font-bold text-white">
-              Never Settle for Single Provider Downtime
+              A connected foundation for ministry
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Bent Planet&apos;s AI Engine coordinates multiple LLM providers in sequence: OpenAI (gpt-4o) → DeepSeek → Google Gemini → Anthropic Claude → Guaranteed Prebuilt Faith Variant Engine. Your church will never experience generation failures.
+              OIKODARA brings practical ministry workflows together in one place, helping teams plan events, communicate clearly and maintain consistent connections with their members.
             </p>
             <div className="space-y-3 pt-2">
               {["100% Generation Uptime Guarantee", "Zero App Server Memory Overload via Cloud Storage CDN", "Strict Super Admin Key Security Lock"].map((item) => (
@@ -264,7 +273,7 @@ export default function HomePage() {
             Ready to Empower Your Church Online?
           </h2>
           <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
-            Log in to your church dashboard or submit an access request to activate your Bent Planet workspace.
+            Give your ministry a more organised digital home. Request a church workspace to explore OIKODARA.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Button asChild size="lg" className="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
@@ -311,7 +320,7 @@ export default function HomePage() {
 
           <div>
             <Link href="/" className="hover:text-primary transition font-medium">
-              &copy; Bent Planet Inc. {new Date().getFullYear()}
+              &copy; OIKODARA {new Date().getFullYear()}
             </Link>
           </div>
         </div>
