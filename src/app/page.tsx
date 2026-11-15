@@ -87,9 +87,9 @@ export default function HomePage() {
     <HomepageClient>
       {/* Glassmorphic Navigation Header */}
       <header className="sticky top-0 z-50 glass-nav">
-        <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 sm:px-8">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-3 sm:h-20 sm:px-8">
           <Link href="/" className="flex items-center gap-3">
-            <BrandLogo iconSize={40} />
+            <BrandLogo iconSize={36} />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
