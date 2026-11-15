@@ -1,6 +1,8 @@
-# Bent Planet
+# OIKODARA
 
-Bent Planet is an invite-only SaaS platform for churches to publish online conferences, capture subscribers, and automate email communication.
+**Building the Church. Connecting the People.**
+
+OIKODARA is a connected digital ministry platform for church administration, fellowship, discipleship, events, communication and member engagement. It is developed by Bent Planet.
 
 ## Phase 1 Status
 

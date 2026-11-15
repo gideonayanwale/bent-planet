@@ -1,18 +1,10 @@
-<svg width="220" height="70" viewBox="0 0 220 70" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Circular Globe Icon -->
-  <g transform="translate(10, 5)">
-    <circle cx="30" cy="30" r="28" stroke="#182230" stroke-width="4.5" fill="#FFFFFF"/>
-    <!-- Globe mesh lines -->
-    <path d="M6 32 C 16 48, 44 48, 54 32" stroke="#CBD5E1" stroke-width="1.5" fill="none" stroke-linecap="round"/>
-    <path d="M12 25 C 20 40, 40 40, 48 25" stroke="#E2E8F0" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <!-- Golden Chevron -->
-    <path d="M 8 22 L 30 38 L 30 29 L 12 16 Z" fill="#D99B26"/>
-    <path d="M 30 38 L 52 22 L 48 16 L 30 29 Z" fill="#C58A1B"/>
-    <line x1="30" y1="29" x2="30" y2="38" stroke="#8C5E0D" stroke-width="1"/>
-  </g>
-
-  <!-- Typography -->
-  <text x="82" y="32" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="bold" fill="#182230" letter-spacing="-0.5">Bent</text>
-  <text x="82" y="52" font-family="Georgia, 'Times New Roman', serif" font-size="22" font-weight="bold" fill="#182230" letter-spacing="-0.5">Planet</text>
-  <line x1="82" y1="58" x2="148" y2="58" stroke="#D99B26" stroke-width="2.5" stroke-linecap="round"/>
+<svg width="420" height="100" viewBox="0 0 420 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect x="4" y="4" width="92" height="92" rx="26" fill="#EEF2FF"/>
+  <path d="M22 78V49C22 32.5 34.2 20 50 20C65.8 20 78 32.5 78 49V78" stroke="#4F46E5" stroke-width="7" stroke-linecap="round"/>
+  <path d="M50 9V29M41 18H59" stroke="#7C3AED" stroke-width="5" stroke-linecap="round"/>
+  <path d="M22 78H78" stroke="#0F172A" stroke-width="6" stroke-linecap="round"/>
+  <circle cx="35" cy="53" r="5" fill="#10B981"/><circle cx="65" cy="53" r="5" fill="#10B981"/><circle cx="50" cy="64" r="5" fill="#4F46E5"/>
+  <path d="M35 58L46 64M65 58L54 64" stroke="#4F46E5" stroke-width="3" stroke-linecap="round"/>
+  <text x="116" y="58" font-family="Arial, Helvetica, sans-serif" font-size="39" font-weight="800" letter-spacing="1.4" fill="#0F172A">OIKODARA</text>
+  <text x="118" y="81" font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="600" letter-spacing="1.1" fill="#64748B">BUILDING THE CHURCH. CONNECTING THE PEOPLE.</text>
 </svg>
