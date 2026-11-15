@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     template: "%s • OIKODARA | Digital Ministry Platform",
   },
   description:
-    "Invite-only platform for churches and Christian ministries to host interactive conferences, automate livestream broadcasts, engage attendees via WhatsApp, and manage subscribers.",
+    "A connected digital ministry platform for church administration, fellowship, discipleship, events, communication and member engagement.",
   icons: {
     icon: "/logo-icon.svg",
     shortcut: "/logo-icon.svg",
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bent Planet — Church & Ministry Growth Software",
+    title: "OIKODARA — Building the Church. Connecting the People.",
     description:
       "Building the Church. Connecting the People. A connected digital ministry platform.",
   },
