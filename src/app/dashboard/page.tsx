@@ -31,6 +31,7 @@ import { getChurchByAdminEmail } from "@/lib/churches";
 import { requireChurchUser } from "@/lib/current-user";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getConferencesByChurchId } from "@/lib/conferences";
+import { AnalyticsChart } from "@/components/analytics-chart";
 
 export default async function DashboardPage() {
   const user = await requireChurchUser();
@@ -166,7 +167,48 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      {/* Concise quick actions instead of a heavy chart panel */}
+      {/* Ministry analytics chart and email broadcast panel */}
+      <div className="grid gap-6 lg:grid-cols-3">
+        <Card className="lg:col-span-2 border-border bg-card/90 shadow-xs">
+          <CardContent className="p-6">
+            <AnalyticsChart />
+          </CardContent>
+        </Card>
+        <Card className="border-border bg-card/90 shadow-xs flex flex-col justify-between">
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/80 dark:text-amber-400">
+                <MailIcon className="h-4 w-4" />
+              </div>
+              <div>
+                <CardTitle className="text-base font-bold text-card-foreground">Email Broadcast</CardTitle>
+                <CardDescription className="text-xs">Nurture your conference attendees</CardDescription>
+              </div>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="rounded-xl bg-secondary/60 p-4 border border-border space-y-2">
+              <div className="flex items-center justify-between text-xs text-muted-foreground font-medium">
+                <span>Total Reachable Audience:</span>
+                <span className="font-bold text-foreground">{totalSubs} Subscribers</span>
+              </div>
+              <p className="text-xs text-muted-foreground leading-relaxed">
+                Send live stream notifications, sermon notes, or devotional reminders in 1 click.
+              </p>
+            </div>
+          </CardContent>
+          <div className="p-6 pt-0">
+            <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2 font-semibold shadow-sm">
+              <Link href="/dashboard/emails">
+                Open Email Command Center
+                <ArrowUpRightIcon className="h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+        </Card>
+      </div>
+
+      {/* Concise quick actions */}
       <div className="grid gap-3 sm:grid-cols-3">
         <Button asChild variant="outline" className="h-auto justify-start gap-3 p-4 text-left"><Link href="/dashboard/conferences"><CalendarIcon className="h-5 w-5 shrink-0 text-primary" /><span><span className="block text-sm font-semibold">Manage conferences</span><span className="text-xs font-normal text-muted-foreground">Create and publish events</span></span></Link></Button>
         <Button asChild variant="outline" className="h-auto justify-start gap-3 p-4 text-left"><Link href="/dashboard/subscribers"><UsersIcon className="h-5 w-5 shrink-0 text-primary" /><span><span className="block text-sm font-semibold">View audience</span><span className="text-xs font-normal text-muted-foreground">Find and organise members</span></span></Link></Button>
