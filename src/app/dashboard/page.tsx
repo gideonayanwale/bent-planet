@@ -31,7 +31,6 @@ import { getChurchByAdminEmail } from "@/lib/churches";
 import { requireChurchUser } from "@/lib/current-user";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getConferencesByChurchId } from "@/lib/conferences";
-import { AnalyticsChart } from "@/components/analytics-chart";
 
 export default async function DashboardPage() {
   const user = await requireChurchUser();
@@ -167,16 +166,23 @@ export default async function DashboardPage() {
         </Card>
       </div>
 
-      {/* Analytics Chart & Quick Email Panel */}
+      {/* Concise quick actions instead of a heavy chart panel */}
+      <div className="grid gap-3 sm:grid-cols-3">
+        <Button asChild variant="outline" className="h-auto justify-start gap-3 p-4 text-left"><Link href="/dashboard/conferences"><CalendarIcon className="h-5 w-5 shrink-0 text-primary" /><span><span className="block text-sm font-semibold">Manage conferences</span><span className="text-xs font-normal text-muted-foreground">Create and publish events</span></span></Link></Button>
+        <Button asChild variant="outline" className="h-auto justify-start gap-3 p-4 text-left"><Link href="/dashboard/subscribers"><UsersIcon className="h-5 w-5 shrink-0 text-primary" /><span><span className="block text-sm font-semibold">View audience</span><span className="text-xs font-normal text-muted-foreground">Find and organise members</span></span></Link></Button>
+        <Button asChild variant="outline" className="h-auto justify-start gap-3 p-4 text-left"><Link href="/dashboard/emails"><MailIcon className="h-5 w-5 shrink-0 text-primary" /><span><span className="block text-sm font-semibold">Send an update</span><span className="text-xs font-normal text-muted-foreground">Reach your subscribers</span></span></Link></Button>
+      </div>
+
+      {/* Concise activity summary and quick email panel */}
       <div className="grid gap-6 lg:grid-cols-3">
         <Card className="lg:col-span-2 border-border bg-card/90 shadow-xs">
-          <CardContent className="p-6">
-            <AnalyticsChart />
+          <CardHeader><CardTitle className="text-base">Your ministry at a glance</CardTitle><CardDescription className="text-xs">A simple summary of your workspace activity.</CardDescription></CardHeader>
+          <CardContent className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+            <div className="rounded-xl bg-secondary/60 p-4"><p className="text-xs text-muted-foreground">Published events</p><p className="mt-1 text-xl font-bold">{publishedCount}</p></div>
+            <div className="rounded-xl bg-secondary/60 p-4"><p className="text-xs text-muted-foreground">Subscribers</p><p className="mt-1 text-xl font-bold">{totalSubs}</p></div>
+            <div className="rounded-xl bg-secondary/60 p-4"><p className="text-xs text-muted-foreground">Emails sent</p><p className="mt-1 text-xl font-bold">{totalEmails}</p></div>
           </CardContent>
         </Card>
-
-        {/* Quick Email Broadcast Hub */}
-        <Card className="border-border bg-card/90 shadow-xs flex flex-col justify-between">
           <CardHeader>
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/80 dark:text-amber-400">
