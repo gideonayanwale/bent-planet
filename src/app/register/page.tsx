@@ -10,7 +10,7 @@ import { PublicFooter } from "@/components/public-footer";
 export const metadata: Metadata = {
   title: "Register & Request Church Workspace",
   description:
-    "Join Bent Planet to automate church conferences, livestream distribution, and attendee lead ownership.",
+    "Join OIKODARA to automate church conferences, livestream distribution, and attendee lead ownership.",
 };
 
 export default function RegisterPage() {
@@ -42,12 +42,12 @@ export default function RegisterPage() {
           <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading leading-tight text-foreground">
             Get Started with{" "}
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-              Bent Planet
+              OIKODARA
             </span>
           </h1>
 
           <p className="text-sm sm:text-base text-muted-foreground leading-relaxed">
-            Bent Planet provides isolated, high-converting digital environments for church conferences, live broadcasts, and attendee nurture. Choose your pathway below to access your workspace.
+            OIKODARA provides isolated, high-converting digital environments for church conferences, live broadcasts, and attendee nurture. Choose your pathway below to access your workspace.
           </p>
         </div>
 
@@ -128,7 +128,7 @@ export default function RegisterPage() {
                 <div className="p-4 rounded-2xl bg-secondary/30 border border-border space-y-2">
                   <span className="text-xs font-semibold text-foreground block">Check Your Email</span>
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Look for an email from <code className="text-[11px] font-mono bg-muted px-1.5 py-0.5 rounded text-foreground">Bent Planet Invitations</code> containing your unique workspace setup token.
+                    Look for an email from <code className="text-[11px] font-mono bg-muted px-1.5 py-0.5 rounded text-foreground">OIKODARA Invitations</code> containing your unique workspace setup token.
                   </p>
                 </div>
 
