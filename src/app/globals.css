@@ -4,26 +4,27 @@
 
 @layer base {
   :root {
-    /* Clean & Cool Light Theme */
-    --background: 210 40% 98%;          /* Cool Slate #F8FAFC */
-    --foreground: 222 47% 11%;          /* Deep Navy Slate #0F172A */
-    --card: 0 0% 100%;                  /* Pure White #FFFFFF */
-    --card-foreground: 222 47% 11%;     /* #0F172A */
-    --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    /* OIKODARA dark-only brand system */
+    color-scheme: dark;
+    --background: 222 47% 7%;          /* Cool Slate #F8FAFC */
+    --foreground: 210 40% 98%;          /* Deep Navy Slate #0F172A */
+    --card: 222 47% 11%;                  /* Pure White #FFFFFF */
+    --card-foreground: 210 40% 98%;     /* #0F172A */
+    --popover: 222 47% 11%;
+    --popover-foreground: 210 40% 98%;
     --primary: 239 84% 59%;             /* Modern Cool Indigo #4F46E5 */
     --primary-foreground: 0 0% 100%;    /* White #FFFFFF */
-    --secondary: 214 32% 93%;           /* Soft Cool Slate #E2E8F0 */
-    --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96.1%;             /* Cool Gray #F1F5F9 */
-    --muted-foreground: 215 16% 40%;    /* High contrast accessible slate #475569 */
-    --accent: 214 32% 93%;
-    --accent-foreground: 222 47% 11%;
+    --secondary: 217 33% 18%;           /* Soft Cool Slate #E2E8F0 */
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 33% 14%;             /* Cool Gray #F1F5F9 */
+    --muted-foreground: 215 20% 68%;    /* High contrast accessible slate #475569 */
+    --accent: 217 33% 18%;
+    --accent-foreground: 210 40% 98%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 88%;              /* Clear visible border #CBD5E1 */
-    --input: 214 32% 88%;
-    --ring: 239 84% 59%;
+    --border: 217 33% 20%;              /* Clear visible border #CBD5E1 */
+    --input: 217 33% 20%;
+    --ring: 239 84% 67%;
     --radius: 1rem;
   }
 
@@ -56,6 +57,12 @@
 
   html {
     scroll-behavior: smooth;
+    color-scheme: dark;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   }
 
   body {
@@ -203,3 +210,7 @@
 .dark .bg-slate-100 {
   background-color: hsl(var(--secondary)) !important;
 }
+
+.dark .bg-indigo-50 { background-color: rgba(79, 70, 229, 0.14) !important; }
+.dark .text-indigo-950 { color: #e0e7ff !important; }
+.dark .text-indigo-900 { color: #c7d2fe !important; }
