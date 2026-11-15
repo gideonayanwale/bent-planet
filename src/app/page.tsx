@@ -15,7 +15,7 @@ import { BrandLogo } from "@/components/brand-logo";
 import { HomepageClient } from "@/components/home/homepage-client";
 
 export const metadata: Metadata = {
-  title: "High-Conversion Conference Platform for Churches",
+  title: "OIKODARA — Building the Church. Connecting the People.",
   description:
     "Bring church administration, fellowship, discipleship, events and communication into one connected workspace. Help your ministry organise its work and keep people meaningfully engaged beyond Sunday.",
 };
@@ -35,7 +35,7 @@ const features = [
     badge: "Audience CRM",
     title: "Church Subscriber Ownership",
     description:
-      "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, import from CSV with deduplication, and export your audience anytime with 100% data sovereignty.",
+      "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, import from CSV with deduplication, and export your audience anytime with church-owned audience records.",
     color: "from-purple-500/20 to-pink-500/20",
     borderColor: "border-purple-500/30",
   },
@@ -138,7 +138,7 @@ export default function HomePage() {
         </h1>
 
         <p className="mt-6 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Create high-converting conference landing pages in 60 seconds with AI, broadcast live streams seamlessly, and automatically nurture registered attendees into lifetime disciples.
+          Bring church administration, fellowship, discipleship, events and communication into one connected workspace. Help your ministry organise its work and keep people meaningfully engaged beyond Sunday.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
