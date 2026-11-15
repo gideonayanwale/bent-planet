@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 import { loginAction } from "@/app/login/actions";
+import { BrandIcon } from "@/components/brand-logo";
 import { FieldError } from "@/components/forms/field-error";
 import { FormFeedback } from "@/components/forms/form-feedback";
 import { Button } from "@/components/ui/button";
@@ -79,7 +80,7 @@ export function LoginForm({ defaultEmail }: LoginFormProps) {
       <FormFeedback state={state} />
 
       <Button className="w-full" size="lg" type="submit" disabled={isPending}>
-        {isPending ? "Signing in..." : "Sign in"}
+        {isPending ? <span className="inline-flex items-center gap-2"><BrandIcon size={16} className="animate-spin motion-reduce:animate-none" /> Signing in...</span> : "Sign in"}
       </Button>
 
       <div className="relative my-4">
@@ -87,7 +88,7 @@ export function LoginForm({ defaultEmail }: LoginFormProps) {
           <span className="w-full border-t border-slate-200" />
         </div>
         <div className="relative flex justify-center text-xs uppercase">
-          <span className="bg-white px-2 text-slate-500">Or continue with</span>
+          <span className="bg-card px-2 text-muted-foreground">Or continue with</span>
         </div>
       </div>
 
