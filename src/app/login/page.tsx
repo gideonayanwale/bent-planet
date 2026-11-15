@@ -6,7 +6,7 @@ import { ArrowRight, ShieldCheck } from "lucide-react";
 export const metadata: Metadata = {
   title: "Church Login",
   description:
-    "Sign in to your Bent Planet church workspace to manage conferences, live broadcasts, and subscriber audiences.",
+    "Sign in to your OIKODARA church workspace to manage conferences, live broadcasts, and subscriber audiences.",
 };
 
 import { LoginForm } from "@/components/forms/login-form";
@@ -56,7 +56,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <Badge className="bg-accent/10 text-accent hover:bg-accent/10">Secure workspace</Badge>
             <div className="space-y-4">
               <h1 className="max-w-3xl font-heading text-4xl font-bold tracking-tight text-primary sm:text-5xl">
-                Sign in to manage your Bent Planet workspace.
+                Sign in to manage your OIKODARA workspace.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-slate-600">
                 Super admins manage invitations. Church teams complete onboarding once, then return
@@ -72,7 +72,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm leading-6 text-slate-600">
-                    Churches only join Bent Planet through a super-admin invitation and one-time
+                    Churches only join OIKODARA through a super-admin invitation and one-time
                     onboarding link.
                   </p>
                 </CardContent>
@@ -92,7 +92,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             </div>
 
             <Button asChild variant="outline" size="lg">
-              <Link href="/">Back to Bent Planet</Link>
+              <Link href="/">Back to OIKODARA</Link>
             </Button>
           </div>
 
@@ -100,7 +100,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
             <CardHeader className="space-y-3">
               <CardTitle className="text-3xl">Account sign-in</CardTitle>
               <CardDescription>
-                Use the email and password tied to your Bent Planet account.
+                Use the email and password tied to your OIKODARA account.
               </CardDescription>
               {showOnboardingNote ? (
                 <div className="rounded-2xl border border-emerald-500/20 bg-emerald-50 dark:bg-emerald-950/30 px-4 py-3 text-sm text-emerald-900 dark:text-emerald-300 font-medium">
