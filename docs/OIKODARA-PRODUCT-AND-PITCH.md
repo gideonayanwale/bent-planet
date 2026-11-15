@@ -1,6 +1,6 @@
 # OIKODARA — Product & Partnership Brief
 
-> Proposed product name for the Bent Planet church conference platform. Name, domain and trademark availability have not been cleared. All demo data in the interactive showcase is fictional.
+> OIKODARA is the approved product identity for this connected digital ministry platform. Name, domain and trademark availability have not been cleared. All demo data in the interactive showcase is fictional.
 
 ## Positioning
 
