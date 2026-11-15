@@ -66,8 +66,8 @@ const config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        heading: ["Segoe UI", "Aptos Display", "system-ui", "sans-serif"],
-        body: ["Aptos", "Segoe UI", "system-ui", "sans-serif"],
+        heading: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
+        body: ["Plus Jakarta Sans", "Inter", "system-ui", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
