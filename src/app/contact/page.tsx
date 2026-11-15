@@ -42,9 +42,9 @@ interface FaqItem {
 const FAQS: FaqItem[] = [
   {
     category: "access",
-    question: "How does our church request access to Bent Planet?",
+    question: "How does our church request access to OIKODARA?",
     answer:
-      "Bent Planet is an invite-only platform engineered specifically for verified ministries and church organizations. You can submit an access request through our online application form. Our review team verifies ministry credentials within 24 hours and issues a secure, isolated workspace onboarding link.",
+      "OIKODARA is an invite-only platform engineered specifically for verified ministries and church organizations. You can submit an access request through our online application form. Our review team verifies ministry credentials within 24 hours and issues a secure, isolated workspace onboarding link.",
   },
   {
     category: "features",
@@ -62,7 +62,7 @@ const FAQS: FaqItem[] = [
     category: "features",
     question: "How does the WhatsApp community integration work?",
     answer:
-      "Bent Planet generates seamless click-to-join WhatsApp buttons with prefilled RSVP confirmation text. When attendees register, they can be immediately routed to your church's WhatsApp group or channel for real-time announcements, sermon notes, and prayer circles.",
+      "OIKODARA generates seamless click-to-join WhatsApp buttons with prefilled RSVP confirmation text. When attendees register, they can be immediately routed to your church's WhatsApp group or channel for real-time announcements, sermon notes, and prayer circles.",
   },
   {
     category: "media",
@@ -156,9 +156,9 @@ export default function ContactPage() {
     return matchesCategory && matchesSearch;
   });
 
-  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_SUPPORT_NUMBER || "2348000000000";
+  const whatsappNumber = process.env.NEXT_PUBLIC_WHATSAPP_SUPPORT_NUMBER || "2348152048160";
   const whatsappUrl = `https://wa.me/${whatsappNumber.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-    "Hello Bent Planet team, I am reaching out regarding church workspace setup and conference streaming."
+    "Hello OIKODARA team, I am reaching out regarding church workspace setup and conference streaming."
   )}`;
 
   return (
@@ -198,7 +198,7 @@ export default function ContactPage() {
             <h1 className="text-3xl sm:text-5xl font-extrabold tracking-tight font-heading leading-tight text-foreground">
               Contact & Partner with{" "}
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-                Bent Planet
+                OIKODARA
               </span>
             </h1>
 
@@ -509,7 +509,7 @@ export default function ContactPage() {
                     </Badge>
                     <h3 className="font-heading font-bold text-lg text-foreground">Apply for Workspace</h3>
                     <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      Ready to launch your ministry on Bent Planet? Submit your application directly to our verification team.
+                      Ready to launch your ministry on OIKODARA? Submit your application directly to our verification team.
                     </p>
                   </div>
                   <Button asChild className="w-full btn-gradient text-xs font-bold shadow-md mt-4">
