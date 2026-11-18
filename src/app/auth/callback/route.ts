@@ -1,12 +1,14 @@
 import { NextResponse } from "next/server";
 import { createServerSupabaseClient } from "@/lib/supabase/server";
+import { getAppRouteForEmail } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
 
 export async function GET(request: Request) {
   const requestUrl = new URL(request.url);
   const code = requestUrl.searchParams.get("code");
-  const next = requestUrl.searchParams.get("next") || "/dashboard";
+  const requestedNext = requestUrl.searchParams.get("next");
+  const next = requestedNext?.startsWith("/") && !requestedNext.startsWith("//") ? requestedNext : "/dashboard";
   const ts = requestUrl.searchParams.get("ts");
 
   // 1. Hardened 15-Minute Token Expiry Check
@@ -23,9 +25,10 @@ export async function GET(request: Request) {
   // 2. PKCE Exchange
   if (code) {
     const supabase = createServerSupabaseClient();
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error) {
-      return NextResponse.redirect(new URL(next, requestUrl.origin));
+      const destination = requestedNext ? next : data.user?.email ? getAppRouteForEmail(data.user.email) : next;
+      return NextResponse.redirect(new URL(destination, requestUrl.origin));
     }
   }
 

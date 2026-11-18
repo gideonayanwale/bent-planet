@@ -6,6 +6,8 @@ import { updateSession } from "@/lib/supabase/middleware";
 
 const PUBLIC_API_ROUTES = new Set([
   "/api/subscribe",
+  "/api/access-requests",
+  "/api/feedback",
   "/api/og",
   "/api/webhooks/resend",
   "/api/cron/email-sequences",
@@ -26,6 +28,7 @@ function isProtectedApiRoute(pathname: string) {
 function isAlwaysPublicRoute(pathname: string) {
   return (
     pathname === "/" ||
+    pathname === "/feedback" ||
     pathname.startsWith("/onboarding/") ||
     pathname.startsWith("/c/") ||
     pathname.startsWith("/_next/") ||

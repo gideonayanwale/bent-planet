@@ -3,17 +3,42 @@ import { getCurrentUser } from "@/lib/current-user";
 
 export const dynamic = "force-dynamic";
 
+const extractionWindows = new Map<string, { count: number; resetAt: number }>();
+const MAX_EXTRACTIONS_PER_HOUR = 5;
+const MAX_IMAGE_DATA_LENGTH = 7_000_000;
+
 export async function POST(req: Request) {
   try {
     const user = await getCurrentUser();
-    if (!user) {
+    if (!user?.email) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { imageBase64 } = await req.json();
+    const contentLength = Number(req.headers.get("content-length") || 0);
+    if (contentLength > 8 * 1024 * 1024) {
+      return NextResponse.json({ error: "Image must be 5 MB or smaller." }, { status: 413 });
+    }
 
-    if (!imageBase64) {
-      return NextResponse.json({ error: "Image is required" }, { status: 400 });
+    const body = await req.json();
+    const imageBase64 = body?.imageBase64;
+    const validImagePrefix = typeof imageBase64 === "string" && (
+      imageBase64.startsWith("data:image/png;base64,") ||
+      imageBase64.startsWith("data:image/jpeg;base64,") ||
+      imageBase64.startsWith("data:image/webp;base64,")
+    );
+    if (!validImagePrefix || imageBase64.length === 0 || imageBase64.length > MAX_IMAGE_DATA_LENGTH) {
+      return NextResponse.json({ error: "Please upload a PNG, JPEG or WebP image up to 5 MB." }, { status: 400 });
+    }
+
+    const now = Date.now();
+    const key = user.email.toLowerCase();
+    const rateLimit = extractionWindows.get(key);
+    if (!rateLimit || rateLimit.resetAt <= now) {
+      extractionWindows.set(key, { count: 1, resetAt: now + 60 * 60 * 1000 });
+    } else if (rateLimit.count >= MAX_EXTRACTIONS_PER_HOUR) {
+      return NextResponse.json({ error: "Hourly flyer extraction limit reached. Please try again later." }, { status: 429 });
+    } else {
+      rateLimit.count += 1;
     }
 
     const openrouterKey = process.env.OPENROUTER_API_KEY;
@@ -116,7 +141,7 @@ Rules:
                   Authorization: `Bearer ${openrouterKey}`,
                   "Content-Type": "application/json",
                   "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com",
-                  "X-Title": "Bent Planet Church Platform",
+                  "X-Title": "OIKODARA",
                 },
                 body: JSON.stringify({
                   model,

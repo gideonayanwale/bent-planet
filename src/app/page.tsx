@@ -11,23 +11,23 @@ import {
 } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { BrandLogo } from "@/components/brand-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { HomepageClient } from "@/components/home/homepage-client";
 
 export const metadata: Metadata = {
-  title: "High-Conversion Conference Platform for Churches",
+  title: "OIKODARA — Building the Church. Connecting the People.",
   description:
-    "Create high-converting conference landing pages in 60 seconds with AI, broadcast live streams seamlessly, and automatically nurture registered attendees into lifetime disciples.",
+    "Bring church administration, fellowship, discipleship, events and communication into one connected workspace. Help your ministry organise its work and keep people meaningfully engaged beyond Sunday.",
 };
 
 const features = [
   {
     icon: CpuIcon,
-    badge: "Multi-Model AI",
-    title: "60-Second AI Event Creator",
+    badge: "Event Creation",
+    title: "AI-Assisted Event Setup",
     description:
-      "Input your theme and ministers — our resilient multi-provider AI engine (OpenAI, DeepSeek, Gemini, Claude) instantly generates Spirit-filled descriptions, time-blocked agendas, and social promotional captions.",
+      "Start with your event theme and ministry details, then use AI-assisted tools to shape event descriptions, programmes and promotional copy.",
     color: "from-indigo-500/20 to-purple-500/20",
     borderColor: "border-indigo-500/30",
   },
@@ -36,7 +36,7 @@ const features = [
     badge: "Audience CRM",
     title: "Church Subscriber Ownership",
     description:
-      "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, import from CSV with deduplication, and export your audience anytime with 100% data sovereignty.",
+      "Every attendee who subscribes on your public conference page belongs strictly to your ministry. Search, filter, tag, import from CSV with deduplication, and export your audience anytime with church-owned audience records.",
     color: "from-purple-500/20 to-pink-500/20",
     borderColor: "border-purple-500/30",
   },
@@ -45,16 +45,16 @@ const features = [
     badge: "Auto Nurture",
     title: "Automated Email Sequences",
     description:
-      "Broadcast live stream links, sermon notes, and devotional guides to thousands of subscribers in 1 click using pre-designed ministry email templates and Resend infrastructure.",
+      "Share event announcements, livestream information and follow-up resources with registered attendees through ministry email workflows.",
     color: "from-emerald-500/20 to-teal-500/20",
     borderColor: "border-emerald-500/30",
   },
   {
     icon: HardDriveIcon,
     badge: "Cloud Storage",
-    title: "Super Admin Cloud CDN",
+    title: "Media & Resources",
     description:
-      "Offloads all high-res logos, conference banners, and devotional PDFs to external cloud storage (Cloudinary, TeraBox Gateway, S3/R2) — protecting app server memory while serving lightning-fast media.",
+      "Keep church identity assets and event resources organised with cloud-backed media storage for dependable delivery.",
     color: "from-blue-500/20 to-cyan-500/20",
     borderColor: "border-blue-500/30",
   },
@@ -63,8 +63,8 @@ const features = [
 const steps = [
   {
     num: "01",
-    title: "Super Admin Invite or Access Request",
-    desc: "Churches receive a secure invitation or submit a verified access request to get their isolated workspace.",
+    title: "Church Workspace Access",
+    desc: "Your church receives an invitation or submits an access request to begin its own workspace.",
   },
   {
     num: "02",
@@ -73,13 +73,13 @@ const steps = [
   },
   {
     num: "03",
-    title: "AI Conference Launch",
-    desc: "AI auto-generates your full landing page, live stream player, and event QR code for Sunday bulletins.",
+    title: "Publish Your Event",
+    desc: "Create an event page, add programme details and share the registration link with your community.",
   },
   {
     num: "04",
-    title: "Automate & Nurture",
-    desc: "Capture attendee leads automatically and broadcast email updates whenever you go live with something new.",
+    title: "Communicate & Follow Up",
+    desc: "Keep attendee details organised and send relevant event updates and follow-up communications.",
   },
 ];
 
@@ -88,9 +88,9 @@ export default function HomePage() {
     <HomepageClient>
       {/* Glassmorphic Navigation Header */}
       <header className="sticky top-0 z-50 glass-nav">
-        <div className="max-w-7xl mx-auto flex h-20 items-center justify-between px-6 sm:px-8">
+        <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-2 px-3 sm:h-20 sm:px-8">
           <Link href="/" className="flex items-center gap-3">
-            <BrandLogo iconSize={40} />
+            <BrandLogo iconSize={36} />
           </Link>
 
           <nav className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
@@ -113,9 +113,9 @@ export default function HomePage() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
             <ThemeToggle />
-            <Button asChild variant="outline" size="sm" className="text-xs h-9 font-semibold">
+            <Button asChild variant="outline" size="sm" className="hidden text-xs h-9 font-semibold sm:inline-flex">
               <Link href="/request-access">Request Access</Link>
             </Button>
             <Button asChild size="sm" className="btn-gradient text-xs font-semibold shadow-md">
@@ -129,18 +129,18 @@ export default function HomePage() {
       <section className="relative pt-20 pb-28 px-6 sm:px-8 max-w-7xl mx-auto text-center z-10">
         <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full glass-pill text-xs font-semibold text-primary mb-8 glow-indigo border border-indigo-500/20">
           <SparklesIcon className="w-4 h-4 text-amber-400" />
-          <span>Invite-Only SaaS for Modern Ministries & Online Conferences</span>
+          <span>A connected digital home for growing churches</span>
         </div>
 
         <h1 className="font-heading text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-tight text-foreground max-w-4xl mx-auto leading-[1.1]">
-          The Intelligent Operating System for{" "}
+          Building stronger church communities through{" "}
           <span className="bg-clip-text text-transparent bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500">
-            Church Conferences
+            Connected Digital Ministry
           </span>
         </h1>
 
         <p className="mt-6 text-base sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-          Create high-converting conference landing pages in 60 seconds with AI, broadcast live streams seamlessly, and automatically nurture registered attendees into lifetime disciples.
+          Bring church administration, fellowship, discipleship, events and communication into one connected workspace. Help your ministry organise its work and keep people meaningfully engaged beyond Sunday.
         </p>
 
         <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
@@ -149,7 +149,7 @@ export default function HomePage() {
           </Button>
           <Button asChild variant="outline" size="lg" className="w-full sm:w-auto glass-pill text-foreground hover:bg-accent/20 font-semibold text-sm px-8 h-12 rounded-2xl border-indigo-500/30 shadow-xs">
             <Link href="/templates">
-              <SparklesIcon className="mr-2 h-4 w-4 text-indigo-500" />
+              <SparklesIcon className="mr-2 h-4 w-4 text-indigo-500 dark:text-indigo-400" />
               Templates & Wireframes
             </Link>
           </Button>
@@ -182,6 +182,25 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* Lightweight interactive sample preview */}
+      <section id="product-preview" className="mx-auto max-w-6xl px-4 py-12 sm:px-8 sm:py-16">
+        <div className="grid gap-8 rounded-3xl border border-border bg-card/80 p-5 shadow-lg sm:p-8 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+          <div className="space-y-4"><span className="inline-flex rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">Explore the workspace</span><h2 className="font-heading text-2xl font-bold tracking-tight text-foreground sm:text-3xl">See how your ministry connects in one place.</h2><p className="text-sm leading-6 text-muted-foreground">Explore a sample church workspace with conference management, audience records, communications and platform tools. No account is required to view the demo.</p><Button asChild className="w-full sm:w-auto"><Link href="/demo">Explore the interactive demo</Link></Button></div>
+          <div className="overflow-hidden rounded-2xl border border-border bg-background shadow-inner"><div className="flex items-center justify-between border-b border-border px-4 py-3"><div className="flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-emerald-500" /><span className="text-xs font-semibold text-foreground">OIKODARA workspace</span></div><span className="text-[10px] text-muted-foreground">Sample data</span></div><div className="grid grid-cols-2 gap-3 p-4 sm:grid-cols-3">{[{label:"Conferences",value:"12"},{label:"Subscribers",value:"846"},{label:"Messages sent",value:"2.4k"}].map((item) => <div key={item.label} className="rounded-xl border border-border bg-card p-3"><p className="text-[10px] text-muted-foreground">{item.label}</p><p className="mt-1 text-xl font-bold text-foreground">{item.value}</p></div>)}</div><div className="space-y-2 px-4 pb-4"><div className="rounded-xl border border-border bg-card p-3"><div className="flex items-center justify-between gap-3"><span className="text-xs font-semibold text-foreground">Sunday Worship Gathering</span><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[9px] font-semibold text-emerald-700 dark:text-emerald-300">Published</span></div><p className="mt-1 text-[10px] text-muted-foreground">Event page · Registration · Follow-up</p></div><div className="grid grid-cols-2 gap-2"><div className="rounded-xl bg-secondary/70 p-3 text-[10px] text-muted-foreground">Audience management</div><div className="rounded-xl bg-secondary/70 p-3 text-[10px] text-muted-foreground">Church communications</div></div></div></div>
+        </div>
+      </section>
+
+      <section className="mx-auto max-w-5xl px-6 py-16 sm:px-8">
+        <div className="rounded-3xl border border-indigo-400/20 bg-gradient-to-br from-indigo-950/60 via-slate-900/80 to-slate-950 p-8 text-center shadow-2xl sm:p-12">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">The meaning behind the name</span>
+          <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-[0.12em] text-white sm:text-4xl">OIKODARA</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+            Inspired by the New Testament word <em>oikodomē</em> — building up, strengthening and edifying the Church. OIKODARA reflects our purpose: to help churches build stronger communities and keep their people connected.
+          </p>
+          <p className="mt-6 text-sm font-semibold tracking-wide text-indigo-200">Building the Church. Connecting the People.</p>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section id="how-it-works" className="py-24 px-6 sm:px-8 max-w-7xl mx-auto border-t border-border/40">
         <div className="text-center max-w-3xl mx-auto mb-16 space-y-4">
@@ -189,10 +208,10 @@ export default function HomePage() {
             Simple 4-Step Process
           </span>
           <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-foreground">
-            How Bent Planet Powers Your Ministry
+            How OIKODARA supports your ministry
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground">
-            From invitation to live stream and subscriber nurturing — completely hands-free.
+            From workspace invitation to event publishing, attendee management and follow-up communication.
           </p>
         </div>
 
@@ -212,16 +231,16 @@ export default function HomePage() {
         <div className="rounded-3xl glass-card p-8 sm:p-12 border border-border/50 bg-gradient-to-br from-indigo-950/40 via-purple-950/20 to-slate-950 grid lg:grid-cols-2 gap-8 items-center">
           <div className="space-y-4">
             <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
-              Zero-Fail AI Architecture
+              Designed for connected ministry
             </span>
             <h3 className="font-heading text-3xl sm:text-4xl font-bold text-white">
-              Never Settle for Single Provider Downtime
+              A connected foundation for ministry
             </h3>
             <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-              Bent Planet&apos;s AI Engine coordinates multiple LLM providers in sequence: OpenAI (gpt-4o) → DeepSeek → Google Gemini → Anthropic Claude → Guaranteed Prebuilt Faith Variant Engine. Your church will never experience generation failures.
+              OIKODARA brings practical ministry workflows together in one place, helping teams plan events, communicate clearly and maintain consistent connections with their members.
             </p>
             <div className="space-y-3 pt-2">
-              {["100% Generation Uptime Guarantee", "Zero App Server Memory Overload via Cloud Storage CDN", "Strict Super Admin Key Security Lock"].map((item) => (
+              {["Designed for dependable ministry workflows", "Cloud-backed storage for church media assets", "Administrative controls for platform operations"].map((item) => (
                 <div key={item} className="flex items-center gap-2.5 text-xs font-semibold text-slate-200">
                   <CheckCircle2Icon className="h-4 w-4 text-emerald-400 flex-shrink-0" />
                   <span>{item}</span>
@@ -232,8 +251,8 @@ export default function HomePage() {
 
           <div className="rounded-2xl bg-slate-900/90 p-6 border border-white/10 space-y-4 text-xs font-mono">
             <div className="flex items-center justify-between text-slate-400 border-b border-white/10 pb-3">
-              <span>PROPRIETARY AI SEQUENCE</span>
-              <span className="text-emerald-400">ACTIVE</span>
+              <span>AI CONTENT GENERATION WORKFLOW</span>
+              <span className="text-emerald-400">CONFIGURABLE</span>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/5 text-slate-300">
@@ -250,7 +269,7 @@ export default function HomePage() {
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-950/40 text-emerald-200 border border-emerald-500/30">
                 <span>4. Prebuilt Faith Engine</span>
-                <span className="text-emerald-300 font-bold">ZERO-FAIL GUARANTEE</span>
+                <span className="text-emerald-300 font-bold">FALLBACK WORKFLOW</span>
               </div>
             </div>
           </div>
@@ -264,10 +283,10 @@ export default function HomePage() {
             Ready to Empower Your Church Online?
           </h2>
           <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
-            Log in to your church dashboard or submit an access request to activate your Bent Planet workspace.
+            Give your ministry a more organised digital home. Request a church workspace to explore OIKODARA.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-            <Button asChild size="lg" className="w-full sm:w-auto bg-white text-slate-950 hover:bg-slate-100 font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
+            <Button asChild size="lg" className="w-full sm:w-auto bg-indigo-500 text-white hover:bg-indigo-400 font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
               <Link href="/request-access">Request Church Access</Link>
             </Button>
             <Button asChild size="lg" className="w-full sm:w-auto bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-base px-8 h-13 rounded-2xl shadow-xl">
@@ -287,7 +306,7 @@ export default function HomePage() {
             <span className="text-muted-foreground/60">|</span>
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" />
-              <span className="font-medium text-foreground/80">All Systems Operational</span>
+              <span className="font-medium text-foreground/80">A connected workspace for ministry teams</span>
             </div>
           </div>
 
@@ -311,7 +330,7 @@ export default function HomePage() {
 
           <div>
             <Link href="/" className="hover:text-primary transition font-medium">
-              &copy; Bent Planet Inc. {new Date().getFullYear()}
+              &copy; OIKODARA {new Date().getFullYear()}
             </Link>
           </div>
         </div>

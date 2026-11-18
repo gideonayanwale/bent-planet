@@ -4,30 +4,32 @@
 
 @layer base {
   :root {
-    /* Clean & Cool Light Theme */
-    --background: 210 40% 98%;          /* Cool Slate #F8FAFC */
-    --foreground: 222 47% 11%;          /* Deep Navy Slate #0F172A */
-    --card: 0 0% 100%;                  /* Pure White #FFFFFF */
-    --card-foreground: 222 47% 11%;     /* #0F172A */
+    /* Accessible OIKODARA light theme */
+    color-scheme: light;
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 11%;
-    --primary: 239 84% 59%;             /* Modern Cool Indigo #4F46E5 */
-    --primary-foreground: 0 0% 100%;    /* White #FFFFFF */
-    --secondary: 214 32% 93%;           /* Soft Cool Slate #E2E8F0 */
+    --primary: 239 84% 59%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 220 14% 96%;
     --secondary-foreground: 222 47% 11%;
-    --muted: 210 40% 96.1%;             /* Cool Gray #F1F5F9 */
-    --muted-foreground: 215 16% 40%;    /* High contrast accessible slate #475569 */
-    --accent: 214 32% 93%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 215 16% 42%;
+    --accent: 220 14% 96%;
     --accent-foreground: 222 47% 11%;
-    --destructive: 0 84% 60%;
+    --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214 32% 88%;              /* Clear visible border #CBD5E1 */
-    --input: 214 32% 88%;
+    --border: 220 13% 87%;
+    --input: 220 13% 87%;
     --ring: 239 84% 59%;
     --radius: 1rem;
   }
 
   .dark {
+    color-scheme: dark;
     /* Clean & Cool Dark Theme */
     --background: 222 47% 7%;           /* Deep Midnight #0B0F19 */
     --foreground: 210 40% 98%;          /* Crisp Off-White #F8FAFC */
@@ -56,6 +58,12 @@
 
   html {
     scroll-behavior: smooth;
+    color-scheme: light;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
   }
 
   body {
@@ -67,6 +75,11 @@
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+
+  .bg-grid-pattern {
+    background-image: radial-gradient(hsl(var(--foreground) / 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
   }
 
   /* High Visibility Glassmorphism Utilities */
@@ -202,4 +215,112 @@
 
 .dark .bg-slate-100 {
   background-color: hsl(var(--secondary)) !important;
+}
+
+.dark .bg-indigo-50 { background-color: rgba(79, 70, 229, 0.14) !important; }
+.dark .text-indigo-950 { color: #e0e7ff !important; }
+.dark .text-indigo-900 { color: #c7d2fe !important; }
+
+
+/* Responsive foundations shared by every OIKODARA route. */
+html,
+body {
+  width: 100%;
+  min-width: 320px;
+  overflow-x: clip;
+}
+
+body {
+  overflow-wrap: break-word;
+}
+
+img,
+video,
+canvas,
+iframe,
+svg {
+  max-width: 100%;
+}
+
+input,
+select,
+textarea,
+button {
+  min-width: 0;
+  max-width: 100%;
+}
+
+textarea {
+  resize: vertical;
+}
+
+pre,
+code {
+  max-width: 100%;
+  overflow-wrap: anywhere;
+}
+
+pre {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.overflow-x-auto,
+[data-radix-scroll-area-viewport] {
+  max-width: 100%;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+[role="dialog"],
+dialog,
+[data-radix-dialog-content] {
+  max-width: min(100vw - 1.5rem, 48rem);
+  max-height: calc(100dvh - 1.5rem);
+  overflow: auto;
+}
+
+@media (max-width: 767px) {
+  .container {
+    width: 100%;
+    max-width: 100%;
+    padding-inline: 1rem;
+  }
+
+  main {
+    min-width: 0;
+  }
+
+  section,
+  article,
+  aside,
+  header,
+  footer {
+    min-width: 0;
+  }
+
+  table {
+    font-size: 0.8125rem;
+  }
+
+  button,
+  [role="button"],
+  a.inline-flex {
+    -webkit-tap-highlight-color: transparent;
+  }
+}
+
+@media (max-width: 420px) {
+  [role="dialog"],
+  dialog,
+  [data-radix-dialog-content] {
+    width: calc(100vw - 1rem);
+    max-width: calc(100vw - 1rem);
+    padding-inline: 1rem;
+  }
+
+  .glass-card {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }

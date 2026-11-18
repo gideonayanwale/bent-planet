@@ -5,8 +5,8 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { FeedbackForm } from "@/components/feedback-form";
 
 export const metadata = {
-  title: "Feedback & Product Support",
-  description: "Send inquiries, feature requests, or technical support messages to the Bent Planet team.",
+  title: "OIKODARA Feedback & Product Support",
+  description: "Send inquiries, feature requests, or technical support messages to the OIKODARA team.",
 };
 
 export default function FeedbackPage() {
@@ -73,7 +73,7 @@ export default function FeedbackPage() {
       {/* Footer */}
       <footer className="border-t border-slate-200 dark:border-slate-800 py-8 text-center text-xs text-slate-500 dark:text-slate-400">
         <div className="container mx-auto max-w-5xl px-4 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p>© {new Date().getFullYear()} Bent Planet Inc. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} OIKODARA All rights reserved.</p>
           <div className="flex gap-4">
             <Link href="/privacy" className="hover:underline">Privacy Policy</Link>
             <Link href="/terms" className="hover:underline">Terms of Service</Link>

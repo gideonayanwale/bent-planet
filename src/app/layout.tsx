@@ -3,13 +3,12 @@ import type { Metadata } from "next";
 import "@/app/globals.css";
 
 export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com"),
   title: {
     default: "OIKODARA • Digital Ministry Platform",
     template: "%s • OIKODARA | Digital Ministry Platform",
   },
   description:
-    "Invite-only platform for churches and Christian ministries to host interactive conferences, automate livestream broadcasts, engage attendees via WhatsApp, and manage subscribers.",
+    "A connected digital ministry platform for church administration, fellowship, discipleship, events, communication and member engagement.",
   icons: {
     icon: "/logo-icon.svg",
     shortcut: "/logo-icon.svg",
@@ -19,13 +18,12 @@ export const metadata: Metadata = {
     title: "OIKODARA — Building the Church. Connecting the People.",
     description:
       "A connected digital platform for church administration, fellowship, discipleship, events, communication and member engagement.",
-    url: "https://bentplanet.com",
     siteName: "OIKODARA",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Bent Planet — Church & Ministry Growth Software",
+    title: "OIKODARA — Building the Church. Connecting the People.",
     description:
       "Building the Church. Connecting the People. A connected digital ministry platform.",
   },
@@ -42,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" className="dark" suppressHydrationWarning>
       <body className="min-h-screen bg-background font-body text-foreground antialiased selection:bg-primary/30 selection:text-primary">
         <ThemeProvider
           attribute="class"

@@ -20,7 +20,8 @@ export function ThemeToggle() {
         variant="ghost"
         size="icon"
         className="h-9 w-9 rounded-xl border border-border/60 text-muted-foreground"
-        aria-label="Toggle theme"
+        aria-label="Theme control loading"
+        disabled
       >
         <Sun className="h-4 w-4" />
       </Button>
@@ -35,7 +36,9 @@ export function ThemeToggle() {
       size="icon"
       onClick={() => setTheme(isDark ? "light" : "dark")}
       className="h-9 w-9 rounded-xl border border-border/60 bg-secondary/50 text-foreground hover:bg-secondary transition-all shadow-xs"
-      aria-label="Toggle theme"
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      aria-pressed={isDark}
+      title={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
       {isDark ? (
         <Sun className="h-4 w-4 text-amber-400 transition-transform duration-300 rotate-0 hover:rotate-45" />

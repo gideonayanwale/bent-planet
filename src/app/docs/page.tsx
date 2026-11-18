@@ -42,7 +42,7 @@ export default function DocsPage() {
             Knowledge Base & Guides
           </Badge>
           <h1 className="font-heading text-3xl sm:text-5xl font-bold tracking-tight text-slate-900">
-            How to Use Bent Planet
+            How to Use OIKODARA
           </h1>
           <p className="text-sm sm:text-base text-slate-600 max-w-2xl leading-relaxed">
             Everything your church needs to know about setting up your workspace, generating AI-powered conference landing pages, and nurturing your online audience.

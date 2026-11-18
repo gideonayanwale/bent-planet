@@ -1,10 +1,16 @@
 # OIKODARA — Product & Partnership Brief
 
-> Proposed product name for the Bent Planet church conference platform. Name, domain and trademark availability have not been cleared. All demo data in the interactive showcase is fictional.
+> OIKODARA is the approved product identity for this connected digital ministry platform. Name, domain and trademark availability have not been cleared. All demo data in the interactive showcase is fictional.
 
 ## Positioning
 
-**OIKODARA is a digital event and audience engagement platform for churches and Christian ministries.** It helps ministries publish branded conference pages, capture registrations, organise their own subscriber audiences and coordinate event communications from one church workspace.
+**OIKODARA is a connected digital ministry platform that helps churches turn fragmented digital reach into sustained relationships, coordinated ministry and measurable engagement.**
+
+Churches already reach people through livestreams, online services, social channels, event registrations, messaging groups and subscriber lists. The problem is that these touchpoints are often disconnected. A church may have livestream viewers and online subscribers but lack a dependable way to recognise returning participants, keep contact records current, coordinate follow-up, understand engagement over time or connect digital participation to the wider life of the ministry. The result is fragmented data, missed follow-up, limited analytics and relationships that are difficult to sustain.
+
+OIKODARA bridges that gap by connecting ministry workspaces, event publishing, registration, audience records, communication and follow-up. Its broader product direction is to help churches connect people across physical and digital ministry, understand activity over time and build stronger pathways into fellowship and discipleship. Analytics from third-party livestream or social platforms depend on supported integrations and permissions; OIKODARA must not imply it already identifies every viewer or subscriber from external channels.
+
+**In one sentence:** OIKODARA helps churches move from fragmented digital reach to connected people, continuous engagement and better-informed ministry.
 
 ## Audiences and pitches
 
@@ -12,13 +18,14 @@
 
 **Message:** Make every conference the beginning of a stronger connection.
 
-Churches often coordinate promotion, registration, livestream information and follow-up across disconnected tools. OIKODARA brings those workflows into a church-branded workspace.
+Churches may have livestream viewers, online subscribers and event participants spread across different platforms, but no connected record of those relationships. They lose continuity, timely follow-up and the ability to understand engagement over time. OIKODARA connects event publishing, registration, church-owned audience records, communication and follow-up in one workspace, with deeper external-channel analytics added only through supported integrations.
 
 - Publish event pages with conference details, speakers, schedules and livestream information.
 - Use AI-assisted event descriptions, schedules and promotional copy.
 - Collect attendee details and organise contacts in a church workspace.
 - Prepare email announcements, reminders, replay links and study resources.
-- Review audience and event activity.
+- Review available audience and event activity, and identify follow-up gaps.
+- Build a more continuous picture of engagement over time from data the church has permission to collect.
 
 **Ask:** Pilot one upcoming conference with one ministry team. Agree success measures before launch: setup time, registration completion, contact-data quality, follow-up completion and administrator satisfaction.
 
@@ -43,9 +50,10 @@ Potential collaboration includes implementation and training, livestream and med
 
 ### Attendees and end users
 
-**Message:** Find the event, register easily and stay connected afterwards.
+**Message:** Discover ministry activities, participate and stay connected afterwards.
 
 - One event page for details, speakers, programme and livestream links.
+- Clear pathways from livestreams, online programmes and subscriptions into ongoing ministry communication.
 - Clear registration and event updates.
 - Relevant replay and resource follow-up from the organising ministry.
 
@@ -107,6 +115,14 @@ A sponsor may fund access, onboarding, training or a defined pilot. Report verif
 
 **OIKODARA** — inspired by the New Testament concept *oikodomē*, building up and strengthening the Church.
 
+## Core problem and solution narrative
+
+**Problem:** Churches are increasingly present online, but their digital ministry is fragmented. Livestream viewers, online subscribers, event registrants and community members are spread across separate platforms. Ministries often cannot keep their records current, recognise returning participants, coordinate consistent follow-up or analyse engagement over time. Digital reach therefore does not reliably become an ongoing relationship.
+
+**Solution:** OIKODARA provides connected infrastructure for the ministry relationship journey: discover → participate → register or subscribe → communicate → follow up → stay connected. It brings church administration, events, audience records, communication and community-oriented ministry workflows into one platform. The aim is not to replace every streaming or social platform; it is to connect the people and ministry processes around them, and progressively incorporate external engagement data through supported integrations.
+
+**What success should mean:** more complete church-owned contact records; fewer missed follow-ups; repeat participation; clearer event and audience trends; stronger connection between online participation and in-person ministry; and better-informed decisions by ministry leaders. These are outcomes to measure in pilots, not guaranteed results or claims that all third-party analytics are already integrated.
+
 **Tagline:** Building the Church. Connecting the People.
 
 **Descriptor:** A connected digital ministry platform for church administration, fellowship, discipleship, events, communication and member engagement.
@@ -115,4 +131,4 @@ The name is an approved working brand, not a claim of legal exclusivity. Complet
 
 ## Suggested 60-second spoken pitch
 
-"Churches carry out important work across administration, events, communication, discipleship and member care, but the digital tools supporting that work are often fragmented. OIKODARA brings essential ministry workflows into one connected platform. Churches can organise their workspaces, publish events, manage registrations and member engagement, and coordinate communications and follow-up. For church networks, it provides a repeatable way to equip member churches while keeping church workspaces distinct. We want to begin with a focused pilot, measure actual outcomes, and grow based on what ministries find useful."
+"Churches are reaching people online through livestreams, subscriptions, social channels and digital programmes, but those relationships are often scattered across disconnected tools. A church may know how many people viewed a stream, yet still struggle to know who is returning, keep contact details current, follow up consistently or understand engagement over time. OIKODARA bridges that gap by connecting church workspaces, events, registrations, audience records, communication and follow-up. We want to help ministries move from fragmented digital reach to sustained relationships, stronger community connection and better-informed decisions. We will measure what the platform can verify today and add deeper external-channel analytics through supported integrations."

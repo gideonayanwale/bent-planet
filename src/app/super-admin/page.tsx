@@ -159,10 +159,10 @@ export default async function SuperAdminPage() {
         </CardContent>
       </Card>
 
-      {/* Platform Analytics Growth Chart */}
+      {/* Platform analytics: subscriber and conference growth */}
       <AnalyticsChart
-        initialSubscribers={subscribers.map((s) => ({ subscribed_at: s.subscribed_at }))}
-        initialConferences={conferences.map((c) => ({ created_at: c.created_at }))}
+        initialSubscribers={subscribers.map((subscriber) => ({ subscribed_at: subscriber.subscribed_at }))}
+        initialConferences={conferences.map((conference) => ({ created_at: conference.created_at }))}
       />
 
       {/* All Churches CRM Table */}
