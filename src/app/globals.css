@@ -77,6 +77,11 @@
     text-wrap: balance;
   }
 
+  .bg-grid-pattern {
+    background-image: radial-gradient(hsl(var(--foreground) / 0.08) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+
   /* High Visibility Glassmorphism Utilities */
   .glass-card {
     background: hsl(var(--card) / 0.85);
