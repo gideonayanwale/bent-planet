@@ -8,7 +8,7 @@ export async function GET(req: NextRequest) {
     const { searchParams } = new URL(req.url);
 
     const title = searchParams.get("title") || "Online Conference";
-    const churchName = searchParams.get("church") || "Bent Planet Church";
+    const churchName = searchParams.get("church") || "Your Church";
     const speaker = searchParams.get("speaker") || "";
     const date = searchParams.get("date") || "";
     const theme = searchParams.get("theme") || "SPECIAL EVENT";
@@ -103,7 +103,7 @@ export async function GET(req: NextRequest) {
               {date ? `🗓️ ${date}` : "Register Free Online"}
             </div>
             <div style={{ fontSize: "20px", color: "#a5b4fc", fontWeight: "700" }}>
-              BENT PLANET
+              OIKODARA
             </div>
           </div>
         </div>
