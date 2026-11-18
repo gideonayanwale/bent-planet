@@ -24,7 +24,7 @@ export function BrandLogo({ iconSize = 36, showText = true, className = "", text
       {showText && (
         <div className={`flex flex-col select-none leading-none ${textClassName}`}>
           <span className="font-heading text-[1.15rem] font-extrabold tracking-[0.08em] text-foreground">OIKODARA</span>
-          <span className="mt-1 text-[0.52rem] font-semibold tracking-[0.12em] text-muted-foreground">BUILDING THE CHURCH. CONNECTING THE PEOPLE.</span>
+          <span className="mt-1 hidden text-[0.52rem] font-semibold tracking-[0.12em] text-muted-foreground sm:block">BUILDING THE CHURCH. CONNECTING THE PEOPLE.</span>
         </div>
       )}
     </div>
