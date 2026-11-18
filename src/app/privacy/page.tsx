@@ -6,7 +6,7 @@ import { PublicFooter } from "@/components/public-footer";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "Learn how Bent Planet safeguards church and attendee information with dedicated data sovereignty.",
+    "Learn how OIKODARA safeguards church and attendee information with dedicated data sovereignty.",
 };
 
 export default function PrivacyPolicyPage() {
@@ -35,7 +35,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-slate-900">1. Information We Collect</h2>
             <p className="text-slate-600">
-              Bent Planet collects information required to provide church workspace administration and conference streaming landing pages. This includes Church Administrator names, official ministry email addresses, passwords (securely hashed), subscriber contact information (names, emails, phone numbers voluntarily submitted for event registrations), and ministry media assets.
+              OIKODARA collects information required to provide church workspace administration and conference streaming landing pages. This includes Church Administrator names, official ministry email addresses, passwords (securely hashed), subscriber contact information (names, emails, phone numbers voluntarily submitted for event registrations), and ministry media assets.
             </p>
           </section>
 
@@ -55,7 +55,7 @@ export default function PrivacyPolicyPage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-slate-900">3. Subscriber Data & Ministry Ownership</h2>
             <p className="text-slate-600">
-              Each church owns their respective subscriber roster. Bent Planet does not sell, rent, or trade subscriber contact information to third parties. Church administrators can export or delete their subscriber records at any time.
+              Each church owns their respective subscriber roster. OIKODARA does not sell, rent, or trade subscriber contact information to third parties. Church administrators can export or delete their subscriber records at any time.
             </p>
           </section>
 
