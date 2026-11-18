@@ -18,6 +18,12 @@ const config = {
     },
     extend: {
       colors: {
+        brand: {
+          indigo: "#4F46E5",
+          navy: "#0F172A",
+          violet: "#7C3AED",
+          emerald: "#10B981",
+        },
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
