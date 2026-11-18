@@ -242,7 +242,7 @@ export default function HomePage() {
             <div className="space-y-3 pt-2">
               {["Designed for dependable ministry workflows", "Cloud-backed storage for church media assets", "Administrative controls for platform operations"].map((item) => (
                 <div key={item} className="flex items-center gap-2.5 text-xs font-semibold text-foreground">
-                  <CheckCircle2Icon className="h-4 w-4 text-emerald-400 flex-shrink-0" />
+                  <CheckCircle2Icon className="h-4 w-4 text-emerald-600 dark:text-emerald-400 flex-shrink-0" />
                   <span>{item}</span>
                 </div>
               ))}
@@ -252,20 +252,20 @@ export default function HomePage() {
           <div className="rounded-2xl bg-white/90 p-6 border border-border space-y-4 text-xs font-mono dark:bg-slate-900/90 dark:border-white/10">
             <div className="flex items-center justify-between text-muted-foreground border-b border-border pb-3 dark:text-slate-400 dark:border-white/10">
               <span>AI CONTENT GENERATION WORKFLOW</span>
-              <span className="text-emerald-400">CONFIGURABLE</span>
+              <span className="text-emerald-700 dark:text-emerald-400">CONFIGURABLE</span>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-100 text-slate-700 dark:bg-white/5 dark:text-slate-300">
                 <span>1. OpenAI (gpt-4o)</span>
-                <span className="text-emerald-400 font-bold">PRIMARY</span>
+                <span className="text-emerald-700 dark:text-emerald-400 font-bold">PRIMARY</span>
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-100 text-slate-700 dark:bg-white/5 dark:text-slate-300">
                 <span>2. DeepSeek API</span>
-                <span className="text-indigo-400">FALLBACK 1</span>
+                <span className="text-indigo-700 dark:text-indigo-400">FALLBACK 1</span>
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-100 text-slate-700 dark:bg-white/5 dark:text-slate-300">
                 <span>3. Google Gemini 1.5</span>
-                <span className="text-purple-400">FALLBACK 2</span>
+                <span className="text-purple-700 dark:text-purple-400">FALLBACK 2</span>
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-950/40 text-emerald-200 border border-emerald-500/30">
                 <span>4. Prebuilt Faith Engine</span>
