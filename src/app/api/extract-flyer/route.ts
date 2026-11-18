@@ -141,7 +141,7 @@ Rules:
                   Authorization: `Bearer ${openrouterKey}`,
                   "Content-Type": "application/json",
                   "HTTP-Referer": process.env.NEXT_PUBLIC_APP_URL || "https://bentplanet.com",
-                  "X-Title": "Bent Planet Church Platform",
+                  "X-Title": "OIKODARA",
                 },
                 body: JSON.stringify({
                   model,
