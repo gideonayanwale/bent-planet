@@ -49,8 +49,13 @@ export async function POST(req: Request) {
 
     const { churchName, adminName, email, phone, website, denomination, country, notes } = parsed.data;
     if (website) {
-      const websiteUrl = new URL(/^https?:\/\//i.test(website) ? website : "https://" + website);
-      if (websiteUrl.protocol !== "https:" && websiteUrl.protocol !== "http:") {
+      try {
+        const normalizedWebsite = website.toLowerCase().startsWith("http://") || website.toLowerCase().startsWith("https://") ? website : "https://" + website;
+        const websiteUrl = new URL(normalizedWebsite);
+        if (websiteUrl.protocol !== "https:" && websiteUrl.protocol !== "http:") {
+          return NextResponse.json({ error: "Please provide a valid website URL." }, { status: 400 });
+        }
+      } catch {
         return NextResponse.json({ error: "Please provide a valid website URL." }, { status: 400 });
       }
     }
