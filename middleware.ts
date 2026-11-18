@@ -6,6 +6,7 @@ import { updateSession } from "@/lib/supabase/middleware";
 
 const PUBLIC_API_ROUTES = new Set([
   "/api/subscribe",
+  "/api/access-requests",
   "/api/og",
   "/api/webhooks/resend",
   "/api/cron/email-sequences",
