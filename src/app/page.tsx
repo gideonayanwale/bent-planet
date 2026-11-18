@@ -209,7 +209,7 @@ export default function HomePage() {
             How OIKODARA supports your ministry
           </h2>
           <p className="text-sm sm:text-base text-muted-foreground">
-            From invitation to live stream and subscriber nurturing — completely hands-free.
+            From workspace invitation to event publishing, attendee management and follow-up communication.
           </p>
         </div>
 
@@ -238,7 +238,7 @@ export default function HomePage() {
               OIKODARA brings practical ministry workflows together in one place, helping teams plan events, communicate clearly and maintain consistent connections with their members.
             </p>
             <div className="space-y-3 pt-2">
-              {["100% Generation Uptime Guarantee", "Zero App Server Memory Overload via Cloud Storage CDN", "Strict Super Admin Key Security Lock"].map((item) => (
+              {["Designed for dependable ministry workflows", "Cloud-backed storage for church media assets", "Administrative controls for platform operations"].map((item) => (
                 <div key={item} className="flex items-center gap-2.5 text-xs font-semibold text-slate-200">
                   <CheckCircle2Icon className="h-4 w-4 text-emerald-400 flex-shrink-0" />
                   <span>{item}</span>
@@ -249,8 +249,8 @@ export default function HomePage() {
 
           <div className="rounded-2xl bg-slate-900/90 p-6 border border-white/10 space-y-4 text-xs font-mono">
             <div className="flex items-center justify-between text-slate-400 border-b border-white/10 pb-3">
-              <span>PROPRIETARY AI SEQUENCE</span>
-              <span className="text-emerald-400">ACTIVE</span>
+              <span>AI CONTENT GENERATION WORKFLOW</span>
+              <span className="text-emerald-400">CONFIGURABLE</span>
             </div>
             <div className="space-y-2">
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/5 text-slate-300">
@@ -267,7 +267,7 @@ export default function HomePage() {
               </div>
               <div className="flex items-center justify-between p-2.5 rounded-lg bg-emerald-950/40 text-emerald-200 border border-emerald-500/30">
                 <span>4. Prebuilt Faith Engine</span>
-                <span className="text-emerald-300 font-bold">ZERO-FAIL GUARANTEE</span>
+                <span className="text-emerald-300 font-bold">FALLBACK WORKFLOW</span>
               </div>
             </div>
           </div>
@@ -304,7 +304,7 @@ export default function HomePage() {
             <span className="text-muted-foreground/60">|</span>
             <div className="flex items-center gap-2">
               <span className="h-2 w-2 rounded-full bg-emerald-500 animate-ping inline-block" />
-              <span className="font-medium text-foreground/80">All Systems Operational</span>
+              <span className="font-medium text-foreground/80">A connected workspace for ministry teams</span>
             </div>
           </div>
 
