@@ -229,29 +229,29 @@ export default async function DashboardPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/80 dark:text-amber-400">
-                <MailIcon className="h-4 w-4" />
+                <UsersIcon className="h-4 w-4" />
               </div>
               <div>
-                <CardTitle className="text-base font-bold text-card-foreground">Email Broadcast</CardTitle>
-                <CardDescription className="text-xs">Nurture your conference attendees</CardDescription>
+                <CardTitle className="text-base font-bold text-card-foreground">Audience Follow-up</CardTitle>
+                <CardDescription className="text-xs">Keep subscriber records organised</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="rounded-xl bg-secondary/60 p-4 border border-border space-y-2">
               <div className="flex items-center justify-between text-xs text-muted-foreground font-medium">
-                <span>Total Reachable Audience:</span>
+                <span>People in your records:</span>
                 <span className="font-bold text-foreground">{totalSubs} Subscribers</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Send live stream notifications, sermon notes, or devotional reminders in 1 click.
+                Send livestream updates, sermon notes and devotional reminders from the Email Center.
               </p>
             </div>
           </CardContent>
           <div className="p-6 pt-0">
             <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2 font-semibold shadow-sm">
-              <Link href="/dashboard/emails">
-                Open Email Command Center
+              <Link href="/dashboard/subscribers">
+                Open Audience Directory
                 <ArrowUpRightIcon className="h-4 w-4" />
               </Link>
             </Button>
