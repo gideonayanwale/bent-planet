@@ -45,7 +45,7 @@ export default async function EmailsPage() {
   const subscriberCount = subscribersCountRes.count || 0;
 
   const totalOpened = emails.filter((e) => e.opened).length;
-  const openRate = emails.length > 0 ? Math.round((totalOpened / emails.length) * 100) : 100;
+  const openRate = emails.length > 0 ? Math.round((totalOpened / emails.length) * 100) : 0;
 
   return (
     <div className="space-y-8 max-w-7xl mx-auto pb-16">
