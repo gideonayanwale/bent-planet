@@ -12,6 +12,7 @@ import {
 
 import { Button } from "@/components/ui/button";
 import { BrandLogo } from "@/components/brand-logo";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { HomepageClient } from "@/components/home/homepage-client";
 
 export const metadata: Metadata = {
@@ -112,8 +113,9 @@ export default function HomePage() {
             </Link>
           </nav>
 
-          <div className="flex items-center gap-3">
-            <Button asChild variant="outline" size="sm" className="text-xs h-9 font-semibold">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <ThemeToggle />
+            <Button asChild variant="outline" size="sm" className="hidden text-xs h-9 font-semibold sm:inline-flex">
               <Link href="/request-access">Request Access</Link>
             </Button>
             <Button asChild size="sm" className="btn-gradient text-xs font-semibold shadow-md">
