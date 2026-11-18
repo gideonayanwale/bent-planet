@@ -65,7 +65,7 @@ export function FeedbackForm({ churchId, onSuccess, className = "" }: FeedbackFo
           Thank you for your feedback!
         </h3>
         <p className="text-sm text-slate-500 dark:text-slate-400 max-w-sm mx-auto leading-relaxed">
-          Our team reads all suggestions and inquiries to continually enhance Bent Planet. We appreciate your contribution!
+          Our team reads all suggestions and inquiries to continually enhance OIKODARA. We appreciate your contribution!
         </p>
       </div>
     );
