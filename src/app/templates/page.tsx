@@ -43,6 +43,7 @@ import {
 } from "@/lib/wireframe-config";
 import { THEME_CONFIGS, TemplateId, ALL_TEMPLATES, getThemeConfig } from "@/lib/theme-config";
 import { ConferenceWireframe } from "@/components/wireframes/conference-wireframe";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 // =========================================================================
 // Original OIKODARA UI concepts informed by common design patterns and publicly described design systems
@@ -382,7 +383,7 @@ export default function TemplatesShowcasePage() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white flex flex-col justify-between">
+    <div className="template-showcase min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white flex flex-col justify-between">
       <div>
         {/* =========================================================
             HEADER / NAVIGATION
@@ -406,6 +407,7 @@ export default function TemplatesShowcasePage() {
             </div>
 
             <div className="flex items-center gap-3">
+              <ThemeToggle />
               <Button asChild variant="outline" size="sm" className="text-xs border-slate-700 bg-slate-900/60 hover:bg-slate-800">
                 <Link href="/dashboard/conferences/new">
                   <ArrowRightIcon className="w-3.5 h-3.5 mr-1.5 text-indigo-400" />
