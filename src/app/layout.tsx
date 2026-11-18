@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const plusJakartaSans = Plus_Jakarta_Sans({ subsets: ["latin"], variable: "--font-plus-jakarta", display: "swap" });
 
 import "@/app/globals.css";
 
@@ -41,7 +44,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
-      <body className="min-h-screen bg-background font-body text-foreground antialiased selection:bg-primary/30 selection:text-primary">
+      <body className={`${plusJakartaSans.variable} min-h-screen bg-background font-body text-foreground antialiased selection:bg-primary/30 selection:text-primary`}>
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
