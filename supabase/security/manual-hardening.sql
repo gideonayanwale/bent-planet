@@ -4,6 +4,9 @@
 
 begin;
 
+-- Feedback writes must go through the validated server route, not the public Data API.
+drop policy if exists "Allow public insert to feedback_messages" on public.feedback_messages;
+
 -- Feedback for one church must never be visible to another church.
 drop policy if exists "feedback_select_policy" on public.feedback_messages;
 create policy "feedback_select_policy"
