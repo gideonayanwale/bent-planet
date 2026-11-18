@@ -6,7 +6,7 @@ import { PublicFooter } from "@/components/public-footer";
 export const metadata: Metadata = {
   title: "Terms of Service",
   description:
-    "Terms and conditions governing church workspace usage and conference hosting on Bent Planet.",
+    "Terms and conditions governing church workspace usage and conference hosting on OIKODARA.",
 };
 
 export default function TermsOfServicePage() {
@@ -35,7 +35,7 @@ export default function TermsOfServicePage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-slate-900">1. Acceptance of Terms</h2>
             <p className="text-slate-600">
-              By accessing or using Bent Planet (&quot;the Service&quot;), you agree to be bound by these Terms of Service. Bent Planet is an invite-only SaaS platform built for churches and Christian ministries to publish conferences and manage attendee communications.
+              By accessing or using OIKODARA (&quot;the Service&quot;), you agree to be bound by these Terms of Service. OIKODARA is an invite-only SaaS platform built for churches and Christian ministries to publish conferences and manage attendee communications.
             </p>
           </section>
 
@@ -56,7 +56,7 @@ export default function TermsOfServicePage() {
           <section className="space-y-2">
             <h2 className="text-base font-bold text-slate-900">4. Limitation of Liability</h2>
             <p className="text-slate-600">
-              Bent Planet is provided &quot;as is&quot; without warranties of any kind. Bent Planet shall not be liable for indirect, incidental, or consequential damages resulting from platform downtime or third-party stream service interruptions.
+              OIKODARA is provided &quot;as is&quot; without warranties of any kind. OIKODARA shall not be liable for indirect, incidental, or consequential damages resulting from platform downtime or third-party stream service interruptions.
             </p>
           </section>
         </div>
