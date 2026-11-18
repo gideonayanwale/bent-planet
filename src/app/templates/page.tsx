@@ -269,7 +269,7 @@ export default function TemplatesShowcasePage() {
     all: "Full Showroom & Wireframe Studio",
     presets: "Wireframe Presets Catalog",
     canvas: "Live Wireframe Canvas Simulator",
-    "ai-studio": "AI Fine-Tuner Studio",
+    "ai-studio": "Sample Content Studio",
     library: "UI Component Concepts",
     typography: "Faith Typography System",
     palettes: "Ministry Color Palette Concepts",
@@ -283,7 +283,7 @@ export default function TemplatesShowcasePage() {
 
   useDynamicTitle(currentTitle, "OIKODARA Design & Templates Studio");
 
-  // AI Fine-Tuner Playground State
+  // Sample Content Studio Playground State
   const [fineTunerSample, setFineTunerSample] = useState<"revival" | "youth" | "leadership" | "cathedral" | "grace">("revival");
   const [customPrompt, setCustomPrompt] = useState("");
   const [isFineTuning, setIsFineTuning] = useState(false);
@@ -362,7 +362,7 @@ export default function TemplatesShowcasePage() {
     }
   };
 
-  // Trigger AI Fine-Tuning Simulation
+  // Trigger Sample Content Preview Simulation
   const runAiFineTuning = () => {
     setIsFineTuning(true);
     setTimeout(() => {
@@ -371,7 +371,7 @@ export default function TemplatesShowcasePage() {
         basePack = {
           ...basePack,
           conferenceTitle: customPrompt.trim(),
-          heroContextHeadline: `AI Slotted for ${customPrompt.trim()}: Tailored with spiritual revelation, targeted breakout tracks, and WhatsApp community sync.`,
+          heroContextHeadline: `Custom brief: ${customPrompt.trim()}: Tailored with spiritual revelation, targeted breakout tracks, and WhatsApp community sync.`,
         };
       }
       setFineTunedData(basePack);
@@ -432,14 +432,14 @@ export default function TemplatesShowcasePage() {
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
               Craft High-Converting Church Gatherings with{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-amber-300">
-                Slotted AI Wireframes
+                Configurable Ministry Wireframes
               </span>
             </h1>
 
             <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mb-8 font-normal leading-relaxed">
               Conference pages use a <strong>consistent ministry-focused structure</strong>{" "}
               (Brand, Hero, Livestream, Ministers, Tracks, Devotional, WhatsApp RSVP), rendered through{" "}
-              <strong>6 polymorphic wireframe topologies</strong> that AI fine-tunes directly into production.
+              <strong>6 configurable wireframe layouts</strong> that you can preview and customise before opening the Conference Builder.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto text-left">
@@ -448,16 +448,16 @@ export default function TemplatesShowcasePage() {
                 <span className="text-xl font-bold text-white">6 Topologies</span>
               </div>
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition">
-                <span className="text-xs text-slate-400 block mb-0.5">Design Libraries</span>
-                <span className="text-xl font-bold text-indigo-400">40+ Production Specs</span>
+                <span className="text-xs text-slate-400 block mb-0.5">Component Concepts</span>
+                <span className="text-xl font-bold text-indigo-400">8 Component Concepts</span>
               </div>
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition">
                 <span className="text-xs text-slate-400 block mb-0.5">Spiritual Themes</span>
-                <span className="text-xl font-bold text-amber-400">8 Curated Palettes</span>
+                <span className="text-xl font-bold text-amber-400">6 Curated Palettes</span>
               </div>
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition">
-                <span className="text-xs text-slate-400 block mb-0.5">AI Fine-Tuning</span>
-                <span className="text-xl font-bold text-emerald-400">100% Slotted Output</span>
+                <span className="text-xs text-slate-400 block mb-0.5">Sample Content Preview</span>
+                <span className="text-xl font-bold text-emerald-400">Preview with Sample Data</span>
               </div>
             </div>
           </div>
@@ -472,7 +472,7 @@ export default function TemplatesShowcasePage() {
               {[
                 { id: "presets", label: "Wireframe Presets", icon: LayoutGridIcon },
                 { id: "canvas", label: "Canvas Simulator", icon: LayersIcon },
-                { id: "ai-studio", label: "AI Fine-Tuner", icon: Wand2Icon },
+                { id: "ai-studio", label: "Sample Content Studio", icon: Wand2Icon },
                 { id: "library", label: "Component Specs", icon: CompassIcon },
                 { id: "typography", label: "Typography", icon: TypeIcon },
                 { id: "palettes", label: "Color Palettes", icon: PaletteIcon },
@@ -629,7 +629,7 @@ export default function TemplatesShowcasePage() {
         </section>
 
         {/* =========================================================
-            AI WIREFRAME FINE-TUNER STUDIO (PLAYGROUND)
+            SAMPLE CONTENT CUSTOMISER
            ========================================================= */}
         <section id="section-ai-studio" className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
           <div className="text-center max-w-3xl mx-auto mb-10">
@@ -638,7 +638,7 @@ export default function TemplatesShowcasePage() {
               <span>Interactive Wireframe Customiser</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
-              Fine-Tune the Wireframe with Faith AI
+              Preview Ministry Content in the Wireframe
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
               Choose a ministry preset or enter a custom conference brief. Preview how sample content fills
@@ -651,7 +651,7 @@ export default function TemplatesShowcasePage() {
             <div className="lg:col-span-5 p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-6">
               <div>
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                  1. Select Faith Prompt Preset
+                  1. Choose a sample ministry brief
                 </label>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                   <button
@@ -734,7 +734,7 @@ export default function TemplatesShowcasePage() {
 
               <div>
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                  2. Custom Title / Mandate Prompt
+                  2. Custom Conference Title
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -749,7 +749,7 @@ export default function TemplatesShowcasePage() {
                     disabled={isFineTuning}
                     className="bg-indigo-600 hover:bg-indigo-500 text-xs font-bold h-10 px-4 shrink-0"
                   >
-                    {isFineTuning ? "Hydrating..." : "Fine-Tune"}
+                    {isFineTuning ? "Preparing preview..." : "Update Preview"}
                   </Button>
                 </div>
               </div>
@@ -899,7 +899,7 @@ export default function TemplatesShowcasePage() {
                 Wireframe Presets & Templates Catalog
               </h2>
               <p className="text-xs sm:text-sm text-slate-400">
-                Explore the 6 production wireframe topologies engineered specifically for church convocations, youth movements, and leadership summits.
+                Explore six configurable wireframe layouts for church conferences, youth gatherings and leadership events.
               </p>
             </div>
 
