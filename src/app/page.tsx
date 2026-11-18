@@ -191,13 +191,13 @@ export default function HomePage() {
       </section>
 
       <section className="mx-auto max-w-5xl px-6 py-16 sm:px-8">
-        <div className="rounded-3xl border border-indigo-400/20 bg-gradient-to-br from-indigo-950/60 via-slate-900/80 to-slate-950 p-8 text-center shadow-2xl sm:p-12">
-          <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-300">The meaning behind the name</span>
-          <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-[0.12em] text-white sm:text-4xl">OIKODARA</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+        <div className="rounded-3xl border border-indigo-200 bg-gradient-to-br from-indigo-50 via-white to-slate-100 p-8 text-center shadow-xl sm:p-12 dark:border-indigo-400/20 dark:from-indigo-950/60 dark:via-slate-900/80 dark:to-slate-950 dark:shadow-2xl">
+          <span className="text-xs font-bold uppercase tracking-[0.2em] text-emerald-700 dark:text-emerald-300">The meaning behind the name</span>
+          <h2 className="mt-4 font-heading text-3xl font-extrabold tracking-[0.12em] text-foreground sm:text-4xl">OIKODARA</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-muted-foreground sm:text-base">
             Inspired by the New Testament word <em>oikodomē</em> — building up, strengthening and edifying the Church. OIKODARA reflects our purpose: to help churches build stronger communities and keep their people connected.
           </p>
-          <p className="mt-6 text-sm font-semibold tracking-wide text-indigo-200">Building the Church. Connecting the People.</p>
+          <p className="mt-6 text-sm font-semibold tracking-wide text-indigo-700 dark:text-indigo-200">Building the Church. Connecting the People.</p>
         </div>
       </section>
 
@@ -228,20 +228,20 @@ export default function HomePage() {
 
       {/* Multi-Provider Architecture Callout */}
       <section className="py-20 px-6 sm:px-8 max-w-7xl mx-auto">
-        <div className="rounded-3xl glass-card p-8 sm:p-12 border border-border/50 bg-gradient-to-br from-indigo-950/40 via-purple-950/20 to-slate-950 grid lg:grid-cols-2 gap-8 items-center">
+        <div className="rounded-3xl glass-card p-8 sm:p-12 border border-indigo-200/80 bg-gradient-to-br from-indigo-50 via-purple-50 to-slate-100 grid lg:grid-cols-2 gap-8 items-center dark:border-border/50 dark:from-indigo-950/40 dark:via-purple-950/20 dark:to-slate-950">
           <div className="space-y-4">
-            <span className="text-xs font-bold uppercase tracking-wider text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
+            <span className="text-xs font-bold uppercase tracking-wider text-emerald-700 dark:text-emerald-400 bg-emerald-500/10 px-3 py-1 rounded-full border border-emerald-500/20">
               Designed for connected ministry
             </span>
-            <h3 className="font-heading text-3xl sm:text-4xl font-bold text-white">
+            <h3 className="font-heading text-3xl sm:text-4xl font-bold text-foreground">
               A connected foundation for ministry
             </h3>
-            <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
+            <p className="text-xs sm:text-sm text-muted-foreground leading-relaxed">
               OIKODARA brings practical ministry workflows together in one place, helping teams plan events, communicate clearly and maintain consistent connections with their members.
             </p>
             <div className="space-y-3 pt-2">
               {["Designed for dependable ministry workflows", "Cloud-backed storage for church media assets", "Administrative controls for platform operations"].map((item) => (
-                <div key={item} className="flex items-center gap-2.5 text-xs font-semibold text-slate-200">
+                <div key={item} className="flex items-center gap-2.5 text-xs font-semibold text-foreground">
                   <CheckCircle2Icon className="h-4 w-4 text-emerald-400 flex-shrink-0" />
                   <span>{item}</span>
                 </div>
@@ -249,21 +249,21 @@ export default function HomePage() {
             </div>
           </div>
 
-          <div className="rounded-2xl bg-slate-900/90 p-6 border border-white/10 space-y-4 text-xs font-mono">
-            <div className="flex items-center justify-between text-slate-400 border-b border-white/10 pb-3">
+          <div className="rounded-2xl bg-white/90 p-6 border border-border space-y-4 text-xs font-mono dark:bg-slate-900/90 dark:border-white/10">
+            <div className="flex items-center justify-between text-muted-foreground border-b border-border pb-3 dark:text-slate-400 dark:border-white/10">
               <span>AI CONTENT GENERATION WORKFLOW</span>
               <span className="text-emerald-400">CONFIGURABLE</span>
             </div>
             <div className="space-y-2">
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/5 text-slate-300">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-100 text-slate-700 dark:bg-white/5 dark:text-slate-300">
                 <span>1. OpenAI (gpt-4o)</span>
                 <span className="text-emerald-400 font-bold">PRIMARY</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/5 text-slate-300">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-100 text-slate-700 dark:bg-white/5 dark:text-slate-300">
                 <span>2. DeepSeek API</span>
                 <span className="text-indigo-400">FALLBACK 1</span>
               </div>
-              <div className="flex items-center justify-between p-2.5 rounded-lg bg-white/5 text-slate-300">
+              <div className="flex items-center justify-between p-2.5 rounded-lg bg-slate-100 text-slate-700 dark:bg-white/5 dark:text-slate-300">
                 <span>3. Google Gemini 1.5</span>
                 <span className="text-purple-400">FALLBACK 2</span>
               </div>
@@ -278,11 +278,11 @@ export default function HomePage() {
 
       {/* Call to Action Banner */}
       <section className="py-16 px-6 sm:px-8 max-w-5xl mx-auto text-center">
-        <div className="rounded-3xl glass-card p-10 sm:p-16 border border-white/20 bg-gradient-to-b from-indigo-900/40 to-slate-950 space-y-6 shadow-2xl glow-indigo">
-          <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-white">
+        <div className="rounded-3xl glass-card p-10 sm:p-16 border border-indigo-200 bg-gradient-to-b from-indigo-50 via-white to-slate-100 space-y-6 shadow-xl glow-indigo dark:border-white/20 dark:from-indigo-900/40 dark:to-slate-950 dark:shadow-2xl">
+          <h2 className="font-heading text-3xl sm:text-5xl font-extrabold text-foreground">
             Ready to Empower Your Church Online?
           </h2>
-          <p className="text-sm sm:text-base text-slate-300 max-w-xl mx-auto">
+          <p className="text-sm sm:text-base text-muted-foreground max-w-xl mx-auto">
             Give your ministry a more organised digital home. Request a church workspace to explore OIKODARA.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
