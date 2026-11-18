@@ -4,7 +4,8 @@
 
 begin;
 
--- Feedback writes must go through the validated server route, not the public Data API.
+-- Public submissions must go through validated server routes, not unrestricted Data API inserts.
+drop policy if exists "Allow public insert to access_requests" on public.access_requests;
 drop policy if exists "Allow public insert to feedback_messages" on public.feedback_messages;
 
 -- Feedback for one church must never be visible to another church.
