@@ -141,6 +141,9 @@ revoke execute on function public.broadcast_feedback_message() from public, anon
 alter function public.rls_auto_enable() set search_path = pg_catalog;
 revoke execute on function public.rls_auto_enable() from public, anon, authenticated;
 
+-- Public write endpoints are mediated by validated server routes using the service role.
+revoke insert on table public.access_requests, public.feedback_messages from anon, authenticated;
+
 -- These records are accessed only by trusted server-side service-role code.
 revoke all on table public.invites from anon, authenticated;
 revoke all on table public.email_delivery_queue from anon, authenticated;
