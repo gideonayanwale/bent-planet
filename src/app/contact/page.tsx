@@ -44,37 +44,37 @@ const FAQS: FaqItem[] = [
     category: "access",
     question: "How does our church request access to OIKODARA?",
     answer:
-      "OIKODARA is an invite-only platform engineered specifically for verified ministries and church organizations. You can submit an access request through our online application form. Our review team verifies ministry credentials within 24 hours and issues a secure, isolated workspace onboarding link.",
+      "OIKODARA is an invite-only platform engineered specifically for verified ministries and church organizations. You can submit an access request through our online application form. Our team reviews each request and contacts the applicant with the next steps. Approval and onboarding timelines can vary.",
   },
   {
     category: "features",
-    question: "Can we broadcast live streams to attendees with zero lag?",
+    question: "Can we add our church livestream to an event page?",
     answer:
-      "Yes! You can embed YouTube Live, Vimeo OTT, Facebook Live, M3U8 HLS streams, or custom RTMP streams directly into your dedicated conference room. Attendees enjoy high-definition playback, synchronized live chat, and instant prayer request submission without leaving your branded portal.",
+      "You can add supported livestream links, including compatible YouTube Live, Vimeo and HLS sources, to your event experience. Playback quality and latency depend on the streaming provider, device and viewer connection.",
   },
   {
     category: "audience",
-    question: "Does our ministry own 100% of our attendee data?",
+    question: "How are attendee records separated between churches?",
     answer:
-      "Absolutely. Every attendee who subscribes or registers for your conference belongs strictly to your church's isolated database. You have full data sovereignty to search, filter, tag, import offline spreadsheets, and export full CSV lists anytime.",
+      "Subscriber records are associated with the church workspace where they registered. Access is governed by application roles and database policies. Administrators can use the audience management and export tools available in their workspace.",
   },
   {
     category: "features",
     question: "How does the WhatsApp community integration work?",
     answer:
-      "OIKODARA generates seamless click-to-join WhatsApp buttons with prefilled RSVP confirmation text. When attendees register, they can be immediately routed to your church's WhatsApp group or channel for real-time announcements, sermon notes, and prayer circles.",
+      "Church administrators can add WhatsApp group or channel links to church and event pages, making it easier for attendees to continue conversations and receive ministry updates. Joining still depends on the attendee choosing to open the link.",
   },
   {
     category: "media",
     question: "Where are our conference banners, flyers, and devotional PDFs hosted?",
     answer:
-      "All heavy assets are automatically offloaded to high-speed external Cloud CDNs (such as Cloudinary, TeraBox Gateway, or AWS S3/R2). This ensures your conference pages load in milliseconds globally without bogging down server memory.",
+      "Media uploads use the storage provider configured for the deployment, with supported options including Cloudinary, an external storage gateway, S3-compatible storage, or Supabase Storage. Delivery speed depends on provider, file size and network conditions.",
   },
   {
     category: "access",
-    question: "How fast can our media team launch our first conference?",
+    question: "Can AI help our media team prepare a conference page?",
     answer:
-      "With our built-in 60-Second AI Event Creator, you simply input your conference theme, scripture, and guest ministers. AI automatically generates a Spirit-filled description, time-blocked agenda, promotional captions, and ready-to-broadcast landing page in under a minute.",
+      "AI-assisted tools can draft event descriptions, agenda content and promotional captions from your event details. Review and edit generated content before publishing; generation time and output quality vary by provider and prompt.",
   },
 ];
 
