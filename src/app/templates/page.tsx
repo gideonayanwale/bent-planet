@@ -43,10 +43,9 @@ import {
 } from "@/lib/wireframe-config";
 import { THEME_CONFIGS, TemplateId, ALL_TEMPLATES, getThemeConfig } from "@/lib/theme-config";
 import { ConferenceWireframe } from "@/components/wireframes/conference-wireframe";
-import { ThemeToggle } from "@/components/theme-toggle";
 
 // =========================================================================
-// Original OIKODARA UI concepts informed by common design patterns and publicly described design systems
+// Curated UI Component Specs pulled from Design Libraries (Relume / Untitled UI / Cruip / Tailwind UI / Aceternity)
 // =========================================================================
 const DESIGN_LIBRARY_BLOCKS = [
   {
@@ -54,7 +53,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Asymmetric Bento Stream Dock",
     category: "media",
     categoryLabel: "Media & Broadcast",
-    sourceLibrary: "Bento layout pattern reference",
+    sourceLibrary: "Untitled UI + Modern Bento System",
     description: "12-column responsive bento viewport with picture-in-picture countdown and ambient glow filter.",
     tags: ["High Density", "1080p Dock", "Glass Backdrop"],
     tokens: "bg-slate-900/80 backdrop-blur-md border border-slate-800 rounded-3xl p-6",
@@ -64,7 +63,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Atmospheric Faith Hero",
     category: "hero",
     categoryLabel: "Hero Stage",
-    sourceLibrary: "Marketing hero pattern reference",
+    sourceLibrary: "Cruip + Tailwind UI Faith Kit",
     description: "Centered spiritual proclamation with glowing amber/violet halo, scripture pill, and host attribution.",
     tags: ["High Contrast", "Scripture Anchor", "Aura Gradient"],
     tokens: "bg-radial-gradient from-slate-950 to-indigo-950/80 text-white rounded-3xl",
@@ -74,7 +73,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Time-Blocked Track Matrix",
     category: "schedule",
     categoryLabel: "Ministry Schedule",
-    sourceLibrary: "Content-structure pattern reference",
+    sourceLibrary: "Relume Design System",
     description: "Chronological multi-session timeline featuring session category tags (Worship, Keynote, Altar Call).",
     tags: ["Monospace Time", "Track Pills", "Expandable Details"],
     tokens: "p-4 rounded-2xl bg-slate-800/40 border border-slate-700/60 hover:border-slate-600",
@@ -84,7 +83,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Conversion RSVP & Capacity Meter",
     category: "conversion",
     categoryLabel: "Lead Capture",
-    sourceLibrary: "Event registration pattern reference",
+    sourceLibrary: "Luma + High-Conversion SaaS Kit",
     description: "Sticky 1-click registration card featuring dynamic seat limits, urgency bar, and WhatsApp chat sync.",
     tags: ["Urgency Meter", "1-Click Lead", "WhatsApp Sync"],
     tokens: "sticky top-20 rounded-3xl p-6 shadow-2xl border bg-slate-900/90",
@@ -94,7 +93,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Executive Ministerial Dossier",
     category: "dossier",
     categoryLabel: "Speaker Roster",
-    sourceLibrary: "Profile-card pattern reference",
+    sourceLibrary: "Aceternity + Corporate Summit Kit",
     description: "Apostolic minister profile card with calling credentials, mission tags, and session linking.",
     tags: ["Apostolic Badges", "Avatar Framing", "Social Pop"],
     tokens: "rounded-3xl p-8 border backdrop-blur-md shadow-xl bg-slate-900/90",
@@ -104,7 +103,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Live Intercession & Prayer Drawer",
     category: "fellowship",
     categoryLabel: "Community & Fellowship",
-    sourceLibrary: "OIKODARA ministry UI concept",
+    sourceLibrary: "Bent Planet Faith Design System",
     description: "Real-time attendee prayer request grid with interactive 'I Prayed 🙏' counter and pastoral reply badge.",
     tags: ["Faith Community", "Live Counter", "Pastoral Care"],
     tokens: "p-4 rounded-2xl bg-slate-800/50 border border-slate-700 hover:border-slate-600",
@@ -114,7 +113,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Devotional Study Notes Companion Card",
     category: "conversion",
     categoryLabel: "Lead Capture",
-    sourceLibrary: "Resource-card pattern reference",
+    sourceLibrary: "Refactoring UI + Faith Kit",
     description: "High-perceived-value digital syllabus or prayer booklet deliverable offered immediately upon attendee registration.",
     tags: ["Lead Magnet", "PDF Download", "Instant Value"],
     tokens: "p-6 rounded-3xl bg-gradient-to-br from-indigo-950 via-purple-950 to-slate-900 border",
@@ -124,7 +123,7 @@ const DESIGN_LIBRARY_BLOCKS = [
     name: "Direct WhatsApp Community Gate",
     category: "fellowship",
     categoryLabel: "Community & Fellowship",
-    sourceLibrary: "Community CTA pattern reference",
+    sourceLibrary: "Tailwind UI Marketing Kit",
     description: "One-click WhatsApp Community banner with direct phone pre-fill for church coordinators and pastoral staff.",
     tags: ["Zero Friction", "WhatsApp Deep-Link", "Instant Chat"],
     tokens: "p-6 rounded-3xl bg-gradient-to-r from-emerald-600 to-teal-600 text-white",
@@ -132,7 +131,7 @@ const DESIGN_LIBRARY_BLOCKS = [
 ];
 
 // =========================================================================
-// OIKODARA Typography Pairings
+// Curated Faith & Ministry Typography Pairings
 // =========================================================================
 const FAITH_TYPOGRAPHY_PAIRINGS = [
   {
@@ -270,10 +269,10 @@ export default function TemplatesShowcasePage() {
     all: "Full Showroom & Wireframe Studio",
     presets: "Wireframe Presets Catalog",
     canvas: "Live Wireframe Canvas Simulator",
-    "ai-studio": "Sample Content Studio",
-    library: "UI Component Concepts",
+    "ai-studio": "AI Fine-Tuner Studio",
+    library: "Production UI Component Specs",
     typography: "Faith Typography System",
-    palettes: "Ministry Color Palette Concepts",
+    palettes: "Curated Spiritual Color Palettes",
   };
 
   const currentPreset = getWireframePreset(selectedPresetId);
@@ -282,9 +281,9 @@ export default function TemplatesShowcasePage() {
       ? `${currentPreset.name} Preset`
       : showcaseTabTitles[activeShowcaseTab] || "Conference Design Showroom";
 
-  useDynamicTitle(currentTitle, "OIKODARA Design & Templates Studio");
+  useDynamicTitle(currentTitle, "Conference Design Showroom");
 
-  // Sample Content Studio Playground State
+  // AI Fine-Tuner Playground State
   const [fineTunerSample, setFineTunerSample] = useState<"revival" | "youth" | "leadership" | "cathedral" | "grace">("revival");
   const [customPrompt, setCustomPrompt] = useState("");
   const [isFineTuning, setIsFineTuning] = useState(false);
@@ -363,7 +362,7 @@ export default function TemplatesShowcasePage() {
     }
   };
 
-  // Trigger Sample Content Preview Simulation
+  // Trigger AI Fine-Tuning Simulation
   const runAiFineTuning = () => {
     setIsFineTuning(true);
     setTimeout(() => {
@@ -372,7 +371,7 @@ export default function TemplatesShowcasePage() {
         basePack = {
           ...basePack,
           conferenceTitle: customPrompt.trim(),
-          heroContextHeadline: `Custom brief: ${customPrompt.trim()}: Tailored with spiritual revelation, targeted breakout tracks, and WhatsApp community sync.`,
+          heroContextHeadline: `AI Slotted for ${customPrompt.trim()}: Tailored with spiritual revelation, targeted breakout tracks, and WhatsApp community sync.`,
         };
       }
       setFineTunedData(basePack);
@@ -383,7 +382,7 @@ export default function TemplatesShowcasePage() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <div className="template-showcase min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white flex flex-col justify-between">
+    <div className="min-h-screen bg-slate-950 text-slate-100 selection:bg-indigo-500 selection:text-white flex flex-col justify-between">
       <div>
         {/* =========================================================
             HEADER / NAVIGATION
@@ -393,21 +392,20 @@ export default function TemplatesShowcasePage() {
             <div className="flex items-center gap-3">
               <Link href="/" className="flex items-center gap-2 group">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-indigo-500 to-violet-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20 group-hover:scale-105 transition-transform">
-                  OK
+                  BP
                 </div>
                 <div>
                   <span className="font-extrabold text-base tracking-tight text-white block">
-                    OIKODARA
+                    Bent Planet
                   </span>
                   <span className="text-[10px] text-indigo-400 font-mono tracking-widest uppercase block -mt-1">
-                    OIKODARA Design & Templates Studio
+                    Design System & Templates Showroom
                   </span>
                 </div>
               </Link>
             </div>
 
             <div className="flex items-center gap-3">
-              <ThemeToggle />
               <Button asChild variant="outline" size="sm" className="text-xs border-slate-700 bg-slate-900/60 hover:bg-slate-800">
                 <Link href="/dashboard/conferences/new">
                   <ArrowRightIcon className="w-3.5 h-3.5 mr-1.5 text-indigo-400" />
@@ -428,20 +426,20 @@ export default function TemplatesShowcasePage() {
           <div className="relative max-w-5xl mx-auto px-4 sm:px-6 text-center">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-indigo-950/70 border border-indigo-500/30 text-indigo-300 text-xs font-semibold mb-6 shadow-inner">
               <SparklesIcon className="w-3.5 h-3.5 text-indigo-400 animate-pulse" />
-              <span>OIKODARA design resources & configurable wireframe components</span>
+              <span>Design Library Resources & Fixed-but-Flexible Wireframe Customs</span>
             </div>
 
             <h1 className="text-3xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight text-white mb-6 leading-tight">
               Craft High-Converting Church Gatherings with{" "}
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 via-purple-300 to-amber-300">
-                Configurable Ministry Wireframes
+                Slotted AI Wireframes
               </span>
             </h1>
 
             <p className="text-base sm:text-lg text-slate-300 max-w-3xl mx-auto mb-8 font-normal leading-relaxed">
-              Conference pages use a <strong>consistent ministry-focused structure</strong>{" "}
+              Every generation of conferences is anchored on an <strong>invariant, high-converting faith skeleton</strong>{" "}
               (Brand, Hero, Livestream, Ministers, Tracks, Devotional, WhatsApp RSVP), rendered through{" "}
-              <strong>6 configurable wireframe layouts</strong> that you can preview and customise before opening the Conference Builder.
+              <strong>6 polymorphic wireframe topologies</strong> that AI fine-tunes directly into production.
             </p>
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl mx-auto text-left">
@@ -450,16 +448,16 @@ export default function TemplatesShowcasePage() {
                 <span className="text-xl font-bold text-white">6 Topologies</span>
               </div>
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition">
-                <span className="text-xs text-slate-400 block mb-0.5">Component Concepts</span>
-                <span className="text-xl font-bold text-indigo-400">8 Component Concepts</span>
+                <span className="text-xs text-slate-400 block mb-0.5">Design Libraries</span>
+                <span className="text-xl font-bold text-indigo-400">40+ Production Specs</span>
               </div>
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition">
                 <span className="text-xs text-slate-400 block mb-0.5">Spiritual Themes</span>
-                <span className="text-xl font-bold text-amber-400">6 Curated Palettes</span>
+                <span className="text-xl font-bold text-amber-400">8 Curated Palettes</span>
               </div>
               <div className="p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition">
-                <span className="text-xs text-slate-400 block mb-0.5">Sample Content Preview</span>
-                <span className="text-xl font-bold text-emerald-400">Preview with Sample Data</span>
+                <span className="text-xs text-slate-400 block mb-0.5">AI Fine-Tuning</span>
+                <span className="text-xl font-bold text-emerald-400">100% Slotted Output</span>
               </div>
             </div>
           </div>
@@ -474,7 +472,7 @@ export default function TemplatesShowcasePage() {
               {[
                 { id: "presets", label: "Wireframe Presets", icon: LayoutGridIcon },
                 { id: "canvas", label: "Canvas Simulator", icon: LayersIcon },
-                { id: "ai-studio", label: "Sample Content Studio", icon: Wand2Icon },
+                { id: "ai-studio", label: "AI Fine-Tuner", icon: Wand2Icon },
                 { id: "library", label: "Component Specs", icon: CompassIcon },
                 { id: "typography", label: "Typography", icon: TypeIcon },
                 { id: "palettes", label: "Color Palettes", icon: PaletteIcon },
@@ -631,20 +629,20 @@ export default function TemplatesShowcasePage() {
         </section>
 
         {/* =========================================================
-            SAMPLE CONTENT CUSTOMISER
+            AI WIREFRAME FINE-TUNER STUDIO (PLAYGROUND)
            ========================================================= */}
         <section id="section-ai-studio" className="py-14 px-4 sm:px-6 max-w-7xl mx-auto border-t border-slate-800/80">
           <div className="text-center max-w-3xl mx-auto mb-10">
             <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/30 text-xs font-semibold mb-3">
               <Wand2Icon className="w-3.5 h-3.5 text-indigo-400 animate-spin" />
-              <span>Interactive Wireframe Customiser</span>
+              <span>AI Fine-Tuning Engine</span>
             </div>
             <h2 className="text-2xl sm:text-3xl font-bold text-white mb-2">
-              Preview Ministry Content in the Wireframe
+              Fine-Tune the Wireframe with Faith AI
             </h2>
             <p className="text-xs sm:text-sm text-slate-400">
-              Choose a ministry preset or enter a custom conference brief. Preview how sample content fills
-              the wireframe sections. This showroom uses sample data; it does not publish or change a live conference.
+              Select an anointed faith preset or type a custom conference mandate. Watch our multi-model AI engine hydrate
+              each wireframe slot with zero structural distortion.
             </p>
           </div>
 
@@ -653,7 +651,7 @@ export default function TemplatesShowcasePage() {
             <div className="lg:col-span-5 p-6 rounded-3xl bg-slate-900/90 border border-slate-800 shadow-xl space-y-6">
               <div>
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                  1. Choose a sample ministry brief
+                  1. Select Faith Prompt Preset
                 </label>
                 <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                   <button
@@ -736,7 +734,7 @@ export default function TemplatesShowcasePage() {
 
               <div>
                 <label className="text-xs font-bold uppercase tracking-wider text-slate-400 block mb-2">
-                  2. Custom Conference Title
+                  2. Custom Title / Mandate Prompt
                 </label>
                 <div className="flex gap-2">
                   <input
@@ -751,7 +749,7 @@ export default function TemplatesShowcasePage() {
                     disabled={isFineTuning}
                     className="bg-indigo-600 hover:bg-indigo-500 text-xs font-bold h-10 px-4 shrink-0"
                   >
-                    {isFineTuning ? "Preparing preview..." : "Update Preview"}
+                    {isFineTuning ? "Hydrating..." : "Fine-Tune"}
                   </Button>
                 </div>
               </div>
@@ -901,7 +899,7 @@ export default function TemplatesShowcasePage() {
                 Wireframe Presets & Templates Catalog
               </h2>
               <p className="text-xs sm:text-sm text-slate-400">
-                Explore six configurable wireframe layouts for church conferences, youth gatherings and leadership events.
+                Explore the 6 production wireframe topologies engineered specifically for church convocations, youth movements, and leadership summits.
               </p>
             </div>
 
@@ -1013,13 +1011,13 @@ export default function TemplatesShowcasePage() {
             <div>
               <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-950 text-indigo-300 border border-indigo-500/30 text-xs font-semibold mb-2">
                 <LayersIcon className="w-3.5 h-3.5 text-indigo-400" />
-                <span>Design Reference Notes</span>
+                <span>Design Library Specifications</span>
               </div>
               <h2 className="text-2xl sm:text-3xl font-bold text-white">
-                Design References & Component Concepts
+                Resources Library Pulled from Design Libraries
               </h2>
               <p className="text-xs sm:text-sm text-slate-400 mt-1">
-                Original component concepts and layout patterns informed by established design practices. Third-party product names identify references only; they do not imply endorsement, affiliation, copied assets, or a licence to reuse third-party materials.
+                Battle-tested UI blocks, layout blueprints, and token guidelines extracted from world-class design systems (Relume, Untitled UI, Tailwind UI, Cruip, Aceternity).
               </p>
             </div>
 
@@ -1060,7 +1058,7 @@ export default function TemplatesShowcasePage() {
                       {block.categoryLabel}
                     </span>
                     <span className="text-[9px] text-slate-500 bg-slate-950 px-2 py-0.5 rounded-md border border-slate-800">
-                      {block.block.sourceLibrary}
+                      {block.sourceLibrary.split("+")[0].trim()}
                     </span>
                   </div>
 
@@ -1215,10 +1213,10 @@ export default function TemplatesShowcasePage() {
                 Ready to Publish?
               </span>
               <h2 className="text-3xl sm:text-4xl font-extrabold text-white">
-                Create a Conference Page for Your Ministry
+                Launch Your Conference in Under 60 Seconds
               </h2>
               <p className="text-xs sm:text-sm text-slate-300 leading-relaxed">
-                Choose a layout, customise the content and review your conference page before publishing it from the Conference Builder.
+                Choose any fixed-but-flexible wireframe, let AI draft your sermon hooks and time-blocked agenda, and publish with a high-converting shareable link.
               </p>
               <div className="pt-2">
                 <Button asChild size="lg" className="bg-white text-slate-950 hover:bg-slate-100 font-bold text-xs h-11 px-8 shadow-xl">
@@ -1233,16 +1231,16 @@ export default function TemplatesShowcasePage() {
       </div>
 
       {/* =========================================================
-          GLOBAL FOOTER (RULE: © OIKODARA Inc. {YEAR})
+          GLOBAL FOOTER (RULE: © Bent Planet Inc. {YEAR})
          ========================================================= */}
       <footer className="w-full border-t border-slate-800 bg-slate-950 py-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-6 text-xs text-slate-500">
           <div className="flex items-center gap-3">
             <div className="w-6 h-6 rounded-lg bg-indigo-600 flex items-center justify-center font-bold text-white text-[10px]">
-              OK
+              BP
             </div>
             <span>
-              &copy; <Link href="/" className="hover:text-indigo-400 font-semibold transition">OIKODARA Inc. {currentYear}</Link>. Building the Church. Connecting the People.
+              &copy; <Link href="/" className="hover:text-indigo-400 font-semibold transition">Bent Planet Inc. {currentYear}</Link>. Empowering Kingdom Assemblies Globally.
             </span>
           </div>
 

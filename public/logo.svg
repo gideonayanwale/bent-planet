@@ -1,6 +1,9 @@
-<svg width="720" height="190" viewBox="0 0 720 190" fill="none" xmlns="http://www.w3.org/2000/svg">
-<defs><linearGradient id="arch" x1="18" y1="10" x2="150" y2="160" gradientUnits="userSpaceOnUse"><stop stop-color="#4F46E5"/><stop offset=".55" stop-color="#7C3AED"/><stop offset="1" stop-color="#312E81"/></linearGradient><linearGradient id="people" x1="20" y1="100" x2="150" y2="160" gradientUnits="userSpaceOnUse"><stop stop-color="#4F46E5"/><stop offset=".5" stop-color="#7C3AED"/><stop offset="1" stop-color="#10B981"/></linearGradient></defs>
-<g transform="translate(12 8) scale(1.55)"><path d="M13 76V43C13 22.6 29.6 7 50 2C70.4 7 87 22.6 87 43V76" stroke="url(#arch)" stroke-width="9" stroke-linecap="round"/><path d="M50 21V48M38 34.5H62" stroke="#0F172A" stroke-width="7"/><circle cx="28" cy="57" r="7.5" fill="#4F46E5"/><circle cx="50" cy="61" r="8" fill="#7C3AED"/><circle cx="72" cy="57" r="7.5" fill="#10B981"/><path d="M8 83C10 68 18 64 28 64C38 64 44 70 46 83H8Z" fill="#4F46E5"/><path d="M29 88C31 72 39 68 50 68C61 68 69 72 71 88H29Z" fill="#7C3AED"/><path d="M54 83C56 70 62 64 72 64C82 64 90 68 92 83H54Z" fill="#10B981"/><path d="M5 91C23 82 39 81 50 85C61 81 77 82 95 91L50 98L5 91Z" fill="#0F172A"/></g>
-<path d="M205 25V165" stroke="#0F172A" stroke-opacity=".55" stroke-width="1.5"/>
-<text x="238" y="103" font-family="Plus Jakarta Sans,Arial,sans-serif" font-size="66" font-weight="800" letter-spacing="-1.5" fill="#0F172A">OIKOD</text><text x="452" y="103" font-family="Plus Jakarta Sans,Arial,sans-serif" font-size="66" font-weight="800" fill="#7C3AED">A</text><text x="501" y="103" font-family="Plus Jakarta Sans,Arial,sans-serif" font-size="66" font-weight="800" letter-spacing="-1.5" fill="#0F172A">RA</text>
-<text x="240" y="137" font-family="Plus Jakarta Sans,Arial,sans-serif" font-size="22" font-weight="500" fill="#0F172A">Building the Church. Connecting the People.</text></svg>
+<svg width="420" height="100" viewBox="0 0 420 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <path d="M18 84V47C18 29.3 32.3 15 50 15C67.7 15 82 29.3 82 47V84" stroke="#818CF8" stroke-width="7" stroke-linecap="round"/>
+  <path d="M50 4V29M39 16.5H61" stroke="#A78BFA" stroke-width="5.5" stroke-linecap="round"/>
+  <path d="M18 84H82" stroke="#E2E8F0" stroke-width="5" stroke-linecap="round"/>
+  <circle cx="33" cy="54" r="6" fill="#10B981"/><circle cx="67" cy="54" r="6" fill="#10B981"/><circle cx="50" cy="68" r="6" fill="#818CF8"/>
+  <path d="M33 60L45 68M67 60L55 68" stroke="#A5B4FC" stroke-width="3.5" stroke-linecap="round"/>
+  <text x="116" y="57" font-family="Plus Jakarta Sans, Inter, sans-serif" font-size="39" font-weight="800" letter-spacing="1.4" fill="#F8FAFC">OIKODARA</text>
+  <text x="118" y="81" font-family="Plus Jakarta Sans, Inter, sans-serif" font-size="10" font-weight="600" letter-spacing="1.1" fill="#94A3B8">BUILDING THE CHURCH. CONNECTING THE PEOPLE.</text>
+</svg>

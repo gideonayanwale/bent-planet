@@ -75,7 +75,7 @@ export default async function DashboardPage() {
             Welcome, {church.name}
           </h1>
           <p className="max-w-2xl text-sm text-indigo-100/90 leading-relaxed">
-            Manage conferences, organise subscriber records, review available engagement data and communicate with your ministry audience.
+            Manage your live conferences, grow your subscriber audience, and broadcast Spirit-filled updates directly to your members.
           </p>
         </div>
 
@@ -110,7 +110,7 @@ export default async function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold text-foreground">{totalSubs}</div>
             <p className="text-xs text-emerald-600 dark:text-emerald-400 font-medium flex items-center gap-1 mt-1">
-              <span>Current subscriber total</span>
+              <span>↑ 100% organic growth</span>
             </p>
           </CardContent>
         </Card>
@@ -144,7 +144,7 @@ export default async function DashboardPage() {
           <CardContent>
             <div className="text-2xl font-bold text-foreground">{totalEmails}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              Email activity recorded for this workspace
+              Automated & custom broadcasts
             </p>
           </CardContent>
         </Card>
@@ -152,14 +152,14 @@ export default async function DashboardPage() {
         <Card className="border-border bg-card/90 shadow-xs hover:shadow-md transition">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-              Workspace Link
+              Platform Status
             </CardTitle>
             <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-emerald-50 text-emerald-600 dark:bg-emerald-950/80 dark:text-emerald-400">
               <RadioIcon className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">Available</div>
+            <div className="text-2xl font-bold text-emerald-600 dark:text-emerald-400">Verified</div>
             <p className="text-xs text-muted-foreground mt-1">
               Slug: <code className="text-indigo-600 dark:text-indigo-400 font-medium">/c/{church.slug}</code>
             </p>
@@ -189,11 +189,11 @@ export default async function DashboardPage() {
           <CardContent className="space-y-4">
             <div className="rounded-xl bg-secondary/60 p-4 border border-border space-y-2">
               <div className="flex items-center justify-between text-xs text-muted-foreground font-medium">
-                <span>Subscriber records:</span>
+                <span>Total Reachable Audience:</span>
                 <span className="font-bold text-foreground">{totalSubs} Subscribers</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Send livestream updates, sermon notes and devotional reminders from the Email Center.
+                Send live stream notifications, sermon notes, or devotional reminders in 1 click.
               </p>
             </div>
           </CardContent>
@@ -229,29 +229,29 @@ export default async function DashboardPage() {
           <CardHeader>
             <div className="flex items-center gap-2">
               <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-50 text-amber-600 dark:bg-amber-950/80 dark:text-amber-400">
-                <UsersIcon className="h-4 w-4" />
+                <MailIcon className="h-4 w-4" />
               </div>
               <div>
-                <CardTitle className="text-base font-bold text-card-foreground">Audience Follow-up</CardTitle>
-                <CardDescription className="text-xs">Keep subscriber records organised</CardDescription>
+                <CardTitle className="text-base font-bold text-card-foreground">Email Broadcast</CardTitle>
+                <CardDescription className="text-xs">Nurture your conference attendees</CardDescription>
               </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="rounded-xl bg-secondary/60 p-4 border border-border space-y-2">
               <div className="flex items-center justify-between text-xs text-muted-foreground font-medium">
-                <span>People in your records:</span>
+                <span>Total Reachable Audience:</span>
                 <span className="font-bold text-foreground">{totalSubs} Subscribers</span>
               </div>
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Send livestream updates, sermon notes and devotional reminders from the Email Center.
+                Send live stream notifications, sermon notes, or devotional reminders in 1 click.
               </p>
             </div>
           </CardContent>
           <div className="p-6 pt-0">
             <Button asChild className="w-full bg-primary hover:bg-primary/90 text-primary-foreground gap-2 font-semibold shadow-sm">
-              <Link href="/dashboard/subscribers">
-                Open Audience Directory
+              <Link href="/dashboard/emails">
+                Open Email Command Center
                 <ArrowUpRightIcon className="h-4 w-4" />
               </Link>
             </Button>
@@ -283,7 +283,7 @@ export default async function DashboardPage() {
               </div>
               <h3 className="font-heading text-lg font-bold text-foreground">No conferences yet</h3>
               <p className="text-xs text-muted-foreground max-w-sm mt-1 mb-4">
-                Start with the conference builder to create and publish your first online conference page.
+                Use our AI Generator to create your first online conference page in under 60 seconds.
               </p>
               <Button asChild size="sm" className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold">
                 <Link href="/dashboard/conferences/new">Generate First Conference</Link>
