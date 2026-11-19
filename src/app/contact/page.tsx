@@ -468,7 +468,7 @@ export default function ContactPage() {
                   </Button>
                 </div>
 
-                {/* Email Direct Desk */}
+                {/* Contact Form Shortcut */}
                 <div className="p-6 rounded-3xl border border-border bg-card space-y-4 flex flex-col justify-between">
                   <div>
                     <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center mb-4">
@@ -477,24 +477,19 @@ export default function ContactPage() {
                     <Badge variant="outline" className="text-[10px] mb-2 font-mono">
                       Formal Inquiries
                     </Badge>
-                    <h3 className="font-heading font-bold text-lg text-foreground">Official Email Support</h3>
+                    <h3 className="font-heading font-bold text-lg text-foreground">Send a Message</h3>
                     <p className="text-xs text-muted-foreground mt-1 leading-relaxed">
-                      For formal ministry proposals, partnership agreements, data protection questions, or custom enterprise terms.
+                      For ministry proposals, partnership discussions, data protection questions, or technical support, send a message through our secure contact form.
                     </p>
-                    <div className="mt-4 space-y-1 text-xs">
-                      <div className="font-mono text-indigo-600 dark:text-indigo-400 font-bold">
-                        support@bentplanet.com
-                      </div>
-                      <div className="font-mono text-muted-foreground">
-                        partners@bentplanet.com
-                      </div>
-                    </div>
                   </div>
-                  <Button asChild variant="outline" className="w-full text-xs font-semibold mt-4">
-                    <Link href="mailto:support@bentplanet.com">
-                      <MailIcon className="w-4 h-4 mr-2 text-indigo-500" />
-                      Email Operations Desk
-                    </Link>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    className="w-full text-xs font-semibold mt-4"
+                    onClick={() => setActiveTab("form")}
+                  >
+                    <MailIcon className="w-4 h-4 mr-2 text-indigo-500" />
+                    Open Contact Form
                   </Button>
                 </div>
 

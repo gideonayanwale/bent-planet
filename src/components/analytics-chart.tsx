@@ -49,13 +49,13 @@ export function AnalyticsChart() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2">
-            <h3 className="font-heading text-lg font-bold text-slate-900">Audience Growth & Engagement</h3>
+            <h3 className="font-heading text-lg font-bold text-slate-900">Engagement Trend Preview</h3>
             <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-semibold text-emerald-700 border border-emerald-200/60">
               <TrendingUpIcon className="h-3 w-3" />
-              +28% this period
+              Illustrative sample data
             </span>
           </div>
-          <p className="text-xs text-slate-500 mt-1">Live growth metrics across subscribers and conference registrations.</p>
+          <p className="text-xs text-slate-500 mt-1">Sample figures for layout preview only. These are not live church analytics or measured growth.</p>
         </div>
 
         <div className="flex items-center gap-2 flex-wrap">
